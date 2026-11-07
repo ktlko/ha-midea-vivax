@@ -25,6 +25,9 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from homeassistant.const import Platform
+from .const import KIND_APPLIANCE
+from .appliance.entities import async_setup_platform as async_setup_appliance
 from .ac import sensor as ac_sensor
 from .const import CONF_KIND, KIND_AC, ERROR_CODES, NOT_PRESENT, REG_ENERGY_IN, REG_ENERGY_OUT
 from .entity import HeatPumpEntity, signed
@@ -129,6 +132,9 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up sensors."""
+    if entry.data.get(CONF_KIND) == KIND_APPLIANCE:
+        await async_setup_appliance(entry, async_add_entities, Platform.SENSOR)
+        return
     if entry.data.get(CONF_KIND) == KIND_AC:
         await ac_sensor.async_setup_entry(hass, entry, async_add_entities)
         return

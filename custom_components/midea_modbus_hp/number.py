@@ -14,6 +14,9 @@ from homeassistant.const import EntityCategory, UnitOfPower, UnitOfTemperature, 
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from homeassistant.const import Platform
+from .const import KIND_APPLIANCE
+from .appliance.entities import async_setup_platform as async_setup_appliance
 from .ac import extras as ac_extras
 from .const import (
     CONF_KIND,
@@ -124,6 +127,9 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up numbers."""
+    if entry.data.get(CONF_KIND) == KIND_APPLIANCE:
+        await async_setup_appliance(entry, async_add_entities, Platform.NUMBER)
+        return
     if entry.data.get(CONF_KIND) == KIND_AC:
         await ac_extras.async_setup_number(hass, entry, async_add_entities)
         return

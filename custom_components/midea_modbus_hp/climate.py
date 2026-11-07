@@ -20,6 +20,7 @@ from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .const import KIND_APPLIANCE
 from .ac import climate as ac_climate
 from .const import CONF_KIND, KIND_AC, REG_LOADS, REG_MODE, REG_POWER, REG_ZONE1_SET
 from .entity import HeatPumpEntity, signed
@@ -37,6 +38,8 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up the zone 1 climate entity."""
+    if entry.data.get(CONF_KIND) == KIND_APPLIANCE:
+        return  # no such entities
     if entry.data.get(CONF_KIND) == KIND_AC:
         await ac_climate.async_setup_entry(hass, entry, async_add_entities)
         return

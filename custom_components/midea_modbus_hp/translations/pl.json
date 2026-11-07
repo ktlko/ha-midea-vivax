@@ -5,7 +5,8 @@
         "title": "Midea / Vivax",
         "menu_options": {
           "heat_pump": "Pompa ciepła (Modbus przez EW11)",
-          "air_conditioner": "Klimatyzator (Wi-Fi)"
+          "air_conditioner": "Klimatyzator (Wi-Fi)",
+          "appliance": "Inne urządzenie Midea (Wi-Fi) – nieprzetestowane"
         }
       },
       "heat_pump": {
@@ -54,6 +55,27 @@
           "name": "Nazwa",
           "outdoor_unit": "Wspólna jednostka zewnętrzna (puste = własna)"
         }
+      },
+      "appliance": {
+        "title": "Chmura Midea",
+        "description": "Osuszacze, podgrzewacze wody, wentylatory, oczyszczacze i inne urządzenia Midea (typy z aplikacji MSmartHome) są sterowane lokalnie przez bibliotekę midea-local. Integracja loguje się jednorazowo, aby pobrać token i klucz urządzenia; hasło nie jest zapisywane. Te typy urządzeń nie zostały przetestowane.",
+        "data": {
+          "cloud": "Aplikacja / chmura",
+          "username": "E-mail konta",
+          "password": "Hasło",
+          "default_account": "Użyj konta domyślnego (bez logowania)"
+        }
+      },
+      "appliance_select": {
+        "title": "Wybór urządzenia",
+        "description": "Urządzenia znalezione w sieci: {found}. Jeśli adres IP jest pusty, sprawdź go w routerze (DHCP).",
+        "data": {
+          "unit": "Urządzenie",
+          "device_id": "ID urządzenia (Appliance ID z aplikacji)",
+          "type": "Typ urządzenia (bez listy z chmury)",
+          "host": "Adres IP urządzenia",
+          "name": "Nazwa"
+        }
       }
     },
     "error": {
@@ -64,7 +86,9 @@
       "missing_credentials": "Wpisz e-mail i hasło albo zaznacz konto domyślne.",
       "cloud_login_failed": "Logowanie do chmury Midea nie powiodło się albo chmura nie zna urządzenia. Sprawdź aplikację, e-mail i hasło.",
       "missing_unit": "Wybierz urządzenie (lub wpisz numeryczne ID) i wpisz jego adres IP.",
-      "no_token": "Chmura nie zwróciła tokenu dla tego urządzenia. Sprawdź ID urządzenia i aplikację."
+      "no_token": "Chmura nie zwróciła tokenu dla tego urządzenia. Sprawdź ID urządzenia i aplikację.",
+      "no_appliances_found": "Na koncie nie znaleziono obsługiwanego urządzenia Midea.",
+      "cannot_connect_appliance": "Urządzenie nie odpowiada (adres IP, token/klucz lub nie jest w sieci lokalnej)."
     },
     "abort": {
       "already_configured": "To urządzenie jest już skonfigurowane.",
@@ -559,6 +583,429 @@
           "underfloor": "podłogowe",
           "other": "inne"
         }
+      },
+      "ml_current_humidity": {
+        "name": "Aktualna wilgotność"
+      },
+      "ml_current_temperature": {
+        "name": "Aktualna temperatura"
+      },
+      "ml_tank": {
+        "name": "Zbiornik wody"
+      },
+      "ml_temperature": {
+        "name": "Temperatura"
+      },
+      "ml_humidity": {
+        "name": "Wilgotność"
+      },
+      "ml_temperature_raw": {
+        "name": "Temperatura (surowa)"
+      },
+      "ml_humidity_raw": {
+        "name": "Wilgotność (surowa)"
+      },
+      "ml_temperature_compensate": {
+        "name": "Korekta temperatury"
+      },
+      "ml_humidity_compensate": {
+        "name": "Korekta wilgotności"
+      },
+      "ml_tvoc": {
+        "name": "TVOC"
+      },
+      "ml_co2": {
+        "name": "Dwutlenek węgla"
+      },
+      "ml_pm25": {
+        "name": "PM2,5"
+      },
+      "ml_hcho": {
+        "name": "Formaldehyd"
+      },
+      "ml_screen_extinction_timeout": {
+        "name": "Wyłączenie ekranu po"
+      },
+      "ml_status": {
+        "name": "Stan"
+      },
+      "ml_mode": {
+        "name": "Tryb"
+      },
+      "ml_fire_power": {
+        "name": "Poziom mocy"
+      },
+      "ml_time_remaining": {
+        "name": "Pozostały czas"
+      },
+      "ml_target_temperature": {
+        "name": "Temperatura docelowa"
+      },
+      "ml_top_compartment_status": {
+        "name": "Górna komora – stan"
+      },
+      "ml_top_compartment_temperature": {
+        "name": "Górna komora – temperatura"
+      },
+      "ml_top_compartment_remaining": {
+        "name": "Górna komora – pozostało"
+      },
+      "ml_middle_compartment_status": {
+        "name": "Środkowa komora – stan"
+      },
+      "ml_middle_compartment_temperature": {
+        "name": "Środkowa komora – temperatura"
+      },
+      "ml_middle_compartment_remaining": {
+        "name": "Środkowa komora – pozostało"
+      },
+      "ml_bottom_compartment_status": {
+        "name": "Dolna komora – stan"
+      },
+      "ml_bottom_compartment_temperature": {
+        "name": "Dolna komora – temperatura"
+      },
+      "ml_bottom_compartment_remaining": {
+        "name": "Dolna komora – pozostało"
+      },
+      "ml_fan_level": {
+        "name": "Poziom ssania"
+      },
+      "ml_work_status": {
+        "name": "Stan pracy"
+      },
+      "ml_function_type": {
+        "name": "Typ funkcji"
+      },
+      "ml_control_type": {
+        "name": "Typ sterowania"
+      },
+      "ml_area": {
+        "name": "Posprzątana powierzchnia"
+      },
+      "ml_battery_percent": {
+        "name": "Bateria"
+      },
+      "ml_work_time": {
+        "name": "Czas pracy"
+      },
+      "ml_mop": {
+        "name": "Stan mopa"
+      },
+      "ml_speed": {
+        "name": "Prędkość"
+      },
+      "ml_error_type": {
+        "name": "Typ błędu"
+      },
+      "ml_error_desc": {
+        "name": "Opis błędu"
+      },
+      "ml_work_mode": {
+        "name": "Tryb pracy"
+      },
+      "ml_temperature_above": {
+        "name": "Temperatura u góry"
+      },
+      "ml_temperature_underside": {
+        "name": "Temperatura u dołu"
+      },
+      "ml_cur_temperature_above": {
+        "name": "Aktualna temperatura u góry"
+      },
+      "ml_cur_temperature_underside": {
+        "name": "Aktualna temperatura u dołu"
+      },
+      "ml_probe_temperature": {
+        "name": "Temperatura docelowa sondy"
+      },
+      "ml_cur_probe_temperature": {
+        "name": "Temperatura sondy"
+      },
+      "ml_steam_quantity": {
+        "name": "Ilość pary"
+      },
+      "ml_weight": {
+        "name": "Waga"
+      },
+      "ml_people_number": {
+        "name": "Liczba osób"
+      },
+      "ml_totalstep": {
+        "name": "Liczba kroków"
+      },
+      "ml_stepnum": {
+        "name": "Bieżący krok"
+      },
+      "ml_cloudmenuid": {
+        "name": "ID przepisu z chmury"
+      },
+      "ml_execute": {
+        "name": "Stan wykonania"
+      },
+      "ml_water_temperature": {
+        "name": "Temperatura wody"
+      },
+      "ml_seat_temperature": {
+        "name": "Temperatura deski"
+      },
+      "ml_filter_life": {
+        "name": "Żywotność filtra"
+      },
+      "ml_error_code": {
+        "name": "Kod błędu"
+      },
+      "ml_tank_actual_temperature": {
+        "name": "Temperatura zasobnika"
+      },
+      "ml_total_energy_consumption": {
+        "name": "Całkowite zużycie energii"
+      },
+      "ml_total_produced_energy": {
+        "name": "Całkowita wytworzona energia"
+      },
+      "ml_outdoor_temperature": {
+        "name": "Temperatura zewnętrzna"
+      },
+      "ml_temp_tw_in": {
+        "name": "Temperatura wody na wejściu"
+      },
+      "ml_temp_tw_out": {
+        "name": "Temperatura wody na wyjściu"
+      },
+      "ml_instant_power0": {
+        "name": "Pobór mocy"
+      },
+      "ml_flex_zone_actual_temp": {
+        "name": "Temperatura strefy flex"
+      },
+      "ml_flex_zone_setting_temp": {
+        "name": "Ustawiona temperatura strefy flex"
+      },
+      "ml_freezer_actual_temp": {
+        "name": "Temperatura zamrażarki"
+      },
+      "ml_freezer_setting_temp": {
+        "name": "Ustawiona temperatura zamrażarki"
+      },
+      "ml_energy_consumption": {
+        "name": "Zużycie energii"
+      },
+      "ml_refrigerator_actual_temp": {
+        "name": "Temperatura chłodziarki"
+      },
+      "ml_refrigerator_setting_temp": {
+        "name": "Ustawiona temperatura chłodziarki"
+      },
+      "ml_right_flex_zone_actual_temp": {
+        "name": "Temperatura prawej strefy flex"
+      },
+      "ml_right_flex_zone_setting_temp": {
+        "name": "Ustawiona temperatura prawej strefy flex"
+      },
+      "ml_variable_mode": {
+        "name": "Tryb strefy zmiennej"
+      },
+      "ml_indoor_temperature": {
+        "name": "Temperatura wewnętrzna"
+      },
+      "ml_compressor_temperature": {
+        "name": "Temperatura sprężarki"
+      },
+      "ml_condenser_temperature": {
+        "name": "Temperatura skraplacza"
+      },
+      "ml_water_level": {
+        "name": "Poziom wody"
+      },
+      "ml_elec_heat": {
+        "name": "Grzałka elektryczna"
+      },
+      "ml_water_pump": {
+        "name": "Pompa wody"
+      },
+      "ml_four_way": {
+        "name": "Zawór czterodrogowy"
+      },
+      "ml_back_water": {
+        "name": "Woda powrotna"
+      },
+      "ml_sterilize": {
+        "name": "Sterylizacja"
+      },
+      "ml_top_temperature": {
+        "name": "Temperatura u góry"
+      },
+      "ml_bottom_temperature": {
+        "name": "Temperatura u dołu"
+      },
+      "ml_wind": {
+        "name": "Wentylator"
+      },
+      "ml_typeinfo": {
+        "name": "Informacja o typie"
+      },
+      "ml_vacation_start_year": {
+        "name": "Urlop od – rok"
+      },
+      "ml_vacation_start_month": {
+        "name": "Urlop od – miesiąc"
+      },
+      "ml_vacation_start_day": {
+        "name": "Urlop od – dzień"
+      },
+      "ml_auto_sterilize_week": {
+        "name": "Automatyczna sterylizacja – dzień"
+      },
+      "ml_auto_sterilize_hour": {
+        "name": "Automatyczna sterylizacja – godzina"
+      },
+      "ml_auto_sterilize_minute": {
+        "name": "Automatyczna sterylizacja – minuta"
+      },
+      "ml_wash_time": {
+        "name": "Czas prania"
+      },
+      "ml_soak_time": {
+        "name": "Czas namaczania"
+      },
+      "ml_dehydration_time": {
+        "name": "Czas wirowania"
+      },
+      "ml_dehydration_speed": {
+        "name": "Prędkość wirowania"
+      },
+      "ml_rinse_count": {
+        "name": "Liczba płukań"
+      },
+      "ml_rinse_level": {
+        "name": "Poziom płukania"
+      },
+      "ml_wash_level": {
+        "name": "Poziom prania"
+      },
+      "ml_wash_strength": {
+        "name": "Intensywność prania"
+      },
+      "ml_softener": {
+        "name": "Płyn zmiękczający"
+      },
+      "ml_detergent": {
+        "name": "Detergent"
+      },
+      "ml_program": {
+        "name": "Program"
+      },
+      "ml_progress": {
+        "name": "Postęp"
+      },
+      "ml_wash_time_value": {
+        "name": "Wartość czasu prania"
+      },
+      "ml_dehydration_time_value": {
+        "name": "Wartość czasu wirowania"
+      },
+      "ml_stains": {
+        "name": "Plamy"
+      },
+      "ml_dirty_degree": {
+        "name": "Stopień zabrudzenia"
+      },
+      "ml_dry_temperature": {
+        "name": "Temperatura suszenia"
+      },
+      "ml_intensity": {
+        "name": "Intensywność"
+      },
+      "ml_dryness_level": {
+        "name": "Poziom wysuszenia"
+      },
+      "ml_door_warn": {
+        "name": "Ostrzeżenie drzwi"
+      },
+      "ml_ai_switch": {
+        "name": "Tryb AI"
+      },
+      "ml_material": {
+        "name": "Materiał"
+      },
+      "ml_water_box": {
+        "name": "Pojemnik na wodę"
+      },
+      "ml_storage_remaining": {
+        "name": "Pozostały czas przechowywania"
+      },
+      "ml_softwater": {
+        "name": "Poziom zmiękczania"
+      },
+      "ml_bright": {
+        "name": "Poziom nabłyszczacza"
+      },
+      "ml_wrong_operation": {
+        "name": "Błędna obsługa"
+      },
+      "ml_top_temp": {
+        "name": "Temperatura u góry"
+      },
+      "ml_heating_time_remaining": {
+        "name": "Pozostały czas grzania"
+      },
+      "ml_heating_power": {
+        "name": "Moc grzania"
+      },
+      "ml_water_consumption": {
+        "name": "Zużycie wody"
+      },
+      "ml_heating_leaving_temperature": {
+        "name": "Temperatura zasilania ogrzewania"
+      },
+      "ml_bathing_leaving_temperature": {
+        "name": "Temperatura wyjściowa ciepłej wody"
+      },
+      "ml_keep_warm_remaining": {
+        "name": "Pozostały czas podtrzymania"
+      },
+      "ml_working_time": {
+        "name": "Czas pracy"
+      },
+      "ml_keep_warm_time": {
+        "name": "Czas podtrzymania ciepła"
+      },
+      "ml_filter1": {
+        "name": "Filtr 1 – pozostało dni"
+      },
+      "ml_filter2": {
+        "name": "Filtr 2 – pozostało dni"
+      },
+      "ml_filter3": {
+        "name": "Filtr 3 – pozostało dni"
+      },
+      "ml_life1": {
+        "name": "Filtr 1 – żywotność"
+      },
+      "ml_life2": {
+        "name": "Filtr 2 – żywotność"
+      },
+      "ml_life3": {
+        "name": "Filtr 3 – żywotność"
+      },
+      "ml_in_tds": {
+        "name": "TDS na wejściu"
+      },
+      "ml_out_tds": {
+        "name": "TDS na wyjściu"
+      },
+      "ml_humidify_feedback": {
+        "name": "Odczyt wilgotności"
+      },
+      "ml_temperature_feedback": {
+        "name": "Odczyt temperatury"
+      },
+      "ml_filter1_life": {
+        "name": "Filtr 1 – żywotność"
+      },
+      "ml_filter2_life": {
+        "name": "Filtr 2 – żywotność"
       }
     },
     "binary_sensor": {
@@ -708,6 +1155,306 @@
       },
       "p2_tbt": {
         "name": "Funkcja: zbiornik buforowy"
+      },
+      "ml_tank_full": {
+        "name": "Pełny zbiornik"
+      },
+      "ml_filter_cleaning_reminder": {
+        "name": "Przypomnienie o czyszczeniu filtra"
+      },
+      "ml_presets_function": {
+        "name": "Funkcja ustawień wstępnych"
+      },
+      "ml_fall_asleep_status": {
+        "name": "Sen"
+      },
+      "ml_portable_sense": {
+        "name": "Czujnik przenośny"
+      },
+      "ml_night_mode": {
+        "name": "Tryb nocny"
+      },
+      "ml_screen_status": {
+        "name": "Ekran"
+      },
+      "ml_led_status": {
+        "name": "Oświetlenie nastrojowe"
+      },
+      "ml_arofene_link": {
+        "name": "Czujnik formaldehydu"
+      },
+      "ml_header_exist": {
+        "name": "Głowica czujnika"
+      },
+      "ml_radar_exist": {
+        "name": "Radar"
+      },
+      "ml_header_led_status": {
+        "name": "Światło oddechowe"
+      },
+      "ml_door": {
+        "name": "Drzwi"
+      },
+      "ml_child_lock": {
+        "name": "Blokada rodzicielska"
+      },
+      "ml_tank_ejected": {
+        "name": "Zbiornik wyjęty"
+      },
+      "ml_water_change_reminder": {
+        "name": "Przypomnienie o wymianie wody"
+      },
+      "ml_water_shortage": {
+        "name": "Brak wody"
+      },
+      "ml_top_compartment_door": {
+        "name": "Górna komora – drzwi"
+      },
+      "ml_top_compartment_preheating": {
+        "name": "Górna komora – nagrzewanie"
+      },
+      "ml_top_compartment_cooling": {
+        "name": "Górna komora – chłodzenie"
+      },
+      "ml_middle_compartment_door": {
+        "name": "Środkowa komora – drzwi"
+      },
+      "ml_middle_compartment_preheating": {
+        "name": "Środkowa komora – nagrzewanie"
+      },
+      "ml_middle_compartment_cooling": {
+        "name": "Środkowa komora – chłodzenie"
+      },
+      "ml_bottom_compartment_door": {
+        "name": "Dolna komora – drzwi"
+      },
+      "ml_bottom_compartment_preheating": {
+        "name": "Dolna komora – nagrzewanie"
+      },
+      "ml_bottom_compartment_cooling": {
+        "name": "Dolna komora – chłodzenie"
+      },
+      "ml_cleaning_reminder": {
+        "name": "Przypomnienie o czyszczeniu"
+      },
+      "ml_oilcup_full": {
+        "name": "Pełny pojemnik na tłuszcz"
+      },
+      "ml_have_reserve_task": {
+        "name": "Zaplanowane zadanie"
+      },
+      "ml_uv_switch": {
+        "name": "Światło UV"
+      },
+      "ml_wifi_switch": {
+        "name": "Kontrolka Wi-Fi"
+      },
+      "ml_voice_switch": {
+        "name": "Komunikaty głosowe"
+      },
+      "ml_command_source": {
+        "name": "Źródło polecenia"
+      },
+      "ml_device_error": {
+        "name": "Błąd urządzenia"
+      },
+      "ml_carpet_switch": {
+        "name": "Wykrywanie dywanów"
+      },
+      "ml_board_communication_error": {
+        "name": "Błąd komunikacji płytki"
+      },
+      "ml_laser_sensor_shelter": {
+        "name": "Czujnik laserowy zasłonięty"
+      },
+      "ml_laser_sensor_error": {
+        "name": "Błąd czujnika laserowego"
+      },
+      "ml_pre_heat": {
+        "name": "Nagrzewanie wstępne"
+      },
+      "ml_flip_side": {
+        "name": "Obrócić"
+      },
+      "ml_reaction": {
+        "name": "Reakcja"
+      },
+      "ml_high_temperature_lock": {
+        "name": "Blokada wysokiej temperatury"
+      },
+      "ml_high_temperature_work": {
+        "name": "Praca w wysokiej temperaturze"
+      },
+      "ml_high_temperature": {
+        "name": "Wysoka temperatura"
+      },
+      "ml_probe_mode": {
+        "name": "Tryb sondy"
+      },
+      "ml_probe": {
+        "name": "Sonda"
+      },
+      "ml_clean_scale": {
+        "name": "Wymagane odkamienianie"
+      },
+      "ml_clean_sink_ponding": {
+        "name": "Woda w misce"
+      },
+      "ml_dissipate_heat": {
+        "name": "Odprowadzanie ciepła"
+      },
+      "ml_seat_status": {
+        "name": "Deska zajęta"
+      },
+      "ml_lid_status": {
+        "name": "Pokrywa"
+      },
+      "ml_light_status": {
+        "name": "Światło"
+      },
+      "ml_zone1_water_temp_mode": {
+        "name": "Strefa 1 – sterowanie temperaturą wody"
+      },
+      "ml_zone2_water_temp_mode": {
+        "name": "Strefa 2 – sterowanie temperaturą wody"
+      },
+      "ml_zone1_room_temp_mode": {
+        "name": "Strefa 1 – sterowanie temperaturą pokoju"
+      },
+      "ml_zone2_room_temp_mode": {
+        "name": "Strefa 2 – sterowanie temperaturą pokoju"
+      },
+      "ml_status_dhw": {
+        "name": "Ciepła woda aktywna"
+      },
+      "ml_status_tbh": {
+        "name": "Grzałka zasobnika (TBH)"
+      },
+      "ml_status_ibh": {
+        "name": "Grzałka rezerwowa (IBH)"
+      },
+      "ml_status_heating": {
+        "name": "Ogrzewanie aktywne"
+      },
+      "ml_bar_door": {
+        "name": "Drzwi barku"
+      },
+      "ml_bar_door_overtime": {
+        "name": "Drzwi barku otwarte zbyt długo"
+      },
+      "ml_flex_zone_door": {
+        "name": "Drzwi strefy flex"
+      },
+      "ml_flex_zone_door_overtime": {
+        "name": "Drzwi strefy flex otwarte zbyt długo"
+      },
+      "ml_freezer_door": {
+        "name": "Drzwi zamrażarki"
+      },
+      "ml_freezer_door_overtime": {
+        "name": "Drzwi zamrażarki otwarte zbyt długo"
+      },
+      "ml_refrigerator_door": {
+        "name": "Drzwi chłodziarki"
+      },
+      "ml_refrigerator_door_overtime": {
+        "name": "Drzwi chłodziarki otwarte zbyt długo"
+      },
+      "ml_microcrystal_fresh": {
+        "name": "Świeżość mikrokrystaliczna"
+      },
+      "ml_electronic_smell": {
+        "name": "Usuwanie zapachów i sterylizacja"
+      },
+      "ml_compressor_status": {
+        "name": "Sprężarka"
+      },
+      "ml_top_elec_heat": {
+        "name": "Górna grzałka"
+      },
+      "ml_bottom_elec_heat": {
+        "name": "Dolna grzałka"
+      },
+      "ml_smart_grid": {
+        "name": "Smart grid"
+      },
+      "ml_multi_terminal": {
+        "name": "Wiele terminali"
+      },
+      "ml_mute_effect": {
+        "name": "Wyciszenie aktywne"
+      },
+      "ml_mute_status": {
+        "name": "Wyciszenie"
+      },
+      "ml_eco": {
+        "name": "Eco"
+      },
+      "ml_maintain_warn": {
+        "name": "Ostrzeżenie o konserwacji"
+      },
+      "ml_order1_effect": {
+        "name": "Harmonogram 1 aktywny"
+      },
+      "ml_order2_effect": {
+        "name": "Harmonogram 2 aktywny"
+      },
+      "ml_filter_change_reminder": {
+        "name": "Przypomnienie o wymianie filtra"
+      },
+      "ml_rinse_aid": {
+        "name": "Mało nabłyszczacza"
+      },
+      "ml_salt": {
+        "name": "Mało soli"
+      },
+      "ml_uv": {
+        "name": "UV"
+      },
+      "ml_dry": {
+        "name": "Suszenie"
+      },
+      "ml_dry_status": {
+        "name": "Suszenie w toku"
+      },
+      "ml_storage_status": {
+        "name": "Przechowywanie w toku"
+      },
+      "ml_waterswitch": {
+        "name": "Przełącznik wody"
+      },
+      "ml_water_lack": {
+        "name": "Brak wody"
+      },
+      "ml_heating": {
+        "name": "Grzanie"
+      },
+      "ml_keep_warm": {
+        "name": "Podtrzymanie ciepła"
+      },
+      "ml_protection": {
+        "name": "Ochrona"
+      },
+      "ml_burning_state": {
+        "name": "Palnik włączony"
+      },
+      "ml_heating_working": {
+        "name": "Ogrzewanie aktywne"
+      },
+      "ml_bathing_working": {
+        "name": "Ciepła woda aktywna"
+      },
+      "ml_finished": {
+        "name": "Zakończono"
+      },
+      "ml_cooking": {
+        "name": "Gotowanie"
+      },
+      "ml_with_pressure": {
+        "name": "Pod ciśnieniem"
+      },
+      "ml_current_radar": {
+        "name": "Obecność"
       }
     },
     "number": {
@@ -860,6 +1607,51 @@
       },
       "ac_fan_percent": {
         "name": "Wentylator"
+      },
+      "ml_target_humidity": {
+        "name": "Wilgotność docelowa"
+      },
+      "ml_voice_volume": {
+        "name": "Głośność komunikatów"
+      },
+      "ml_dry_level": {
+        "name": "Poziom suszenia"
+      },
+      "ml_water_temp_level": {
+        "name": "Poziom temperatury wody"
+      },
+      "ml_seat_temp_level": {
+        "name": "Poziom temperatury deski"
+      },
+      "ml_dhw_target_temp": {
+        "name": "Temperatura c.w.u."
+      },
+      "ml_target_temperature": {
+        "name": "Temperatura docelowa"
+      },
+      "ml_disinfection_temperature": {
+        "name": "Temperatura dezynfekcji"
+      },
+      "ml_max_temperature": {
+        "name": "Maksymalna temperatura docelowa"
+      },
+      "ml_vacation_days": {
+        "name": "Dni urlopu"
+      },
+      "ml_heating_temperature": {
+        "name": "Temperatura ogrzewania"
+      },
+      "ml_bathing_temperature": {
+        "name": "Temperatura ciepłej wody"
+      },
+      "ml_heating_level": {
+        "name": "Poziom grzania"
+      },
+      "ml_brightness": {
+        "name": "Jasność"
+      },
+      "ml_color_temperature": {
+        "name": "Temperatura barwowa"
       }
     },
     "select": {
@@ -934,6 +1726,130 @@
           "4": "4",
           "5": "5"
         }
+      },
+      "ml_fan_speed": {
+        "name": "Prędkość wentylatora",
+        "state": {
+          "lowest": "Najniższa",
+          "low": "Niska",
+          "medium": "Średnia",
+          "high": "Wysoka",
+          "auto": "Automatycznie",
+          "off": "Wyłączone",
+          "standby": "Czuwanie"
+        }
+      },
+      "ml_water_level_set": {
+        "name": "Ustawienie poziomu zbiornika",
+        "state": {
+          "25": "25 %",
+          "50": "50 %",
+          "75": "75 %",
+          "100": "100 %"
+        }
+      },
+      "ml_silent_level": {
+        "name": "Poziom trybu cichego",
+        "state": {
+          "off": "Wyłączone",
+          "silent": "Cichy",
+          "super_silent": "Super cichy"
+        }
+      },
+      "ml_heating_modes": {
+        "name": "Tryb ogrzewania",
+        "state": {
+          "normal": "Normalny",
+          "out": "Poza domem",
+          "home": "W domu",
+          "sleep": "Sen"
+        }
+      },
+      "ml_oscillation_mode": {
+        "name": "Tryb oscylacji",
+        "state": {
+          "off": "Wyłączone",
+          "oscillation": "Oscylacja",
+          "tilting": "Pochylanie",
+          "curve_w": "Krzywa W",
+          "curve_8": "Krzywa 8",
+          "reserved": "Zarezerwowane",
+          "both": "Oba"
+        }
+      },
+      "ml_oscillation_angle": {
+        "name": "Kąt oscylacji",
+        "state": {
+          "off": "Wyłączone",
+          "30": "30°",
+          "60": "60°",
+          "90": "90°",
+          "120": "120°",
+          "180": "180°",
+          "360": "360°"
+        }
+      },
+      "ml_tilting_angle": {
+        "name": "Kąt pochylenia",
+        "state": {
+          "off": "Wyłączone",
+          "30": "30°",
+          "60": "60°",
+          "90": "90°",
+          "120": "120°",
+          "180": "180°",
+          "360": "360°",
+          "plus_60": "+60°",
+          "minus_60": "−60°",
+          "40": "40°"
+        }
+      },
+      "ml_detect_mode": {
+        "name": "Tryb czujnika",
+        "state": {
+          "off": "Wyłączone",
+          "pm_25": "PM2,5",
+          "methanal": "Formaldehyd"
+        }
+      },
+      "ml_mode": {
+        "name": "Tryb",
+        "state": {
+          "standby": "Czuwanie",
+          "auto": "Automatycznie",
+          "manual": "Ręcznie",
+          "sleep": "Sen",
+          "fast": "Szybki",
+          "smoke": "Dym",
+          "off": "Wyłączone",
+          "heat_high": "Grzanie wysokie",
+          "heat_low": "Grzanie niskie",
+          "bath": "Kąpiel",
+          "blow": "Nawiew",
+          "ventilation": "Wentylacja",
+          "dry": "Suszenie"
+        }
+      },
+      "ml_screen_display": {
+        "name": "Wyświetlacz",
+        "state": {
+          "bright": "Jasny",
+          "dim": "Przyciemniony",
+          "off": "Wyłączone"
+        }
+      },
+      "ml_direction": {
+        "name": "Kierunek",
+        "state": {
+          "60": "60°",
+          "70": "70°",
+          "80": "80°",
+          "90": "90°",
+          "100": "100°",
+          "110": "110°",
+          "120": "120°",
+          "oscillate": "Oscylacja"
+        }
       }
     },
     "switch": {
@@ -981,6 +1897,165 @@
       },
       "ac_prevent_straight_wind": {
         "name": "Nawiew omijający ludzi"
+      },
+      "ml_child_lock": {
+        "name": "Blokada rodzicielska"
+      },
+      "ml_anion": {
+        "name": "Jonizator"
+      },
+      "ml_prompt_tone": {
+        "name": "Sygnał dźwiękowy"
+      },
+      "ml_power": {
+        "name": "Zasilanie"
+      },
+      "ml_swing": {
+        "name": "Ruch żaluzji"
+      },
+      "ml_pump": {
+        "name": "Pompa wody"
+      },
+      "ml_light": {
+        "name": "Światło"
+      },
+      "ml_furnace_light": {
+        "name": "Oświetlenie piekarnika"
+      },
+      "ml_hot_wind": {
+        "name": "Gorące powietrze"
+      },
+      "ml_ramadan": {
+        "name": "Tryb Ramadan"
+      },
+      "ml_turntable": {
+        "name": "Talerz obrotowy"
+      },
+      "ml_sensor_light": {
+        "name": "Światło z czujnikiem"
+      },
+      "ml_foam_shield": {
+        "name": "Osłona piankowa"
+      },
+      "ml_disinfect": {
+        "name": "Dezynfekcja c.w.u."
+      },
+      "ml_dhw_power": {
+        "name": "Ciepła woda użytkowa"
+      },
+      "ml_eco_mode": {
+        "name": "Tryb Eco"
+      },
+      "ml_fast_dhw": {
+        "name": "Szybka ciepła woda"
+      },
+      "ml_silent_mode": {
+        "name": "Tryb cichy"
+      },
+      "ml_tbh": {
+        "name": "Grzałka zasobnika (TBH)"
+      },
+      "ml_zone1_curve": {
+        "name": "Strefa 1 – krzywa grzewcza"
+      },
+      "ml_zone2_curve": {
+        "name": "Strefa 2 – krzywa grzewcza"
+      },
+      "ml_zone1_power": {
+        "name": "Strefa 1"
+      },
+      "ml_zone2_power": {
+        "name": "Strefa 2"
+      },
+      "ml_aux_heating": {
+        "name": "Ogrzewanie dodatkowe"
+      },
+      "ml_night_light": {
+        "name": "Światło nocne"
+      },
+      "ml_sleep_mode": {
+        "name": "Tryb snu"
+      },
+      "ml_maintenance_reminder": {
+        "name": "Przypomnienie o konserwacji"
+      },
+      "ml_vacation_mode": {
+        "name": "Tryb urlopowy"
+      },
+      "ml_link_to_ac": {
+        "name": "Powiązanie z klimatyzatorem"
+      },
+      "ml_powerful_purify": {
+        "name": "Intensywne oczyszczanie"
+      },
+      "ml_start": {
+        "name": "Start"
+      },
+      "ml_storage": {
+        "name": "Przechowywanie"
+      },
+      "ml_variable_heating": {
+        "name": "Grzanie zmienne"
+      },
+      "ml_whole_tank_heating": {
+        "name": "Grzanie całego zbiornika"
+      },
+      "ml_sterilization": {
+        "name": "Sterylizacja"
+      },
+      "ml_memory": {
+        "name": "Pamięć"
+      },
+      "ml_smart_volume": {
+        "name": "Inteligentna objętość"
+      },
+      "ml_zero_cold_water": {
+        "name": "Zero zimnej wody"
+      },
+      "ml_zero_cold_pulse": {
+        "name": "Zero zimnej wody (impuls)"
+      },
+      "ml_main_power": {
+        "name": "Zasilanie główne"
+      },
+      "ml_heating_power": {
+        "name": "Ogrzewanie"
+      },
+      "ml_cold_water_single": {
+        "name": "Zimna woda – jednorazowo"
+      },
+      "ml_cold_water_dot": {
+        "name": "Zimna woda – punktowo"
+      },
+      "ml_oscillate": {
+        "name": "Oscylacja"
+      },
+      "ml_humidify": {
+        "name": "Nawilżanie"
+      },
+      "ml_waterions": {
+        "name": "Jony wodne"
+      },
+      "ml_anophelifuge": {
+        "name": "Przeciw komarom"
+      },
+      "ml_display_on_off": {
+        "name": "Wyświetlacz"
+      },
+      "ml_body_feeling_scan": {
+        "name": "Wykrywanie osób"
+      },
+      "ml_standby": {
+        "name": "Czuwanie"
+      },
+      "ml_main_light": {
+        "name": "Światło główne"
+      },
+      "ml_ventilation": {
+        "name": "Wentylacja"
+      },
+      "ml_smelly_sensor": {
+        "name": "Czujnik zapachów"
       }
     },
     "climate": {

@@ -5,7 +5,8 @@
         "title": "Midea / Vivax",
         "menu_options": {
           "heat_pump": "Tepelné čerpadlo (Modbus přes EW11)",
-          "air_conditioner": "Klimatizace (Wi-Fi)"
+          "air_conditioner": "Klimatizace (Wi-Fi)",
+          "appliance": "Jiný spotřebič Midea (Wi-Fi) – netestováno"
         }
       },
       "heat_pump": {
@@ -54,6 +55,27 @@
           "name": "Název",
           "outdoor_unit": "Společná venkovní jednotka (prázdné = vlastní)"
         }
+      },
+      "appliance": {
+        "title": "Midea cloud",
+        "description": "Odvlhčovače, ohřívače vody, ventilátory, čističky a další spotřebiče Midea (typy z aplikace MSmartHome) se ovládají lokálně přes knihovnu midea-local. Integrace se jednou přihlásí, aby stáhla token a klíč spotřebiče; heslo se neukládá. Tyto typy zařízení nejsou otestované.",
+        "data": {
+          "cloud": "Aplikace / cloud",
+          "username": "E-mail účtu",
+          "password": "Heslo",
+          "default_account": "Použít výchozí účet (bez přihlášení)"
+        }
+      },
+      "appliance_select": {
+        "title": "Výběr spotřebiče",
+        "description": "Spotřebiče nalezené v síti: {found}. Pokud je IP adresa prázdná, najděte ji v routeru (DHCP).",
+        "data": {
+          "unit": "Jednotka",
+          "device_id": "ID jednotky (Appliance ID z aplikace)",
+          "type": "Typ zařízení (bez seznamu z cloudu)",
+          "host": "IP adresa jednotky",
+          "name": "Název"
+        }
       }
     },
     "error": {
@@ -64,7 +86,9 @@
       "missing_credentials": "Zadejte e-mail a heslo, nebo zaškrtněte výchozí účet.",
       "cloud_login_failed": "Přihlášení do Midea cloudu selhalo, nebo cloud jednotku nezná. Zkontrolujte aplikaci, e-mail a heslo.",
       "missing_unit": "Vyberte jednotku (nebo zadejte číselné ID) a zadejte její IP adresu.",
-      "no_token": "Cloud pro tuto jednotku nevrátil token. Zkontrolujte ID jednotky a aplikaci."
+      "no_token": "Cloud pro tuto jednotku nevrátil token. Zkontrolujte ID jednotky a aplikaci.",
+      "no_appliances_found": "Na účtu nebyl nalezen žádný podporovaný spotřebič Midea.",
+      "cannot_connect_appliance": "Spotřebič neodpovídá (IP adresa, token/klíč, nebo není v lokální síti)."
     },
     "abort": {
       "already_configured": "Zařízení už je přidané.",
@@ -559,6 +583,429 @@
           "underfloor": "podlahové",
           "other": "jiné"
         }
+      },
+      "ml_current_humidity": {
+        "name": "Aktuální vlhkost"
+      },
+      "ml_current_temperature": {
+        "name": "Aktuální teplota"
+      },
+      "ml_tank": {
+        "name": "Nádrž na vodu"
+      },
+      "ml_temperature": {
+        "name": "Teplota"
+      },
+      "ml_humidity": {
+        "name": "Vlhkost"
+      },
+      "ml_temperature_raw": {
+        "name": "Teplota (surová)"
+      },
+      "ml_humidity_raw": {
+        "name": "Vlhkost (surová)"
+      },
+      "ml_temperature_compensate": {
+        "name": "Korekce teploty"
+      },
+      "ml_humidity_compensate": {
+        "name": "Korekce vlhkosti"
+      },
+      "ml_tvoc": {
+        "name": "TVOC"
+      },
+      "ml_co2": {
+        "name": "Oxid uhličitý"
+      },
+      "ml_pm25": {
+        "name": "PM2,5"
+      },
+      "ml_hcho": {
+        "name": "Formaldehyd"
+      },
+      "ml_screen_extinction_timeout": {
+        "name": "Vypnutí displeje po"
+      },
+      "ml_status": {
+        "name": "Stav"
+      },
+      "ml_mode": {
+        "name": "Režim"
+      },
+      "ml_fire_power": {
+        "name": "Stupeň výkonu"
+      },
+      "ml_time_remaining": {
+        "name": "Zbývající čas"
+      },
+      "ml_target_temperature": {
+        "name": "Cílová teplota"
+      },
+      "ml_top_compartment_status": {
+        "name": "Horní komora – stav"
+      },
+      "ml_top_compartment_temperature": {
+        "name": "Horní komora – teplota"
+      },
+      "ml_top_compartment_remaining": {
+        "name": "Horní komora – zbývá"
+      },
+      "ml_middle_compartment_status": {
+        "name": "Střední komora – stav"
+      },
+      "ml_middle_compartment_temperature": {
+        "name": "Střední komora – teplota"
+      },
+      "ml_middle_compartment_remaining": {
+        "name": "Střední komora – zbývá"
+      },
+      "ml_bottom_compartment_status": {
+        "name": "Dolní komora – stav"
+      },
+      "ml_bottom_compartment_temperature": {
+        "name": "Dolní komora – teplota"
+      },
+      "ml_bottom_compartment_remaining": {
+        "name": "Dolní komora – zbývá"
+      },
+      "ml_fan_level": {
+        "name": "Stupeň sání"
+      },
+      "ml_work_status": {
+        "name": "Pracovní stav"
+      },
+      "ml_function_type": {
+        "name": "Typ funkce"
+      },
+      "ml_control_type": {
+        "name": "Typ ovládání"
+      },
+      "ml_area": {
+        "name": "Uklizená plocha"
+      },
+      "ml_battery_percent": {
+        "name": "Baterie"
+      },
+      "ml_work_time": {
+        "name": "Doba práce"
+      },
+      "ml_mop": {
+        "name": "Stav mopu"
+      },
+      "ml_speed": {
+        "name": "Rychlost"
+      },
+      "ml_error_type": {
+        "name": "Typ chyby"
+      },
+      "ml_error_desc": {
+        "name": "Popis chyby"
+      },
+      "ml_work_mode": {
+        "name": "Pracovní režim"
+      },
+      "ml_temperature_above": {
+        "name": "Teplota nahoře"
+      },
+      "ml_temperature_underside": {
+        "name": "Teplota dole"
+      },
+      "ml_cur_temperature_above": {
+        "name": "Aktuální teplota nahoře"
+      },
+      "ml_cur_temperature_underside": {
+        "name": "Aktuální teplota dole"
+      },
+      "ml_probe_temperature": {
+        "name": "Cílová teplota sondy"
+      },
+      "ml_cur_probe_temperature": {
+        "name": "Teplota sondy"
+      },
+      "ml_steam_quantity": {
+        "name": "Množství páry"
+      },
+      "ml_weight": {
+        "name": "Hmotnost"
+      },
+      "ml_people_number": {
+        "name": "Počet osob"
+      },
+      "ml_totalstep": {
+        "name": "Počet kroků"
+      },
+      "ml_stepnum": {
+        "name": "Aktuální krok"
+      },
+      "ml_cloudmenuid": {
+        "name": "ID receptu z cloudu"
+      },
+      "ml_execute": {
+        "name": "Stav provádění"
+      },
+      "ml_water_temperature": {
+        "name": "Teplota vody"
+      },
+      "ml_seat_temperature": {
+        "name": "Teplota sedátka"
+      },
+      "ml_filter_life": {
+        "name": "Životnost filtru"
+      },
+      "ml_error_code": {
+        "name": "Kód chyby"
+      },
+      "ml_tank_actual_temperature": {
+        "name": "Teplota zásobníku"
+      },
+      "ml_total_energy_consumption": {
+        "name": "Celková spotřeba energie"
+      },
+      "ml_total_produced_energy": {
+        "name": "Celková vyrobená energie"
+      },
+      "ml_outdoor_temperature": {
+        "name": "Venkovní teplota"
+      },
+      "ml_temp_tw_in": {
+        "name": "Teplota vstupní vody"
+      },
+      "ml_temp_tw_out": {
+        "name": "Teplota výstupní vody"
+      },
+      "ml_instant_power0": {
+        "name": "Příkon"
+      },
+      "ml_flex_zone_actual_temp": {
+        "name": "Teplota flexi zóny"
+      },
+      "ml_flex_zone_setting_temp": {
+        "name": "Nastavená teplota flexi zóny"
+      },
+      "ml_freezer_actual_temp": {
+        "name": "Teplota mrazničky"
+      },
+      "ml_freezer_setting_temp": {
+        "name": "Nastavená teplota mrazničky"
+      },
+      "ml_energy_consumption": {
+        "name": "Spotřeba energie"
+      },
+      "ml_refrigerator_actual_temp": {
+        "name": "Teplota chladničky"
+      },
+      "ml_refrigerator_setting_temp": {
+        "name": "Nastavená teplota chladničky"
+      },
+      "ml_right_flex_zone_actual_temp": {
+        "name": "Teplota pravé flexi zóny"
+      },
+      "ml_right_flex_zone_setting_temp": {
+        "name": "Nastavená teplota pravé flexi zóny"
+      },
+      "ml_variable_mode": {
+        "name": "Režim variabilní zóny"
+      },
+      "ml_indoor_temperature": {
+        "name": "Vnitřní teplota"
+      },
+      "ml_compressor_temperature": {
+        "name": "Teplota kompresoru"
+      },
+      "ml_condenser_temperature": {
+        "name": "Teplota kondenzátoru"
+      },
+      "ml_water_level": {
+        "name": "Hladina vody"
+      },
+      "ml_elec_heat": {
+        "name": "Elektrický ohřev"
+      },
+      "ml_water_pump": {
+        "name": "Čerpadlo vody"
+      },
+      "ml_four_way": {
+        "name": "Čtyřcestný ventil"
+      },
+      "ml_back_water": {
+        "name": "Zpátečka"
+      },
+      "ml_sterilize": {
+        "name": "Sterilizace"
+      },
+      "ml_top_temperature": {
+        "name": "Teplota nahoře"
+      },
+      "ml_bottom_temperature": {
+        "name": "Teplota dole"
+      },
+      "ml_wind": {
+        "name": "Ventilátor"
+      },
+      "ml_typeinfo": {
+        "name": "Informace o typu"
+      },
+      "ml_vacation_start_year": {
+        "name": "Dovolená od – rok"
+      },
+      "ml_vacation_start_month": {
+        "name": "Dovolená od – měsíc"
+      },
+      "ml_vacation_start_day": {
+        "name": "Dovolená od – den"
+      },
+      "ml_auto_sterilize_week": {
+        "name": "Automatická sterilizace – den"
+      },
+      "ml_auto_sterilize_hour": {
+        "name": "Automatická sterilizace – hodina"
+      },
+      "ml_auto_sterilize_minute": {
+        "name": "Automatická sterilizace – minuta"
+      },
+      "ml_wash_time": {
+        "name": "Doba praní"
+      },
+      "ml_soak_time": {
+        "name": "Doba namáčení"
+      },
+      "ml_dehydration_time": {
+        "name": "Doba odstřeďování"
+      },
+      "ml_dehydration_speed": {
+        "name": "Otáčky odstřeďování"
+      },
+      "ml_rinse_count": {
+        "name": "Počet máchání"
+      },
+      "ml_rinse_level": {
+        "name": "Úroveň máchání"
+      },
+      "ml_wash_level": {
+        "name": "Úroveň praní"
+      },
+      "ml_wash_strength": {
+        "name": "Intenzita praní"
+      },
+      "ml_softener": {
+        "name": "Aviváž"
+      },
+      "ml_detergent": {
+        "name": "Prací prostředek"
+      },
+      "ml_program": {
+        "name": "Program"
+      },
+      "ml_progress": {
+        "name": "Průběh"
+      },
+      "ml_wash_time_value": {
+        "name": "Hodnota doby praní"
+      },
+      "ml_dehydration_time_value": {
+        "name": "Hodnota doby odstřeďování"
+      },
+      "ml_stains": {
+        "name": "Skvrny"
+      },
+      "ml_dirty_degree": {
+        "name": "Stupeň znečištění"
+      },
+      "ml_dry_temperature": {
+        "name": "Teplota sušení"
+      },
+      "ml_intensity": {
+        "name": "Intenzita"
+      },
+      "ml_dryness_level": {
+        "name": "Stupeň vysušení"
+      },
+      "ml_door_warn": {
+        "name": "Upozornění na dvířka"
+      },
+      "ml_ai_switch": {
+        "name": "Režim AI"
+      },
+      "ml_material": {
+        "name": "Materiál"
+      },
+      "ml_water_box": {
+        "name": "Zásobník vody"
+      },
+      "ml_storage_remaining": {
+        "name": "Zbývající doba uložení"
+      },
+      "ml_softwater": {
+        "name": "Úroveň změkčování"
+      },
+      "ml_bright": {
+        "name": "Úroveň leštidla"
+      },
+      "ml_wrong_operation": {
+        "name": "Chybná obsluha"
+      },
+      "ml_top_temp": {
+        "name": "Teplota nahoře"
+      },
+      "ml_heating_time_remaining": {
+        "name": "Zbývající doba ohřevu"
+      },
+      "ml_heating_power": {
+        "name": "Výkon ohřevu"
+      },
+      "ml_water_consumption": {
+        "name": "Spotřeba vody"
+      },
+      "ml_heating_leaving_temperature": {
+        "name": "Teplota výstupu topení"
+      },
+      "ml_bathing_leaving_temperature": {
+        "name": "Teplota výstupu teplé vody"
+      },
+      "ml_keep_warm_remaining": {
+        "name": "Zbývající udržování teploty"
+      },
+      "ml_working_time": {
+        "name": "Doba provozu"
+      },
+      "ml_keep_warm_time": {
+        "name": "Doba udržování teploty"
+      },
+      "ml_filter1": {
+        "name": "Filtr 1 – zbývá dní"
+      },
+      "ml_filter2": {
+        "name": "Filtr 2 – zbývá dní"
+      },
+      "ml_filter3": {
+        "name": "Filtr 3 – zbývá dní"
+      },
+      "ml_life1": {
+        "name": "Filtr 1 – životnost"
+      },
+      "ml_life2": {
+        "name": "Filtr 2 – životnost"
+      },
+      "ml_life3": {
+        "name": "Filtr 3 – životnost"
+      },
+      "ml_in_tds": {
+        "name": "TDS na vstupu"
+      },
+      "ml_out_tds": {
+        "name": "TDS na výstupu"
+      },
+      "ml_humidify_feedback": {
+        "name": "Zpětná vazba vlhkosti"
+      },
+      "ml_temperature_feedback": {
+        "name": "Zpětná vazba teploty"
+      },
+      "ml_filter1_life": {
+        "name": "Filtr 1 – životnost"
+      },
+      "ml_filter2_life": {
+        "name": "Filtr 2 – životnost"
       }
     },
     "binary_sensor": {
@@ -708,6 +1155,306 @@
       },
       "p2_tbt": {
         "name": "Funkce: akumulační nádrž"
+      },
+      "ml_tank_full": {
+        "name": "Plná nádrž"
+      },
+      "ml_filter_cleaning_reminder": {
+        "name": "Připomínka čištění filtru"
+      },
+      "ml_presets_function": {
+        "name": "Funkce předvoleb"
+      },
+      "ml_fall_asleep_status": {
+        "name": "Spánek"
+      },
+      "ml_portable_sense": {
+        "name": "Přenosný snímač"
+      },
+      "ml_night_mode": {
+        "name": "Noční režim"
+      },
+      "ml_screen_status": {
+        "name": "Displej"
+      },
+      "ml_led_status": {
+        "name": "Ambientní osvětlení"
+      },
+      "ml_arofene_link": {
+        "name": "Snímač formaldehydu"
+      },
+      "ml_header_exist": {
+        "name": "Hlava snímače"
+      },
+      "ml_radar_exist": {
+        "name": "Radar"
+      },
+      "ml_header_led_status": {
+        "name": "Dýchající světlo"
+      },
+      "ml_door": {
+        "name": "Dvířka"
+      },
+      "ml_child_lock": {
+        "name": "Dětský zámek"
+      },
+      "ml_tank_ejected": {
+        "name": "Nádrž vyjmutá"
+      },
+      "ml_water_change_reminder": {
+        "name": "Připomínka výměny vody"
+      },
+      "ml_water_shortage": {
+        "name": "Nedostatek vody"
+      },
+      "ml_top_compartment_door": {
+        "name": "Horní komora – dvířka"
+      },
+      "ml_top_compartment_preheating": {
+        "name": "Horní komora – předehřev"
+      },
+      "ml_top_compartment_cooling": {
+        "name": "Horní komora – chladnutí"
+      },
+      "ml_middle_compartment_door": {
+        "name": "Střední komora – dvířka"
+      },
+      "ml_middle_compartment_preheating": {
+        "name": "Střední komora – předehřev"
+      },
+      "ml_middle_compartment_cooling": {
+        "name": "Střední komora – chladnutí"
+      },
+      "ml_bottom_compartment_door": {
+        "name": "Dolní komora – dvířka"
+      },
+      "ml_bottom_compartment_preheating": {
+        "name": "Dolní komora – předehřev"
+      },
+      "ml_bottom_compartment_cooling": {
+        "name": "Dolní komora – chladnutí"
+      },
+      "ml_cleaning_reminder": {
+        "name": "Připomínka čištění"
+      },
+      "ml_oilcup_full": {
+        "name": "Plná nádobka na olej"
+      },
+      "ml_have_reserve_task": {
+        "name": "Naplánovaná úloha"
+      },
+      "ml_uv_switch": {
+        "name": "UV světlo"
+      },
+      "ml_wifi_switch": {
+        "name": "Kontrolka Wi-Fi"
+      },
+      "ml_voice_switch": {
+        "name": "Hlasová hlášení"
+      },
+      "ml_command_source": {
+        "name": "Zdroj příkazu"
+      },
+      "ml_device_error": {
+        "name": "Porucha zařízení"
+      },
+      "ml_carpet_switch": {
+        "name": "Detekce koberců"
+      },
+      "ml_board_communication_error": {
+        "name": "Chyba komunikace desky"
+      },
+      "ml_laser_sensor_shelter": {
+        "name": "Laserový snímač zakrytý"
+      },
+      "ml_laser_sensor_error": {
+        "name": "Chyba laserového snímače"
+      },
+      "ml_pre_heat": {
+        "name": "Předehřev"
+      },
+      "ml_flip_side": {
+        "name": "Otočit"
+      },
+      "ml_reaction": {
+        "name": "Reakce"
+      },
+      "ml_high_temperature_lock": {
+        "name": "Zámek při vysoké teplotě"
+      },
+      "ml_high_temperature_work": {
+        "name": "Provoz při vysoké teplotě"
+      },
+      "ml_high_temperature": {
+        "name": "Vysoká teplota"
+      },
+      "ml_probe_mode": {
+        "name": "Režim sondy"
+      },
+      "ml_probe": {
+        "name": "Sonda"
+      },
+      "ml_clean_scale": {
+        "name": "Nutné odvápnění"
+      },
+      "ml_clean_sink_ponding": {
+        "name": "Voda ve vaně trouby"
+      },
+      "ml_dissipate_heat": {
+        "name": "Odvod tepla"
+      },
+      "ml_seat_status": {
+        "name": "Sedátko obsazeno"
+      },
+      "ml_lid_status": {
+        "name": "Víko"
+      },
+      "ml_light_status": {
+        "name": "Světlo"
+      },
+      "ml_zone1_water_temp_mode": {
+        "name": "Zóna 1 – regulace podle vody"
+      },
+      "ml_zone2_water_temp_mode": {
+        "name": "Zóna 2 – regulace podle vody"
+      },
+      "ml_zone1_room_temp_mode": {
+        "name": "Zóna 1 – regulace podle místnosti"
+      },
+      "ml_zone2_room_temp_mode": {
+        "name": "Zóna 2 – regulace podle místnosti"
+      },
+      "ml_status_dhw": {
+        "name": "Ohřev TUV běží"
+      },
+      "ml_status_tbh": {
+        "name": "Dohřev zásobníku (TBH)"
+      },
+      "ml_status_ibh": {
+        "name": "Záložní ohřev (IBH)"
+      },
+      "ml_status_heating": {
+        "name": "Topení běží"
+      },
+      "ml_bar_door": {
+        "name": "Dvířka baru"
+      },
+      "ml_bar_door_overtime": {
+        "name": "Dvířka baru otevřená příliš dlouho"
+      },
+      "ml_flex_zone_door": {
+        "name": "Dveře flexi zóny"
+      },
+      "ml_flex_zone_door_overtime": {
+        "name": "Dveře flexi zóny otevřené příliš dlouho"
+      },
+      "ml_freezer_door": {
+        "name": "Dveře mrazničky"
+      },
+      "ml_freezer_door_overtime": {
+        "name": "Dveře mrazničky otevřené příliš dlouho"
+      },
+      "ml_refrigerator_door": {
+        "name": "Dveře chladničky"
+      },
+      "ml_refrigerator_door_overtime": {
+        "name": "Dveře chladničky otevřené příliš dlouho"
+      },
+      "ml_microcrystal_fresh": {
+        "name": "Mikrokrystalická čerstvost"
+      },
+      "ml_electronic_smell": {
+        "name": "Odstraňování pachů a sterilizace"
+      },
+      "ml_compressor_status": {
+        "name": "Kompresor"
+      },
+      "ml_top_elec_heat": {
+        "name": "Horní elektrický ohřev"
+      },
+      "ml_bottom_elec_heat": {
+        "name": "Dolní elektrický ohřev"
+      },
+      "ml_smart_grid": {
+        "name": "Smart grid"
+      },
+      "ml_multi_terminal": {
+        "name": "Více terminálů"
+      },
+      "ml_mute_effect": {
+        "name": "Ztlumení aktivní"
+      },
+      "ml_mute_status": {
+        "name": "Ztlumení"
+      },
+      "ml_eco": {
+        "name": "Eco"
+      },
+      "ml_maintain_warn": {
+        "name": "Upozornění na údržbu"
+      },
+      "ml_order1_effect": {
+        "name": "Plán 1 aktivní"
+      },
+      "ml_order2_effect": {
+        "name": "Plán 2 aktivní"
+      },
+      "ml_filter_change_reminder": {
+        "name": "Připomínka výměny filtru"
+      },
+      "ml_rinse_aid": {
+        "name": "Málo leštidla"
+      },
+      "ml_salt": {
+        "name": "Málo soli"
+      },
+      "ml_uv": {
+        "name": "UV"
+      },
+      "ml_dry": {
+        "name": "Sušení"
+      },
+      "ml_dry_status": {
+        "name": "Sušení běží"
+      },
+      "ml_storage_status": {
+        "name": "Uložení běží"
+      },
+      "ml_waterswitch": {
+        "name": "Spínač vody"
+      },
+      "ml_water_lack": {
+        "name": "Nedostatek vody"
+      },
+      "ml_heating": {
+        "name": "Ohřev"
+      },
+      "ml_keep_warm": {
+        "name": "Udržování teploty"
+      },
+      "ml_protection": {
+        "name": "Ochrana"
+      },
+      "ml_burning_state": {
+        "name": "Hořák zapálený"
+      },
+      "ml_heating_working": {
+        "name": "Topení běží"
+      },
+      "ml_bathing_working": {
+        "name": "Ohřev teplé vody běží"
+      },
+      "ml_finished": {
+        "name": "Dokončeno"
+      },
+      "ml_cooking": {
+        "name": "Vaření"
+      },
+      "ml_with_pressure": {
+        "name": "Pod tlakem"
+      },
+      "ml_current_radar": {
+        "name": "Přítomnost"
       }
     },
     "number": {
@@ -860,6 +1607,51 @@
       },
       "ac_fan_percent": {
         "name": "Ventilátor"
+      },
+      "ml_target_humidity": {
+        "name": "Cílová vlhkost"
+      },
+      "ml_voice_volume": {
+        "name": "Hlasitost hlasu"
+      },
+      "ml_dry_level": {
+        "name": "Stupeň sušení"
+      },
+      "ml_water_temp_level": {
+        "name": "Stupeň teploty vody"
+      },
+      "ml_seat_temp_level": {
+        "name": "Stupeň teploty sedátka"
+      },
+      "ml_dhw_target_temp": {
+        "name": "Teplota TUV"
+      },
+      "ml_target_temperature": {
+        "name": "Cílová teplota"
+      },
+      "ml_disinfection_temperature": {
+        "name": "Teplota dezinfekce"
+      },
+      "ml_max_temperature": {
+        "name": "Maximální cílová teplota"
+      },
+      "ml_vacation_days": {
+        "name": "Dny dovolené"
+      },
+      "ml_heating_temperature": {
+        "name": "Teplota topení"
+      },
+      "ml_bathing_temperature": {
+        "name": "Teplota teplé vody"
+      },
+      "ml_heating_level": {
+        "name": "Stupeň ohřevu"
+      },
+      "ml_brightness": {
+        "name": "Jas"
+      },
+      "ml_color_temperature": {
+        "name": "Teplota barvy"
       }
     },
     "select": {
@@ -934,6 +1726,130 @@
           "4": "4",
           "5": "5"
         }
+      },
+      "ml_fan_speed": {
+        "name": "Rychlost ventilátoru",
+        "state": {
+          "lowest": "Nejnižší",
+          "low": "Nízká",
+          "medium": "Střední",
+          "high": "Vysoká",
+          "auto": "Automaticky",
+          "off": "Vypnuto",
+          "standby": "Pohotovost"
+        }
+      },
+      "ml_water_level_set": {
+        "name": "Nastavení hladiny nádrže",
+        "state": {
+          "25": "25 %",
+          "50": "50 %",
+          "75": "75 %",
+          "100": "100 %"
+        }
+      },
+      "ml_silent_level": {
+        "name": "Stupeň tichého režimu",
+        "state": {
+          "off": "Vypnuto",
+          "silent": "Tichý",
+          "super_silent": "Super tichý"
+        }
+      },
+      "ml_heating_modes": {
+        "name": "Režim topení",
+        "state": {
+          "normal": "Normální",
+          "out": "Mimo domov",
+          "home": "Doma",
+          "sleep": "Spánek"
+        }
+      },
+      "ml_oscillation_mode": {
+        "name": "Režim otáčení",
+        "state": {
+          "off": "Vypnuto",
+          "oscillation": "Otáčení",
+          "tilting": "Naklánění",
+          "curve_w": "Křivka W",
+          "curve_8": "Křivka 8",
+          "reserved": "Rezervováno",
+          "both": "Obojí"
+        }
+      },
+      "ml_oscillation_angle": {
+        "name": "Úhel otáčení",
+        "state": {
+          "off": "Vypnuto",
+          "30": "30°",
+          "60": "60°",
+          "90": "90°",
+          "120": "120°",
+          "180": "180°",
+          "360": "360°"
+        }
+      },
+      "ml_tilting_angle": {
+        "name": "Úhel náklonu",
+        "state": {
+          "off": "Vypnuto",
+          "30": "30°",
+          "60": "60°",
+          "90": "90°",
+          "120": "120°",
+          "180": "180°",
+          "360": "360°",
+          "plus_60": "+60°",
+          "minus_60": "−60°",
+          "40": "40°"
+        }
+      },
+      "ml_detect_mode": {
+        "name": "Režim snímače",
+        "state": {
+          "off": "Vypnuto",
+          "pm_25": "PM2,5",
+          "methanal": "Formaldehyd"
+        }
+      },
+      "ml_mode": {
+        "name": "Režim",
+        "state": {
+          "standby": "Pohotovost",
+          "auto": "Automaticky",
+          "manual": "Ručně",
+          "sleep": "Spánek",
+          "fast": "Rychlý",
+          "smoke": "Kouř",
+          "off": "Vypnuto",
+          "heat_high": "Topení vysoké",
+          "heat_low": "Topení nízké",
+          "bath": "Koupání",
+          "blow": "Foukání",
+          "ventilation": "Větrání",
+          "dry": "Sušení"
+        }
+      },
+      "ml_screen_display": {
+        "name": "Displej",
+        "state": {
+          "bright": "Jasný",
+          "dim": "Ztlumený",
+          "off": "Vypnuto"
+        }
+      },
+      "ml_direction": {
+        "name": "Směr",
+        "state": {
+          "60": "60°",
+          "70": "70°",
+          "80": "80°",
+          "90": "90°",
+          "100": "100°",
+          "110": "110°",
+          "120": "120°",
+          "oscillate": "Otáčení"
+        }
       }
     },
     "switch": {
@@ -981,6 +1897,165 @@
       },
       "ac_prevent_straight_wind": {
         "name": "Vzduch mimo lidi"
+      },
+      "ml_child_lock": {
+        "name": "Dětský zámek"
+      },
+      "ml_anion": {
+        "name": "Ionizátor"
+      },
+      "ml_prompt_tone": {
+        "name": "Pípání"
+      },
+      "ml_power": {
+        "name": "Zapnutí"
+      },
+      "ml_swing": {
+        "name": "Natáčení lamel"
+      },
+      "ml_pump": {
+        "name": "Čerpadlo vody"
+      },
+      "ml_light": {
+        "name": "Světlo"
+      },
+      "ml_furnace_light": {
+        "name": "Osvětlení trouby"
+      },
+      "ml_hot_wind": {
+        "name": "Horký vzduch"
+      },
+      "ml_ramadan": {
+        "name": "Režim Ramadán"
+      },
+      "ml_turntable": {
+        "name": "Otočný talíř"
+      },
+      "ml_sensor_light": {
+        "name": "Světlo se snímačem"
+      },
+      "ml_foam_shield": {
+        "name": "Pěnový štít"
+      },
+      "ml_disinfect": {
+        "name": "Dezinfekce TUV"
+      },
+      "ml_dhw_power": {
+        "name": "Teplá užitková voda"
+      },
+      "ml_eco_mode": {
+        "name": "Režim Eco"
+      },
+      "ml_fast_dhw": {
+        "name": "Rychlý ohřev TUV"
+      },
+      "ml_silent_mode": {
+        "name": "Tichý režim"
+      },
+      "ml_tbh": {
+        "name": "Dohřev zásobníku (TBH)"
+      },
+      "ml_zone1_curve": {
+        "name": "Zóna 1 – ekvitermní křivka"
+      },
+      "ml_zone2_curve": {
+        "name": "Zóna 2 – ekvitermní křivka"
+      },
+      "ml_zone1_power": {
+        "name": "Zóna 1"
+      },
+      "ml_zone2_power": {
+        "name": "Zóna 2"
+      },
+      "ml_aux_heating": {
+        "name": "Přídavné topení"
+      },
+      "ml_night_light": {
+        "name": "Noční světlo"
+      },
+      "ml_sleep_mode": {
+        "name": "Režim spánku"
+      },
+      "ml_maintenance_reminder": {
+        "name": "Připomínka údržby"
+      },
+      "ml_vacation_mode": {
+        "name": "Režim dovolená"
+      },
+      "ml_link_to_ac": {
+        "name": "Propojení s klimatizací"
+      },
+      "ml_powerful_purify": {
+        "name": "Intenzivní čištění"
+      },
+      "ml_start": {
+        "name": "Start"
+      },
+      "ml_storage": {
+        "name": "Uložení"
+      },
+      "ml_variable_heating": {
+        "name": "Variabilní ohřev"
+      },
+      "ml_whole_tank_heating": {
+        "name": "Ohřev celého zásobníku"
+      },
+      "ml_sterilization": {
+        "name": "Sterilizace"
+      },
+      "ml_memory": {
+        "name": "Paměť"
+      },
+      "ml_smart_volume": {
+        "name": "Inteligentní objem"
+      },
+      "ml_zero_cold_water": {
+        "name": "Bez studené vody"
+      },
+      "ml_zero_cold_pulse": {
+        "name": "Bez studené vody (impulz)"
+      },
+      "ml_main_power": {
+        "name": "Hlavní vypínač"
+      },
+      "ml_heating_power": {
+        "name": "Topení"
+      },
+      "ml_cold_water_single": {
+        "name": "Studená voda – jednorázově"
+      },
+      "ml_cold_water_dot": {
+        "name": "Studená voda – bodově"
+      },
+      "ml_oscillate": {
+        "name": "Otáčení"
+      },
+      "ml_humidify": {
+        "name": "Zvlhčování"
+      },
+      "ml_waterions": {
+        "name": "Vodní ionty"
+      },
+      "ml_anophelifuge": {
+        "name": "Proti komárům"
+      },
+      "ml_display_on_off": {
+        "name": "Displej"
+      },
+      "ml_body_feeling_scan": {
+        "name": "Snímání osob"
+      },
+      "ml_standby": {
+        "name": "Pohotovost"
+      },
+      "ml_main_light": {
+        "name": "Hlavní světlo"
+      },
+      "ml_ventilation": {
+        "name": "Větrání"
+      },
+      "ml_smelly_sensor": {
+        "name": "Snímač pachů"
       }
     },
     "climate": {

@@ -12,6 +12,8 @@ DOMAIN = "midea_modbus_hp"
 # Config entries are either the Modbus heat pump (no kind, older entries) or a Wi-Fi air conditioner.
 CONF_KIND = "kind"
 KIND_AC = "air_conditioner"
+# Any other Midea appliance driven by midea-local (dehumidifier, water heater, ...).
+KIND_APPLIANCE = "appliance"
 CONF_OUTDOOR_UNIT = "outdoor_unit"
 DEFAULT_PORT = 502
 DEFAULT_DEVICE_ID = 1

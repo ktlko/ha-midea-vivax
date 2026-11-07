@@ -15,6 +15,7 @@ from homeassistant.helpers import config_validation as cv, entity_registry as er
 from homeassistant.helpers.typing import ConfigType
 
 from .ac.coordinator import AcCoordinator
+from .appliance.coordinator import ApplianceCoordinator
 from .const import (
     CONF_KIND,
     CONF_OUTDOOR_UNIT,
@@ -23,6 +24,7 @@ from .const import (
     DEFAULT_PORT,
     DOMAIN,
     KIND_AC,
+    KIND_APPLIANCE,
 )
 from .coordinator import HeatPumpCoordinator
 
@@ -83,6 +85,16 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up from a config entry."""
+    if entry.data.get(CONF_KIND) == KIND_APPLIANCE:
+        appliance = ApplianceCoordinator(hass, entry)
+        try:
+            await appliance.async_config_entry_first_refresh()
+        except Exception:
+            await appliance.async_close()
+            raise
+        entry.runtime_data = appliance
+        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+        return True
     if entry.data.get(CONF_KIND) == KIND_AC:
         ac = AcCoordinator(hass, entry)
         await ac.async_config_entry_first_refresh()
@@ -109,6 +121,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unloaded and isinstance(entry.runtime_data, HeatPumpCoordinator):
+        await entry.runtime_data.async_close()
+    if unloaded and isinstance(entry.runtime_data, ApplianceCoordinator):
         await entry.runtime_data.async_close()
     return unloaded
 

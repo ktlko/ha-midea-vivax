@@ -33,7 +33,10 @@ from .const import (
     DEFAULT_PORT,
     DOMAIN,
     KIND_AC,
+    KIND_APPLIANCE,
 )
+from .appliance.catalog import DEVICE_TYPES
+from .appliance.coordinator import DEFAULT_PORT as APPLIANCE_PORT, build_device
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -41,6 +44,7 @@ CONF_DEVICE_ID = "device_id"
 CONF_UNIT = "unit"
 CONF_CLOUD = "cloud"
 CONF_DEFAULT_ACCOUNT = "default_account"
+CONF_TYPE = "type"
 # Cloud names understood by midea-local (the app the unit is registered in).
 CLOUDS = ("SmartHome", "NetHome Plus", "Midea Air", "Ariston Clima", "OS Comfort")
 DEFAULT_CLOUD = "SmartHome"
@@ -85,6 +89,7 @@ class MideaModbusConfigFlow(ConfigFlow, domain=DOMAIN):
         self._found: dict[str, dict[str, Any]] = {}
         self._ips: dict[str, str] = {}
         self._cloud: Any = None
+        self._located: dict[str, dict[str, Any]] = {}
 
     @staticmethod
     @callback
@@ -94,7 +99,7 @@ class MideaModbusConfigFlow(ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Choose what to add."""
-        return self.async_show_menu(step_id="user", menu_options=["heat_pump", "air_conditioner"])
+        return self.async_show_menu(step_id="user", menu_options=["heat_pump", "air_conditioner", "appliance"])
 
     async def async_step_heat_pump(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Ask for the gateway address."""
@@ -135,26 +140,8 @@ class MideaModbusConfigFlow(ConfigFlow, domain=DOMAIN):
         """Sign in to the cloud of the app the unit is registered in."""
         errors: dict[str, str] = {}
         if user_input is not None:
-            from midealocal.cloud import get_midea_cloud, get_preset_account_cloud  # noqa: PLC0415
-
-            use_default = bool(user_input.get(CONF_DEFAULT_ACCOUNT))
-            if use_default:
-                preset = get_preset_account_cloud()
-                cloud_name, account, password = preset["cloud_name"], preset["username"], preset["password"]
-            else:
-                cloud_name = user_input[CONF_CLOUD]
-                account = (user_input.get(CONF_USERNAME) or "").strip()
-                password = user_input.get(CONF_PASSWORD) or ""
-            if not use_default and not (account and password):
-                errors["base"] = "missing_credentials"
-            else:
-                try:
-                    cloud = get_midea_cloud(cloud_name, async_get_clientsession(self.hass), account, password)
-                    ok = await cloud.login()
-                    appliances = {} if use_default or not ok else (await cloud.list_appliances(None) or {})
-                except Exception:  # noqa: BLE001
-                    _LOGGER.exception("Midea cloud login failed")
-                    ok, appliances = False, {}
+            use_default, ok, appliances, cloud = await self._async_cloud_login(user_input, errors)
+            if not errors:
                 if not ok:
                     errors["base"] = "cloud_login_failed"
                 else:
@@ -170,7 +157,38 @@ class MideaModbusConfigFlow(ConfigFlow, domain=DOMAIN):
                     else:
                         await self._async_locate()
                         return await self.async_step_ac_select()
-        schema = vol.Schema(
+        return self.async_show_form(step_id="ac_cloud", data_schema=self._cloud_schema(), errors=errors)
+
+    async def _async_cloud_login(
+        self, user_input: dict[str, Any], errors: dict[str, str]
+    ) -> tuple[bool, bool, dict[int, dict[str, Any]], Any]:
+        """Sign in; returns (default account, signed in, appliances, cloud)."""
+        from midealocal.cloud import get_midea_cloud, get_preset_account_cloud  # noqa: PLC0415
+
+        use_default = bool(user_input.get(CONF_DEFAULT_ACCOUNT))
+        if use_default:
+            preset = get_preset_account_cloud()
+            cloud_name, account, password = preset["cloud_name"], preset["username"], preset["password"]
+        else:
+            cloud_name = user_input[CONF_CLOUD]
+            account = (user_input.get(CONF_USERNAME) or "").strip()
+            password = user_input.get(CONF_PASSWORD) or ""
+        if not use_default and not (account and password):
+            errors["base"] = "missing_credentials"
+            return use_default, False, {}, None
+        cloud = None
+        try:
+            cloud = get_midea_cloud(cloud_name, async_get_clientsession(self.hass), account, password)
+            ok = await cloud.login()
+            appliances = {} if use_default or not ok else (await cloud.list_appliances(None) or {})
+        except Exception:  # noqa: BLE001
+            _LOGGER.exception("Midea cloud login failed")
+            ok, appliances = False, {}
+        return use_default, ok, appliances, cloud
+
+    @staticmethod
+    def _cloud_schema() -> vol.Schema:
+        return vol.Schema(
             {
                 vol.Optional(CONF_CLOUD, default=DEFAULT_CLOUD): SelectSelector(
                     SelectSelectorConfig(options=list(CLOUDS))
@@ -182,7 +200,125 @@ class MideaModbusConfigFlow(ConfigFlow, domain=DOMAIN):
                 vol.Optional(CONF_DEFAULT_ACCOUNT, default=False): bool,
             }
         )
-        return self.async_show_form(step_id="ac_cloud", data_schema=schema, errors=errors)
+
+    # ---- other Midea appliances (midea-local)
+    async def async_step_appliance(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Sign in to the cloud to list appliances and download their token/key."""
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            use_default, ok, appliances, cloud = await self._async_cloud_login(user_input, errors)
+            if not errors and not ok:
+                errors["base"] = "cloud_login_failed"
+            elif not errors:
+                self._cloud = cloud
+                configured = self._configured_ac()
+                self._found = {
+                    str(dev_id): dev
+                    for dev_id, dev in appliances.items()
+                    if dev.get("type") in DEVICE_TYPES and f"appliance_{dev_id}" not in configured
+                }
+                if not use_default and not self._found:
+                    errors["base"] = "no_appliances_found" if not appliances else "all_configured"
+                else:
+                    from midealocal.discover import discover  # noqa: PLC0415
+
+                    try:
+                        found = await discover(list(DEVICE_TYPES))
+                    except Exception:  # noqa: BLE001
+                        found = {}
+                    self._located = {str(k): v for k, v in found.items()}
+                    return await self.async_step_appliance_select()
+        return self.async_show_form(step_id="appliance", data_schema=self._cloud_schema(), errors=errors)
+
+    async def async_step_appliance_select(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Pick the appliance (or type its id and type), its IP address and name; test the connection."""
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            device_id = str(user_input.get(CONF_UNIT) or user_input.get(CONF_DEVICE_ID) or "").strip()
+            host = (user_input.get(CONF_HOST) or "").strip()
+            info = self._found.get(device_id, {})
+            located = self._located.get(device_id, {})
+            dev_type = info.get("type") or located.get("type") or int(user_input.get(CONF_TYPE) or "0", 16)
+            if not device_id.isdigit() or not host or dev_type not in DEVICE_TYPES:
+                errors["base"] = "missing_unit"
+            else:
+                await self.async_set_unique_id(f"appliance_{device_id}")
+                self._abort_if_unique_id_configured()
+                if data := await self._async_test_appliance(int(device_id), dev_type, host, info, located):
+                    return self.async_create_entry(title=user_input[CONF_NAME], data=data)
+                errors["base"] = "cannot_connect_appliance"
+        fields: dict[Any, Any] = {}
+        if self._found:
+            options = [
+                SelectOptionDict(
+                    value=k,
+                    label=f"{v.get('name') or k} ({DEVICE_TYPES[v['type']]}, 0x{v['type']:02X})",
+                )
+                for k, v in self._found.items()
+            ]
+            first = next(iter(self._found))
+            fields[vol.Required(CONF_UNIT, default=first)] = SelectSelector(SelectSelectorConfig(options=options))
+            default_host = self._located.get(first, {}).get("ip_address", "")
+            default_name = self._found[first].get("name") or DEVICE_TYPES[self._found[first]["type"]]
+        else:
+            fields[vol.Required(CONF_DEVICE_ID)] = str
+            fields[vol.Required(CONF_TYPE)] = SelectSelector(
+                SelectSelectorConfig(
+                    options=[
+                        SelectOptionDict(value=f"{t:02X}", label=f"0x{t:02X} {name}")
+                        for t, name in DEVICE_TYPES.items()
+                    ]
+                )
+            )
+            default_host, default_name = "", "Midea"
+        fields[vol.Required(CONF_HOST, default=default_host)] = str
+        fields[vol.Required(CONF_NAME, default=default_name)] = str
+        return self.async_show_form(
+            step_id="appliance_select",
+            data_schema=vol.Schema(fields),
+            errors=errors,
+            description_placeholders={
+                "found": ", ".join(
+                    f"{k} → {v.get('ip_address')} (0x{v.get('type', 0):02X})" for k, v in self._located.items()
+                ) or "–"
+            },
+        )
+
+    async def _async_test_appliance(
+        self, device_id: int, dev_type: int, host: str, info: dict[str, Any], located: dict[str, Any]
+    ) -> dict[str, Any] | None:
+        """Try the token/key pairs from the cloud; return the entry data of the first that works."""
+        protocol = int(located.get("protocol") or 3)
+        methods: list[dict[str, str]] = [{"token": "", "key": ""}] if protocol != 3 else []
+        if protocol == 3:
+            try:
+                methods = list((await self._cloud.get_cloud_keys(device_id)).values())
+            except Exception:  # noqa: BLE001
+                _LOGGER.exception("Getting the token from the Midea cloud failed")
+        subtype = info.get("model_number") or located.get("subtype") or 0
+        model = info.get("model") or located.get("model") or ""
+        for method in methods:
+            data = {
+                CONF_KIND: KIND_APPLIANCE,
+                CONF_HOST: host,
+                CONF_PORT: int(located.get("port") or APPLIANCE_PORT),
+                "device_id": device_id,
+                "type": dev_type,
+                "protocol": protocol,
+                "token": method.get("token", ""),
+                "key": method.get("key", ""),
+                "model": str(model or ""),
+                "subtype": int(subtype) if str(subtype).isdigit() else 0,
+            }
+            device = build_device("test", data)
+            try:
+                if await device.connect(check_protocol=True):
+                    return data
+            except Exception:  # noqa: BLE001
+                _LOGGER.debug("Appliance %s did not accept the key", device_id, exc_info=True)
+            finally:
+                await device.close_socket()
+        return None
 
     async def _async_locate(self) -> None:
         """Best effort: learn IP addresses by UDP discovery (many units do not answer it)."""

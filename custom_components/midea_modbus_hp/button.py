@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .const import KIND_APPLIANCE
 from .ac import extras as ac_extras
 from .const import CONF_KIND, KIND_AC, FUNCTION_PUMP_D, REG_FUNCTION
 from .entity import HeatPumpEntity
@@ -16,6 +17,8 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities: AddEntitiesCallback
 ) -> None:
     """Set up buttons."""
+    if entry.data.get(CONF_KIND) == KIND_APPLIANCE:
+        return  # no such entities
     if entry.data.get(CONF_KIND) == KIND_AC:
         await ac_extras.async_setup_button(hass, entry, async_add_entities)
         return

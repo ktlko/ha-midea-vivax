@@ -1,4 +1,4 @@
-# Midea / Vivax heat pump & air conditioners for Home Assistant
+# Midea / Vivax heat pump, air conditioners & appliances for Home Assistant
 
 [![HACS Custom](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://hacs.xyz/)
 [![GitHub release](https://img.shields.io/github/v/release/ktlko/ha-midea-vivax)](https://github.com/ktlko/ha-midea-vivax/releases)
@@ -6,6 +6,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Local control of **Midea M-Thermal (Vivax, Hyundai, …) air-to-water heat pumps** over Modbus and of **Midea / Vivax Wi-Fi air conditioners** over their LAN protocol – no cloud needed for operation.
+Other Midea Wi-Fi appliances (dehumidifiers, water heaters, fans, purifiers, …) can be added too
+(**untested**, see [Supported devices](#supported-devices)).
 
 [![Buy me a coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=kotelino&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/kotelino)
 
@@ -31,6 +33,13 @@ Local control of **Midea M-Thermal (Vivax, Hyundai, …) air-to-water heat pumps
 - room temperature and humidity, indoor/outdoor coil, compressor, fan speeds, energy
 - self-cleaning start, filter reminder
 - **multi-split**: indoor units can share one outdoor unit device with one "units mode" select
+
+**Other Midea appliances (Wi-Fi) – untested**
+
+- 35 device types of the MSmartHome app, driven by the [midea-local](https://github.com/midea-lan/midea-local)
+  library (local connection, status pushed by the appliance)
+- power, setpoints, modes and options as switches, numbers and selects; temperatures, humidity, filters, tanks,
+  errors and running states as sensors – all names and states translated
 
 ## Requirements
 
@@ -89,6 +98,73 @@ The integration reads register 1 before it creates the entry, so wrong wiring is
 If you already use **Midea AC LAN**, units paired there can be added directly without signing in.
 
 The IP address and the outdoor unit can be changed later in the integration options.
+
+### Other Midea appliance (Wi-Fi) – untested
+
+1. **Sign in to the Midea cloud** exactly as for an air conditioner.
+2. **Choose the appliance** – all supported appliances of your account are listed with their type. With the
+   default account, enter the appliance ID and pick the device type.
+3. The token and key are fetched, the connection is tested with midea-local and the appliance is added.
+
+Entities are created from the attributes midea-local reports for the device type, so a model may show
+entities it does not use (they stay *unknown*).
+
+## Supported devices
+
+### Tested
+
+| Device | Connection |
+| --- | --- |
+| Midea M-Thermal air-to-water heat pump (Vivax, Hyundai, …), wired controller | Modbus RTU via EW11 (Modbus TCP) |
+| Midea / Vivax air conditioners, type `0xAC`, including multi-split | Wi-Fi, LAN protocol V3 |
+
+### Untested
+
+The device types below were taken from the **MSmartHome 3.20.0** Android app (device type codes in its code and
+bundled scene templates) and from midea-local, which implements their protocol. They are added through
+*Other Midea appliance (Wi-Fi)* and have **not been tested** with real hardware – please open an
+[issue](https://github.com/ktlko/ha-midea-vivax/issues) with your results.
+
+| Type | Device (English name in the Midea apps) | Referenced by MSmartHome 3.20.0 |
+| --- | --- | --- |
+| `0x13` | Light | yes |
+| `0x26` | Bathroom Master | yes |
+| `0x34` | Sink Dishwasher | – |
+| `0x40` | Integrated Ceiling Fan | yes |
+| `0xA1` | Dehumidifier | yes |
+| `0xAD` | Air Detector | – |
+| `0xB0` | Microwave Oven | yes |
+| `0xB1` | Electric Oven | yes |
+| `0xB3` | Dish Sterilizer | – |
+| `0xB4` | Toaster | yes |
+| `0xB6` | Range Hood | yes |
+| `0xB8` | Robot Vacuum | yes |
+| `0xBF` | Microwave Steam Oven | yes |
+| `0xC2` | Toilet | – |
+| `0xC3` | Heat Pump Wi-Fi Controller | yes |
+| `0xCA` | Refrigerator | yes |
+| `0xCC` | MDV Wi-Fi Controller | yes |
+| `0xCD` | Heat Pump Water Heater | – |
+| `0xCE` | Fresh Air Appliance | yes |
+| `0xCF` | Heat Pump | yes |
+| `0xDA` | Top Load Washer | yes |
+| `0xDB` | Front Load Washer | yes |
+| `0xDC` | Clothes Dryer | yes |
+| `0xE1` | Dishwasher | yes |
+| `0xE2` | Electric Water Heater | yes |
+| `0xE3` | Gas Water Heater | yes |
+| `0xE6` | Gas Boilers | – |
+| `0xE8` | Electric Slow Cooker | – |
+| `0xEA` | Electric Rice Cooker | yes |
+| `0xEC` | Electric Pressure Cooker | – |
+| `0xED` | Water Drinking Appliance | yes |
+| `0xFA` | Fan | yes |
+| `0xFB` | Electric Heater | yes |
+| `0xFC` | Air Purifier | yes |
+| `0xFD` | Humidifier | yes |
+
+The device plug-ins of the app (screens, Lua scripts) are downloaded from the cloud at runtime and are not part of
+the APK, so model-specific features may be missing.
 
 ## Tips
 
