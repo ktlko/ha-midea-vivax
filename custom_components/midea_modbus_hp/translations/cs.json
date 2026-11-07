@@ -1,0 +1,1018 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Midea / Vivax",
+        "menu_options": {
+          "heat_pump": "Tepelné čerpadlo (Modbus přes EW11)",
+          "air_conditioner": "Klimatizace (Wi-Fi)"
+        }
+      },
+      "heat_pump": {
+        "title": "Tepelné čerpadlo (Modbus TCP)",
+        "description": "Brána Modbus TCP (např. Elfin EW11) připojená na H1/H2 kabelového ovladače.",
+        "data": {
+          "host": "IP adresa brány",
+          "port": "Port",
+          "device_id": "Modbus adresa (HMI ADDRESS FOR BMS)",
+          "name": "Název"
+        }
+      },
+      "air_conditioner": {
+        "title": "Klimatizace (Wi-Fi)",
+        "menu_options": {
+          "ac_cloud": "Přihlásit se do Midea cloudu (MSmartHome, NetHome Plus…)",
+          "ac_lan": "Použít jednotku spárovanou v Midea AC LAN"
+        }
+      },
+      "ac_select": {
+        "title": "Výběr klimatizace",
+        "description": "Jednotky nalezené v síti: {found}. Pokud IP adresa není vyplněná, najdete ji v routeru (DHCP). Vnitřní jednotky se společnou venkovní jednotkou (multi-split) označte stejným názvem venkovní jednotky.",
+        "data": {
+          "unit": "Jednotka",
+          "device_id": "ID jednotky (Appliance ID z aplikace)",
+          "host": "IP adresa jednotky",
+          "name": "Název",
+          "outdoor_unit": "Společná venkovní jednotka (prázdné = vlastní)"
+        }
+      },
+      "ac_cloud": {
+        "title": "Midea cloud",
+        "description": "Klimatizace potřebuje pro místní ovládání token a klíč. Integrace si je jednou stáhne z cloudu aplikace, ve které je jednotka registrována (MSmartHome = SmartHome). Heslo se neukládá. Bez vlastního účtu zaškrtněte výchozí účet – ID jednotky pak zadáte ručně.",
+        "data": {
+          "cloud": "Aplikace / cloud",
+          "username": "E-mail účtu",
+          "password": "Heslo",
+          "default_account": "Použít výchozí účet (bez přihlášení)"
+        }
+      },
+      "ac_lan": {
+        "title": "Klimatizace z Midea AC LAN",
+        "description": "Token a klíč se převezmou z integrace Midea AC LAN. Vnitřní jednotky se společnou venkovní jednotkou (multi-split) označte stejným názvem venkovní jednotky.",
+        "data": {
+          "unit": "Jednotka",
+          "name": "Název",
+          "outdoor_unit": "Společná venkovní jednotka (prázdné = vlastní)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Z tepelného čerpadla nelze číst. Zkontrolujte IP, port, zapojení (A+ na H2, B- na H1) a 9600 8N1.",
+      "cannot_connect_ac": "Klimatizace neodpovídá (IP adresa, token/klíč).",
+      "no_devices_found": "Na účtu nebyla nalezena žádná klimatizace.",
+      "all_configured": "Všechny nalezené klimatizace už jsou přidané.",
+      "missing_credentials": "Zadejte e-mail a heslo, nebo zaškrtněte výchozí účet.",
+      "cloud_login_failed": "Přihlášení do Midea cloudu selhalo, nebo cloud jednotku nezná. Zkontrolujte aplikaci, e-mail a heslo.",
+      "missing_unit": "Vyberte jednotku (nebo zadejte číselné ID) a zadejte její IP adresu.",
+      "no_token": "Cloud pro tuto jednotku nevrátil token. Zkontrolujte ID jednotky a aplikaci."
+    },
+    "abort": {
+      "already_configured": "Zařízení už je přidané.",
+      "no_air_conditioners": "Žádné další klimatizace spárované v Midea AC LAN."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Klimatizace",
+        "data": {
+          "host": "IP adresa",
+          "outdoor_unit": "Společná venkovní jednotka (prázdné = vlastní)"
+        }
+      }
+    },
+    "abort": {
+      "not_supported": "Tepelné čerpadlo nemá volitelná nastavení."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "comp_freq": {
+        "name": "Frekvence kompresoru"
+      },
+      "unit_mode": {
+        "name": "Aktuální režim jednotky",
+        "state": {
+          "off": "vypnuto",
+          "cool": "chlazení",
+          "heat": "topení",
+          "other": "jiné"
+        }
+      },
+      "fan_speed": {
+        "name": "Otáčky ventilátoru"
+      },
+      "exv": {
+        "name": "Expanzní ventil (otevření)"
+      },
+      "tw_in": {
+        "name": "Vstup vody (Tw_in)"
+      },
+      "tw_out": {
+        "name": "Výstup vody (Tw_out)"
+      },
+      "t3": {
+        "name": "Kondenzátor (T3)"
+      },
+      "t4": {
+        "name": "Venkovní teplota (T4)"
+      },
+      "tp": {
+        "name": "Výtlak kompresoru (Tp)"
+      },
+      "th": {
+        "name": "Sání kompresoru (Th)"
+      },
+      "t1": {
+        "name": "Celková výstupní voda (T1)"
+      },
+      "t1b": {
+        "name": "Voda zóna 2 (T1B)"
+      },
+      "t2": {
+        "name": "Chladivo kapalina (T2)"
+      },
+      "t2b": {
+        "name": "Chladivo plyn (T2B)"
+      },
+      "ta": {
+        "name": "Pokojová teplota (Ta)"
+      },
+      "t5": {
+        "name": "Bojler (T5)"
+      },
+      "p_high": {
+        "name": "Vysoký tlak"
+      },
+      "p_low": {
+        "name": "Nízký tlak"
+      },
+      "odu_current": {
+        "name": "Proud venkovní jednotky"
+      },
+      "odu_voltage": {
+        "name": "Napětí venkovní jednotky"
+      },
+      "tbt1": {
+        "name": "Akumulační nádrž nahoře (Tbt1)"
+      },
+      "tbt2": {
+        "name": "Akumulační nádrž dole (Tbt2)"
+      },
+      "comp_hours": {
+        "name": "Provoz kompresoru"
+      },
+      "unit_capacity": {
+        "name": "Výkonová třída jednotky"
+      },
+      "idu_sw": {
+        "name": "Software hydromodulu"
+      },
+      "hmi_sw": {
+        "name": "Software ovladače"
+      },
+      "target_freq": {
+        "name": "Cílová frekvence"
+      },
+      "dc_current": {
+        "name": "DC proud"
+      },
+      "dc_voltage": {
+        "name": "DC napětí"
+      },
+      "tf": {
+        "name": "Teplota modulu (TF)"
+      },
+      "curve_t1s_z1": {
+        "name": "Ekvitermní cíl zóna 1"
+      },
+      "curve_t1s_z2": {
+        "name": "Ekvitermní cíl zóna 2"
+      },
+      "water_flow": {
+        "name": "Průtok vody"
+      },
+      "odu_limit": {
+        "name": "Omezení proudu (kód)"
+      },
+      "capacity": {
+        "name": "Výkon hydromodulu"
+      },
+      "tsolar": {
+        "name": "Solární panel (Tsolar)"
+      },
+      "lim_cool_max": {
+        "name": "Limit chlazení – max. voda zóna 1"
+      },
+      "lim_cool_min": {
+        "name": "Limit chlazení – min. voda zóna 1"
+      },
+      "lim_heat_max": {
+        "name": "Limit topení – max. voda zóna 1"
+      },
+      "lim_heat_min": {
+        "name": "Limit topení – min. voda zóna 1"
+      },
+      "lim_room_max": {
+        "name": "Limit místnost – max."
+      },
+      "lim_room_min": {
+        "name": "Limit místnost – min."
+      },
+      "lim_dhw_max": {
+        "name": "Limit teplá voda – max."
+      },
+      "lim_dhw_min": {
+        "name": "Limit teplá voda – min."
+      },
+      "dry_up": {
+        "name": "Vysoušení podlahy – dny náběhu"
+      },
+      "dry_peak_days": {
+        "name": "Vysoušení podlahy – dny na vrcholu"
+      },
+      "dry_down": {
+        "name": "Vysoušení podlahy – dny doběhu"
+      },
+      "dry_peak": {
+        "name": "Vysoušení podlahy – vrcholová teplota"
+      },
+      "t_arsth": {
+        "name": "Předehřev podlahy – trvání"
+      },
+      "preheat_t1s": {
+        "name": "Předehřev podlahy – teplota vody"
+      },
+      "error": {
+        "name": "Aktuální porucha",
+        "state": {
+          "none": "Bez poruchy",
+          "e0": "E0 Porucha průtoku vody (E8 3×)",
+          "e1": "E1 Výpadek fáze / prohozené N a L",
+          "e2": "E2 Komunikace ovladač – hydromodul",
+          "e3": "E3 Snímač výstupní vody T1",
+          "e4": "E4 Snímač bojleru T5",
+          "e5": "E5 Snímač kondenzátoru T3",
+          "e6": "E6 Snímač venkovní teploty T4",
+          "e7": "E7 Snímač akumulační nádrže nahoře Tbt1",
+          "e8": "E8 Porucha průtoku vody",
+          "e9": "E9 Snímač sání Th",
+          "ea": "EA Snímač výtlaku Tp",
+          "eb": "Eb Snímač solárního panelu Tsolar",
+          "ec": "Ec Snímač akumulační nádrže dole Tbt2",
+          "ed": "Ed Snímač vstupní vody Tw_in",
+          "ee": "EE EEPROM hydromodulu",
+          "p0": "P0 Ochrana nízkého tlaku",
+          "p1": "P1 Ochrana vysokého tlaku",
+          "p3": "P3 Nadproud kompresoru",
+          "p4": "P4 Vysoká teplota výtlaku",
+          "p5": "P5 Příliš velký rozdíl Tw_out – Tw_in",
+          "p6": "P6 Ochrana invertorového modulu",
+          "pb": "Pb Ochrana proti zamrznutí",
+          "pd": "Pd Vysoká teplota chladiva na výstupu kondenzátoru",
+          "pp": "PP Neobvyklý rozdíl Tw_out – Tw_in",
+          "h0": "H0 Komunikace hydromodul – hlavní deska",
+          "h1": "H1 Komunikace invertor – hlavní deska",
+          "h2": "H2 Snímač chladiva kapalina T2",
+          "h3": "H3 Snímač chladiva plyn T2B",
+          "h4": "H4 Třikrát P6 (L0/L1)",
+          "h5": "H5 Snímač pokojové teploty Ta",
+          "h6": "H6 Porucha DC ventilátoru",
+          "h7": "H7 Ochrana napětí",
+          "h8": "H8 Snímač tlaku",
+          "h9": "H9 Snímač vody zóny 2 Tw2",
+          "ha": "HA Snímač výstupní vody Tw_out",
+          "hb": "Hb Třikrát PP a Tw_out < 7 °C",
+          "hd": "Hd Komunikace mezi hydromoduly (kaskáda)",
+          "he": "HE Komunikace hlavní deska – termostat",
+          "hf": "HF EEPROM invertorového modulu",
+          "hh": "HH H6 10× za 2 hodiny",
+          "hp": "HP Nízký tlak (Pe<0,6) 3× za hodinu",
+          "c7": "C7 Přehřátí modulu invertoru",
+          "bh": "bH Porucha desky PED",
+          "f1": "F1 Nízké napětí DC sběrnice",
+          "l0": "L0 Ochrana modulu",
+          "l1": "L1 Nízké napětí DC sběrnice",
+          "l2": "L2 Vysoké napětí DC sběrnice",
+          "l4": "L4 Porucha MCE",
+          "l5": "L5 Ochrana nulových otáček",
+          "l7": "L7 Chyba sledu fází",
+          "l8": "L8 Rozdíl otáček > 15 Hz (hodiny)",
+          "l9": "L9 Rozdíl skutečných a požadovaných otáček > 15 Hz",
+          "unknown": "Neznámý kód"
+        }
+      },
+      "error_hist1": {
+        "name": "Porucha – historie 1",
+        "state": {
+          "none": "Bez poruchy",
+          "e0": "E0 Porucha průtoku vody (E8 3×)",
+          "e1": "E1 Výpadek fáze / prohozené N a L",
+          "e2": "E2 Komunikace ovladač – hydromodul",
+          "e3": "E3 Snímač výstupní vody T1",
+          "e4": "E4 Snímač bojleru T5",
+          "e5": "E5 Snímač kondenzátoru T3",
+          "e6": "E6 Snímač venkovní teploty T4",
+          "e7": "E7 Snímač akumulační nádrže nahoře Tbt1",
+          "e8": "E8 Porucha průtoku vody",
+          "e9": "E9 Snímač sání Th",
+          "ea": "EA Snímač výtlaku Tp",
+          "eb": "Eb Snímač solárního panelu Tsolar",
+          "ec": "Ec Snímač akumulační nádrže dole Tbt2",
+          "ed": "Ed Snímač vstupní vody Tw_in",
+          "ee": "EE EEPROM hydromodulu",
+          "p0": "P0 Ochrana nízkého tlaku",
+          "p1": "P1 Ochrana vysokého tlaku",
+          "p3": "P3 Nadproud kompresoru",
+          "p4": "P4 Vysoká teplota výtlaku",
+          "p5": "P5 Příliš velký rozdíl Tw_out – Tw_in",
+          "p6": "P6 Ochrana invertorového modulu",
+          "pb": "Pb Ochrana proti zamrznutí",
+          "pd": "Pd Vysoká teplota chladiva na výstupu kondenzátoru",
+          "pp": "PP Neobvyklý rozdíl Tw_out – Tw_in",
+          "h0": "H0 Komunikace hydromodul – hlavní deska",
+          "h1": "H1 Komunikace invertor – hlavní deska",
+          "h2": "H2 Snímač chladiva kapalina T2",
+          "h3": "H3 Snímač chladiva plyn T2B",
+          "h4": "H4 Třikrát P6 (L0/L1)",
+          "h5": "H5 Snímač pokojové teploty Ta",
+          "h6": "H6 Porucha DC ventilátoru",
+          "h7": "H7 Ochrana napětí",
+          "h8": "H8 Snímač tlaku",
+          "h9": "H9 Snímač vody zóny 2 Tw2",
+          "ha": "HA Snímač výstupní vody Tw_out",
+          "hb": "Hb Třikrát PP a Tw_out < 7 °C",
+          "hd": "Hd Komunikace mezi hydromoduly (kaskáda)",
+          "he": "HE Komunikace hlavní deska – termostat",
+          "hf": "HF EEPROM invertorového modulu",
+          "hh": "HH H6 10× za 2 hodiny",
+          "hp": "HP Nízký tlak (Pe<0,6) 3× za hodinu",
+          "c7": "C7 Přehřátí modulu invertoru",
+          "bh": "bH Porucha desky PED",
+          "f1": "F1 Nízké napětí DC sběrnice",
+          "l0": "L0 Ochrana modulu",
+          "l1": "L1 Nízké napětí DC sběrnice",
+          "l2": "L2 Vysoké napětí DC sběrnice",
+          "l4": "L4 Porucha MCE",
+          "l5": "L5 Ochrana nulových otáček",
+          "l7": "L7 Chyba sledu fází",
+          "l8": "L8 Rozdíl otáček > 15 Hz (hodiny)",
+          "l9": "L9 Rozdíl skutečných a požadovaných otáček > 15 Hz",
+          "unknown": "Neznámý kód"
+        }
+      },
+      "error_hist2": {
+        "name": "Porucha – historie 2",
+        "state": {
+          "none": "Bez poruchy",
+          "e0": "E0 Porucha průtoku vody (E8 3×)",
+          "e1": "E1 Výpadek fáze / prohozené N a L",
+          "e2": "E2 Komunikace ovladač – hydromodul",
+          "e3": "E3 Snímač výstupní vody T1",
+          "e4": "E4 Snímač bojleru T5",
+          "e5": "E5 Snímač kondenzátoru T3",
+          "e6": "E6 Snímač venkovní teploty T4",
+          "e7": "E7 Snímač akumulační nádrže nahoře Tbt1",
+          "e8": "E8 Porucha průtoku vody",
+          "e9": "E9 Snímač sání Th",
+          "ea": "EA Snímač výtlaku Tp",
+          "eb": "Eb Snímač solárního panelu Tsolar",
+          "ec": "Ec Snímač akumulační nádrže dole Tbt2",
+          "ed": "Ed Snímač vstupní vody Tw_in",
+          "ee": "EE EEPROM hydromodulu",
+          "p0": "P0 Ochrana nízkého tlaku",
+          "p1": "P1 Ochrana vysokého tlaku",
+          "p3": "P3 Nadproud kompresoru",
+          "p4": "P4 Vysoká teplota výtlaku",
+          "p5": "P5 Příliš velký rozdíl Tw_out – Tw_in",
+          "p6": "P6 Ochrana invertorového modulu",
+          "pb": "Pb Ochrana proti zamrznutí",
+          "pd": "Pd Vysoká teplota chladiva na výstupu kondenzátoru",
+          "pp": "PP Neobvyklý rozdíl Tw_out – Tw_in",
+          "h0": "H0 Komunikace hydromodul – hlavní deska",
+          "h1": "H1 Komunikace invertor – hlavní deska",
+          "h2": "H2 Snímač chladiva kapalina T2",
+          "h3": "H3 Snímač chladiva plyn T2B",
+          "h4": "H4 Třikrát P6 (L0/L1)",
+          "h5": "H5 Snímač pokojové teploty Ta",
+          "h6": "H6 Porucha DC ventilátoru",
+          "h7": "H7 Ochrana napětí",
+          "h8": "H8 Snímač tlaku",
+          "h9": "H9 Snímač vody zóny 2 Tw2",
+          "ha": "HA Snímač výstupní vody Tw_out",
+          "hb": "Hb Třikrát PP a Tw_out < 7 °C",
+          "hd": "Hd Komunikace mezi hydromoduly (kaskáda)",
+          "he": "HE Komunikace hlavní deska – termostat",
+          "hf": "HF EEPROM invertorového modulu",
+          "hh": "HH H6 10× za 2 hodiny",
+          "hp": "HP Nízký tlak (Pe<0,6) 3× za hodinu",
+          "c7": "C7 Přehřátí modulu invertoru",
+          "bh": "bH Porucha desky PED",
+          "f1": "F1 Nízké napětí DC sběrnice",
+          "l0": "L0 Ochrana modulu",
+          "l1": "L1 Nízké napětí DC sběrnice",
+          "l2": "L2 Vysoké napětí DC sběrnice",
+          "l4": "L4 Porucha MCE",
+          "l5": "L5 Ochrana nulových otáček",
+          "l7": "L7 Chyba sledu fází",
+          "l8": "L8 Rozdíl otáček > 15 Hz (hodiny)",
+          "l9": "L9 Rozdíl skutečných a požadovaných otáček > 15 Hz",
+          "unknown": "Neznámý kód"
+        }
+      },
+      "error_hist3": {
+        "name": "Porucha – historie 3",
+        "state": {
+          "none": "Bez poruchy",
+          "e0": "E0 Porucha průtoku vody (E8 3×)",
+          "e1": "E1 Výpadek fáze / prohozené N a L",
+          "e2": "E2 Komunikace ovladač – hydromodul",
+          "e3": "E3 Snímač výstupní vody T1",
+          "e4": "E4 Snímač bojleru T5",
+          "e5": "E5 Snímač kondenzátoru T3",
+          "e6": "E6 Snímač venkovní teploty T4",
+          "e7": "E7 Snímač akumulační nádrže nahoře Tbt1",
+          "e8": "E8 Porucha průtoku vody",
+          "e9": "E9 Snímač sání Th",
+          "ea": "EA Snímač výtlaku Tp",
+          "eb": "Eb Snímač solárního panelu Tsolar",
+          "ec": "Ec Snímač akumulační nádrže dole Tbt2",
+          "ed": "Ed Snímač vstupní vody Tw_in",
+          "ee": "EE EEPROM hydromodulu",
+          "p0": "P0 Ochrana nízkého tlaku",
+          "p1": "P1 Ochrana vysokého tlaku",
+          "p3": "P3 Nadproud kompresoru",
+          "p4": "P4 Vysoká teplota výtlaku",
+          "p5": "P5 Příliš velký rozdíl Tw_out – Tw_in",
+          "p6": "P6 Ochrana invertorového modulu",
+          "pb": "Pb Ochrana proti zamrznutí",
+          "pd": "Pd Vysoká teplota chladiva na výstupu kondenzátoru",
+          "pp": "PP Neobvyklý rozdíl Tw_out – Tw_in",
+          "h0": "H0 Komunikace hydromodul – hlavní deska",
+          "h1": "H1 Komunikace invertor – hlavní deska",
+          "h2": "H2 Snímač chladiva kapalina T2",
+          "h3": "H3 Snímač chladiva plyn T2B",
+          "h4": "H4 Třikrát P6 (L0/L1)",
+          "h5": "H5 Snímač pokojové teploty Ta",
+          "h6": "H6 Porucha DC ventilátoru",
+          "h7": "H7 Ochrana napětí",
+          "h8": "H8 Snímač tlaku",
+          "h9": "H9 Snímač vody zóny 2 Tw2",
+          "ha": "HA Snímač výstupní vody Tw_out",
+          "hb": "Hb Třikrát PP a Tw_out < 7 °C",
+          "hd": "Hd Komunikace mezi hydromoduly (kaskáda)",
+          "he": "HE Komunikace hlavní deska – termostat",
+          "hf": "HF EEPROM invertorového modulu",
+          "hh": "HH H6 10× za 2 hodiny",
+          "hp": "HP Nízký tlak (Pe<0,6) 3× za hodinu",
+          "c7": "C7 Přehřátí modulu invertoru",
+          "bh": "bH Porucha desky PED",
+          "f1": "F1 Nízké napětí DC sběrnice",
+          "l0": "L0 Ochrana modulu",
+          "l1": "L1 Nízké napětí DC sběrnice",
+          "l2": "L2 Vysoké napětí DC sběrnice",
+          "l4": "L4 Porucha MCE",
+          "l5": "L5 Ochrana nulových otáček",
+          "l7": "L7 Chyba sledu fází",
+          "l8": "L8 Rozdíl otáček > 15 Hz (hodiny)",
+          "l9": "L9 Rozdíl skutečných a požadovaných otáček > 15 Hz",
+          "unknown": "Neznámý kód"
+        }
+      },
+      "energy_in": {
+        "name": "Spotřebovaná elektřina"
+      },
+      "energy_out": {
+        "name": "Vyrobené teplo"
+      },
+      "cop_total": {
+        "name": "COP celkový"
+      },
+      "ac_indoor_temperature": {
+        "name": "Teplota v místnosti"
+      },
+      "ac_pmv": {
+        "name": "Tepelný komfort (PMV)"
+      },
+      "ac_indoor_fan_speed": {
+        "name": "Otáčky vnitřního ventilátoru"
+      },
+      "ac_indoor_coil_temperature": {
+        "name": "Teplota vnitřního výměníku"
+      },
+      "ac_humidity": {
+        "name": "Vlhkost v místnosti"
+      },
+      "ac_outdoor_temperature": {
+        "name": "Venkovní teplota"
+      },
+      "ac_compressor_frequency": {
+        "name": "Frekvence kompresoru"
+      },
+      "ac_compressor_current": {
+        "name": "Proud kompresoru"
+      },
+      "ac_outdoor_coil_temperature": {
+        "name": "Teplota venkovního výměníku"
+      },
+      "ac_discharge_temperature": {
+        "name": "Teplota na výtlaku kompresoru"
+      },
+      "ac_outdoor_fan_speed": {
+        "name": "Otáčky venkovního ventilátoru"
+      },
+      "ac_energy_total": {
+        "name": "Spotřebovaná elektřina"
+      },
+      "emission_z1_heat": {
+        "name": "Typ otopných těles – zóna 1 topení",
+        "state": {
+          "fan_coil": "fan-coil",
+          "radiators": "radiátory",
+          "underfloor": "podlahové",
+          "other": "jiné"
+        }
+      },
+      "emission_z2_heat": {
+        "name": "Typ otopných těles – zóna 2 topení",
+        "state": {
+          "fan_coil": "fan-coil",
+          "radiators": "radiátory",
+          "underfloor": "podlahové",
+          "other": "jiné"
+        }
+      },
+      "emission_z1_cool": {
+        "name": "Typ otopných těles – zóna 1 chlazení",
+        "state": {
+          "fan_coil": "fan-coil",
+          "radiators": "radiátory",
+          "underfloor": "podlahové",
+          "other": "jiné"
+        }
+      },
+      "emission_z2_cool": {
+        "name": "Typ otopných těles – zóna 2 chlazení",
+        "state": {
+          "fan_coil": "fan-coil",
+          "radiators": "radiátory",
+          "underfloor": "podlahové",
+          "other": "jiné"
+        }
+      }
+    },
+    "binary_sensor": {
+      "ibh1": {
+        "name": "Elektrický ohřívač IBH1"
+      },
+      "ibh2": {
+        "name": "Elektrický ohřívač IBH2"
+      },
+      "pump_i": {
+        "name": "Vnitřní oběhové čerpadlo"
+      },
+      "sv1": {
+        "name": "Trojcestný ventil SV1 (bojler)"
+      },
+      "sv2": {
+        "name": "Trojcestný ventil SV2"
+      },
+      "pump_o": {
+        "name": "Venkovní oběhové čerpadlo"
+      },
+      "pump_c": {
+        "name": "Čerpadlo zóny 2 (pump_C)"
+      },
+      "sv3": {
+        "name": "Trojcestný ventil SV3"
+      },
+      "crankcase": {
+        "name": "Ohřev klikové skříně"
+      },
+      "pump_s": {
+        "name": "Solární čerpadlo (pump_S)"
+      },
+      "alarm": {
+        "name": "Alarm"
+      },
+      "ahs": {
+        "name": "Externí zdroj tepla (AHS)"
+      },
+      "defrost": {
+        "name": "Odmrazování"
+      },
+      "anti_freeze": {
+        "name": "Ochrana proti zamrznutí"
+      },
+      "oil_return": {
+        "name": "Návrat oleje"
+      },
+      "remote_onoff": {
+        "name": "Dálkové zap/vyp aktivní"
+      },
+      "thermostat_heat": {
+        "name": "Termostat – požadavek topení (HT)"
+      },
+      "thermostat_cool": {
+        "name": "Termostat – požadavek chlazení (CL)"
+      },
+      "solar_input": {
+        "name": "Solární vstup"
+      },
+      "dhw_anti_freeze": {
+        "name": "Ochrana bojleru proti zamrznutí"
+      },
+      "sg_signal": {
+        "name": "Smart grid signál (SG)"
+      },
+      "euv_signal": {
+        "name": "Levná elektřina (EUV)"
+      },
+      "holiday_away": {
+        "name": "Dovolená – pryč"
+      },
+      "holiday_home": {
+        "name": "Dovolená – doma"
+      },
+      "compressor_running": {
+        "name": "Kompresor běží"
+      },
+      "ac_self_clean": {
+        "name": "Samočištění"
+      },
+      "ac_filter_full": {
+        "name": "Vyčistit filtr"
+      },
+      "tbh": {
+        "name": "Ohřívač bojleru TBH"
+      },
+      "pump_d": {
+        "name": "Cirkulace TV (pump_D)"
+      },
+      "p1_dhw": {
+        "name": "Funkce: teplá voda"
+      },
+      "p1_tbh": {
+        "name": "Funkce: ohřívač bojleru TBH"
+      },
+      "p1_disinfect": {
+        "name": "Funkce: dezinfekce"
+      },
+      "p1_pump_d": {
+        "name": "Funkce: cirkulační čerpadlo TV"
+      },
+      "p1_dhw_priority_fn": {
+        "name": "Funkce: priorita TV"
+      },
+      "p1_pump_d_disinfect": {
+        "name": "Funkce: cirkulace při dezinfekci"
+      },
+      "p1_cooling": {
+        "name": "Funkce: chlazení"
+      },
+      "p1_heating": {
+        "name": "Funkce: topení"
+      },
+      "p1_pump_i_silent": {
+        "name": "Funkce: tiché oběhové čerpadlo"
+      },
+      "p1_room_temp": {
+        "name": "Funkce: řízení podle pokojové teploty"
+      },
+      "p1_room_thermostat": {
+        "name": "Funkce: pokojový termostat"
+      },
+      "p1_thermostat_mode": {
+        "name": "Funkce: termostat přepíná režim"
+      },
+      "p1_thermostat_double": {
+        "name": "Funkce: termostat 2 zóny"
+      },
+      "p1_dhw_priority": {
+        "name": "Funkce: priorita TV zapnutá"
+      },
+      "p2_m1m2": {
+        "name": "Funkce: M1M2 / AHS zap-vyp"
+      },
+      "p2_tbt1": {
+        "name": "Funkce: snímač akumulační nádrže Tbt1"
+      },
+      "p2_fpipe": {
+        "name": "Funkce: potrubí ≥ 10 m"
+      },
+      "p2_smart_grid": {
+        "name": "Funkce: smart grid"
+      },
+      "p2_double_zone": {
+        "name": "Funkce: dvě zóny"
+      },
+      "p2_tbt": {
+        "name": "Funkce: akumulační nádrž"
+      }
+    },
+    "number": {
+      "zone1_set": {
+        "name": "Zóna 1 – požadovaná teplota vody"
+      },
+      "zone2_set": {
+        "name": "Zóna 2 – požadovaná teplota vody"
+      },
+      "dhw_set": {
+        "name": "Teplá voda – požadovaná teplota"
+      },
+      "room_set": {
+        "name": "Místnost – požadovaná teplota"
+      },
+      "curve_z1_no": {
+        "name": "Ekvitermní křivka zóna 1 (1–9)"
+      },
+      "curve_z2_no": {
+        "name": "Ekvitermní křivka zóna 2 (1–9)"
+      },
+      "sg_max": {
+        "name": "Smart grid – max. hodin při drahém tarifu"
+      },
+      "p_dt5_on": {
+        "name": "TV – hystereze startu (dT5_ON)"
+      },
+      "p_dt1s5": {
+        "name": "TV – rozdíl voda/bojler (dT1S5)"
+      },
+      "p_t4dhwmax": {
+        "name": "TV – max. venkovní teplota"
+      },
+      "p_t4dhwmin": {
+        "name": "TV – min. venkovní teplota"
+      },
+      "p_t_dhwhp_max": {
+        "name": "TV – max. doba ohřevu tepelným čerpadlem"
+      },
+      "p_t_dhwhp_restrict": {
+        "name": "TV – doba topení mezi ohřevy TV"
+      },
+      "p_pump_d_time": {
+        "name": "Cirkulace TV – doba chodu"
+      },
+      "p_t_tbh_delay": {
+        "name": "TBH – zpoždění zapnutí"
+      },
+      "p_dt5_tbh_off": {
+        "name": "TBH – rozdíl vypnutí (dT5_TBH_OFF)"
+      },
+      "p_t4_tbh_on": {
+        "name": "TBH – max. venkovní teplota"
+      },
+      "p_tbh_power": {
+        "name": "TBH – příkon"
+      },
+      "p_t5s_di": {
+        "name": "Dezinfekce – teplota"
+      },
+      "p_t_di_max": {
+        "name": "Dezinfekce – max. trvání"
+      },
+      "p_t_di_hightemp": {
+        "name": "Dezinfekce – držení teploty"
+      },
+      "p_dt1sc": {
+        "name": "Chlazení – hystereze vody (dT1SC)"
+      },
+      "p_dtsc": {
+        "name": "Chlazení – hystereze místnosti (dTSC)"
+      },
+      "p_t4cmax": {
+        "name": "Chlazení – max. venkovní teplota"
+      },
+      "p_t4cmin": {
+        "name": "Chlazení – min. venkovní teplota"
+      },
+      "p_dt1sh": {
+        "name": "Topení – hystereze vody (dT1SH)"
+      },
+      "p_dtsh": {
+        "name": "Topení – hystereze místnosti (dTSH)"
+      },
+      "p_t4hmax": {
+        "name": "Topení – max. venkovní teplota"
+      },
+      "p_t4hmin": {
+        "name": "Topení – min. venkovní teplota"
+      },
+      "p_t4autocmin": {
+        "name": "Auto – min. venkovní pro chlazení"
+      },
+      "p_t4autohmax": {
+        "name": "Auto – max. venkovní pro topení"
+      },
+      "p_t1seth1": {
+        "name": "Vlastní křivka topení – voda bod 1"
+      },
+      "p_t4h1": {
+        "name": "Vlastní křivka topení – venku bod 1"
+      },
+      "p_t1seth2": {
+        "name": "Vlastní křivka topení – voda bod 2"
+      },
+      "p_t4h2": {
+        "name": "Vlastní křivka topení – venku bod 2"
+      },
+      "p_t1setc1": {
+        "name": "Vlastní křivka chlazení – voda bod 1"
+      },
+      "p_t1setc2": {
+        "name": "Vlastní křivka chlazení – voda bod 2"
+      },
+      "p_t4c2": {
+        "name": "Vlastní křivka chlazení – venku bod 2"
+      },
+      "p_t4_ibh_on": {
+        "name": "IBH – max. venkovní teplota zapnutí"
+      },
+      "p_dt1_ibh_on": {
+        "name": "IBH – rozdíl vody pro zapnutí"
+      },
+      "p_t_ibh_delay": {
+        "name": "IBH – zpoždění zapnutí"
+      },
+      "p_ibh1_power": {
+        "name": "IBH1 – příkon"
+      },
+      "p_ibh2_power": {
+        "name": "IBH2 – příkon"
+      },
+      "p_t4_ahs_on": {
+        "name": "AHS – max. venkovní teplota zapnutí"
+      },
+      "p_dt1_ahs_on": {
+        "name": "AHS – rozdíl vody pro zapnutí"
+      },
+      "p_t_ahs_delay": {
+        "name": "AHS – zpoždění zapnutí"
+      },
+      "p_holiday_heat": {
+        "name": "Dovolená – teplota vody topení"
+      },
+      "p_holiday_dhw": {
+        "name": "Dovolená – teplota TV"
+      },
+      "p_power_limit": {
+        "name": "Omezení příkonu (typ 0–8)"
+      },
+      "ac_fan_percent": {
+        "name": "Ventilátor"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Režim",
+        "state": {
+          "auto": "auto",
+          "cool": "chlazení",
+          "heat": "topení"
+        }
+      },
+      "silent_level": {
+        "name": "Úroveň tichého režimu",
+        "state": {
+          "level_1": "úroveň 1",
+          "level_2": "úroveň 2"
+        }
+      },
+      "forced_dhw": {
+        "name": "Vynucený ohřev TV",
+        "state": {
+          "none": "bez vynucení",
+          "force_on": "vynutit zapnutí",
+          "force_off": "vynutit vypnutí"
+        }
+      },
+      "forced_tbh": {
+        "name": "Vynucený ohřívač bojleru (TBH)",
+        "state": {
+          "none": "bez vynucení",
+          "force_on": "vynutit zapnutí",
+          "force_off": "vynutit vypnutí"
+        }
+      },
+      "forced_ibh": {
+        "name": "Vynucený záložní ohřívač (IBH)",
+        "state": {
+          "none": "bez vynucení",
+          "force_on": "vynutit zapnutí",
+          "force_off": "vynutit vypnutí"
+        }
+      },
+      "ac_mode": {
+        "name": "Režim jednotek",
+        "state": {
+          "off": "vypnuto",
+          "heat": "topení",
+          "cool": "chlazení",
+          "dry": "sušení",
+          "fan_only": "ventilátor",
+          "mixed": "různé"
+        }
+      },
+      "ac_ud_angle": {
+        "name": "Lamela nahoru–dolů",
+        "state": {
+          "free": "volně",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      },
+      "ac_lr_angle": {
+        "name": "Lamela vlevo–vpravo",
+        "state": {
+          "free": "volně",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      }
+    },
+    "switch": {
+      "zone1_power": {
+        "name": "Zóna 1 – topení/chlazení"
+      },
+      "zone2_power": {
+        "name": "Zóna 2 – topení/chlazení"
+      },
+      "dhw_power": {
+        "name": "Ohřev teplé vody"
+      },
+      "room_power": {
+        "name": "Zóny podle pokojové teploty"
+      },
+      "eco": {
+        "name": "ECO režim"
+      },
+      "silent": {
+        "name": "Tichý režim"
+      },
+      "disinfect": {
+        "name": "Dezinfekce (antilegionela)"
+      },
+      "curve_z1": {
+        "name": "Ekvitermní křivka zóna 1"
+      },
+      "curve_z2": {
+        "name": "Ekvitermní křivka zóna 2"
+      },
+      "ac_dry": {
+        "name": "Vysušení výměníku po vypnutí"
+      },
+      "ac_frost_protect": {
+        "name": "Temperování 8 °C"
+      },
+      "ac_anion": {
+        "name": "Ionizátor"
+      },
+      "ac_display": {
+        "name": "Displej"
+      },
+      "ac_beep": {
+        "name": "Pípnutí při ovládání"
+      },
+      "ac_prevent_straight_wind": {
+        "name": "Vzduch mimo lidi"
+      }
+    },
+    "climate": {
+      "zone1_climate": {
+        "name": "Zóna 1"
+      },
+      "ac_climate": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "silent": "tichý",
+              "low": "nízké",
+              "medium": "střední",
+              "high": "vysoké",
+              "auto": "auto"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "pump_d_start": {
+        "name": "Spustit cirkulaci TV"
+      },
+      "ac_self_clean_start": {
+        "name": "Spustit samočištění"
+      }
+    }
+  },
+  "device": {
+    "outdoor_unit": {
+      "name": "Venkovní jednotka {unit}"
+    }
+  }
+}

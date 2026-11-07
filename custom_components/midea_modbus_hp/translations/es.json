@@ -1,0 +1,1018 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Midea / Vivax",
+        "menu_options": {
+          "heat_pump": "Bomba de calor (Modbus vía EW11)",
+          "air_conditioner": "Aire acondicionado (Wi-Fi)"
+        }
+      },
+      "heat_pump": {
+        "title": "Bomba de calor (Modbus TCP)",
+        "description": "Pasarela Modbus TCP (p. ej. Elfin EW11) conectada a H1/H2 del controlador cableado.",
+        "data": {
+          "host": "Dirección IP de la pasarela",
+          "port": "Puerto",
+          "device_id": "Dirección Modbus (HMI ADDRESS FOR BMS)",
+          "name": "Nombre"
+        }
+      },
+      "air_conditioner": {
+        "title": "Aire acondicionado (Wi-Fi)",
+        "menu_options": {
+          "ac_cloud": "Iniciar sesión en la nube Midea (MSmartHome, NetHome Plus…)",
+          "ac_lan": "Usar una unidad emparejada en Midea AC LAN"
+        }
+      },
+      "ac_select": {
+        "title": "Elegir aire acondicionado",
+        "description": "Unidades encontradas en la red: {found}. Si la dirección IP está vacía, búscala en tu router (DHCP). Da el mismo nombre de unidad exterior a las unidades interiores que la comparten (multi-split).",
+        "data": {
+          "unit": "Unidad",
+          "device_id": "ID de la unidad (Appliance ID de la app)",
+          "host": "Dirección IP de la unidad",
+          "name": "Nombre",
+          "outdoor_unit": "Unidad exterior compartida (vacío = propia)"
+        }
+      },
+      "ac_cloud": {
+        "title": "Nube Midea",
+        "description": "El aire acondicionado necesita un token y una clave para el control local. La integración los descarga una vez de la nube de la app en la que está registrada la unidad (MSmartHome = SmartHome). La contraseña no se guarda. Sin cuenta propia, marca la cuenta predeterminada – después introduces el ID de la unidad a mano.",
+        "data": {
+          "cloud": "App / nube",
+          "username": "Correo de la cuenta",
+          "password": "Contraseña",
+          "default_account": "Usar la cuenta predeterminada (sin iniciar sesión)"
+        }
+      },
+      "ac_lan": {
+        "title": "Aire acondicionado de Midea AC LAN",
+        "description": "El token y la clave se toman de la integración Midea AC LAN. Da el mismo nombre de unidad exterior a las unidades interiores que la comparten (multi-split).",
+        "data": {
+          "unit": "Unidad",
+          "name": "Nombre",
+          "outdoor_unit": "Unidad exterior compartida (vacío = propia)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "No se puede leer la bomba de calor. Revisa IP, puerto, cableado (A+ a H2, B- a H1) y 9600 8N1.",
+      "cannot_connect_ac": "El aire acondicionado no responde (dirección IP, token/clave).",
+      "no_devices_found": "No se encontró ningún aire acondicionado en la cuenta.",
+      "all_configured": "Todos los aires acondicionados encontrados ya están añadidos.",
+      "missing_credentials": "Introduce correo y contraseña, o marca la cuenta predeterminada.",
+      "cloud_login_failed": "Falló el inicio de sesión en la nube Midea o la nube no conoce esta unidad. Revisa la app, el correo y la contraseña.",
+      "missing_unit": "Elige una unidad (o introduce su ID numérico) e introduce su dirección IP.",
+      "no_token": "La nube no devolvió ningún token para esta unidad. Revisa el ID de la unidad y la app."
+    },
+    "abort": {
+      "already_configured": "Este dispositivo ya está configurado.",
+      "no_air_conditioners": "No hay más aires acondicionados emparejados en Midea AC LAN."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Aire acondicionado",
+        "data": {
+          "host": "Dirección IP",
+          "outdoor_unit": "Unidad exterior compartida (vacío = propia)"
+        }
+      }
+    },
+    "abort": {
+      "not_supported": "La bomba de calor no tiene opciones."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "comp_freq": {
+        "name": "Frecuencia del compresor"
+      },
+      "unit_mode": {
+        "name": "Modo actual de la unidad",
+        "state": {
+          "off": "apagado",
+          "cool": "refrigeración",
+          "heat": "calefacción",
+          "other": "otro"
+        }
+      },
+      "fan_speed": {
+        "name": "Velocidad del ventilador"
+      },
+      "exv": {
+        "name": "Válvula de expansión (apertura)"
+      },
+      "tw_in": {
+        "name": "Entrada de agua (Tw_in)"
+      },
+      "tw_out": {
+        "name": "Salida de agua (Tw_out)"
+      },
+      "t3": {
+        "name": "Condensador (T3)"
+      },
+      "t4": {
+        "name": "Temperatura exterior (T4)"
+      },
+      "tp": {
+        "name": "Descarga del compresor (Tp)"
+      },
+      "th": {
+        "name": "Aspiración del compresor (Th)"
+      },
+      "t1": {
+        "name": "Salida total de agua (T1)"
+      },
+      "t1b": {
+        "name": "Agua zona 2 (T1B)"
+      },
+      "t2": {
+        "name": "Refrigerante líquido (T2)"
+      },
+      "t2b": {
+        "name": "Refrigerante gas (T2B)"
+      },
+      "ta": {
+        "name": "Temperatura ambiente (Ta)"
+      },
+      "t5": {
+        "name": "Depósito ACS (T5)"
+      },
+      "p_high": {
+        "name": "Alta presión"
+      },
+      "p_low": {
+        "name": "Baja presión"
+      },
+      "odu_current": {
+        "name": "Corriente de la unidad exterior"
+      },
+      "odu_voltage": {
+        "name": "Tensión de la unidad exterior"
+      },
+      "tbt1": {
+        "name": "Depósito de inercia arriba (Tbt1)"
+      },
+      "tbt2": {
+        "name": "Depósito de inercia abajo (Tbt2)"
+      },
+      "comp_hours": {
+        "name": "Horas de funcionamiento del compresor"
+      },
+      "unit_capacity": {
+        "name": "Clase de potencia de la unidad"
+      },
+      "idu_sw": {
+        "name": "Software del módulo hidráulico"
+      },
+      "hmi_sw": {
+        "name": "Software del controlador"
+      },
+      "target_freq": {
+        "name": "Frecuencia objetivo"
+      },
+      "dc_current": {
+        "name": "Corriente CC"
+      },
+      "dc_voltage": {
+        "name": "Tensión CC"
+      },
+      "tf": {
+        "name": "Temperatura del módulo (TF)"
+      },
+      "curve_t1s_z1": {
+        "name": "Objetivo curva climática zona 1"
+      },
+      "curve_t1s_z2": {
+        "name": "Objetivo curva climática zona 2"
+      },
+      "water_flow": {
+        "name": "Caudal de agua"
+      },
+      "odu_limit": {
+        "name": "Límite de corriente (código)"
+      },
+      "capacity": {
+        "name": "Potencia del módulo hidráulico"
+      },
+      "tsolar": {
+        "name": "Panel solar (Tsolar)"
+      },
+      "lim_cool_max": {
+        "name": "Límite refrigeración – agua máx. zona 1"
+      },
+      "lim_cool_min": {
+        "name": "Límite refrigeración – agua mín. zona 1"
+      },
+      "lim_heat_max": {
+        "name": "Límite calefacción – agua máx. zona 1"
+      },
+      "lim_heat_min": {
+        "name": "Límite calefacción – agua mín. zona 1"
+      },
+      "lim_room_max": {
+        "name": "Límite estancia – máx."
+      },
+      "lim_room_min": {
+        "name": "Límite estancia – mín."
+      },
+      "lim_dhw_max": {
+        "name": "Límite ACS – máx."
+      },
+      "lim_dhw_min": {
+        "name": "Límite ACS – mín."
+      },
+      "dry_up": {
+        "name": "Secado de suelo – días de subida"
+      },
+      "dry_peak_days": {
+        "name": "Secado de suelo – días en máximo"
+      },
+      "dry_down": {
+        "name": "Secado de suelo – días de bajada"
+      },
+      "dry_peak": {
+        "name": "Secado de suelo – temperatura máxima"
+      },
+      "t_arsth": {
+        "name": "Precalentamiento de suelo – duración"
+      },
+      "preheat_t1s": {
+        "name": "Precalentamiento de suelo – temperatura del agua"
+      },
+      "error": {
+        "name": "Error actual",
+        "state": {
+          "none": "Sin error",
+          "e0": "E0 Fallo de caudal de agua (E8 3×)",
+          "e1": "E1 Pérdida de fase / N y L invertidos",
+          "e2": "E2 Comunicación controlador – módulo hidráulico",
+          "e3": "E3 Sensor de salida de agua T1",
+          "e4": "E4 Sensor del depósito ACS T5",
+          "e5": "E5 Sensor del condensador T3",
+          "e6": "E6 Sensor de temperatura exterior T4",
+          "e7": "E7 Sensor del depósito de inercia arriba Tbt1",
+          "e8": "E8 Fallo de caudal de agua",
+          "e9": "E9 Sensor de aspiración Th",
+          "ea": "EA Sensor de descarga Tp",
+          "eb": "Eb Sensor del panel solar Tsolar",
+          "ec": "Ec Sensor del depósito de inercia abajo Tbt2",
+          "ed": "Ed Sensor de entrada de agua Tw_in",
+          "ee": "EE EEPROM del módulo hidráulico",
+          "p0": "P0 Protección de baja presión",
+          "p1": "P1 Protección de alta presión",
+          "p3": "P3 Sobrecorriente del compresor",
+          "p4": "P4 Alta temperatura de descarga",
+          "p5": "P5 Diferencia Tw_out – Tw_in demasiado grande",
+          "p6": "P6 Protección del módulo inverter",
+          "pb": "Pb Protección antihielo",
+          "pd": "Pd Alta temperatura del refrigerante a la salida del condensador",
+          "pp": "PP Diferencia anómala Tw_out – Tw_in",
+          "h0": "H0 Comunicación módulo hidráulico – placa principal",
+          "h1": "H1 Comunicación inverter – placa principal",
+          "h2": "H2 Sensor de refrigerante líquido T2",
+          "h3": "H3 Sensor de refrigerante gas T2B",
+          "h4": "H4 P6 tres veces (L0/L1)",
+          "h5": "H5 Sensor de temperatura ambiente Ta",
+          "h6": "H6 Fallo del ventilador CC",
+          "h7": "H7 Protección de tensión",
+          "h8": "H8 Sensor de presión",
+          "h9": "H9 Sensor de agua zona 2 Tw2",
+          "ha": "HA Sensor de salida de agua Tw_out",
+          "hb": "Hb PP tres veces y Tw_out < 7 °C",
+          "hd": "Hd Comunicación entre módulos hidráulicos (cascada)",
+          "he": "HE Comunicación placa principal – termostato",
+          "hf": "HF EEPROM del módulo inverter",
+          "hh": "HH H6 10× en 2 horas",
+          "hp": "HP Baja presión (Pe<0,6) 3× por hora",
+          "c7": "C7 Sobrecalentamiento del módulo inverter",
+          "bh": "bH Fallo de la placa PED",
+          "f1": "F1 Baja tensión del bus CC",
+          "l0": "L0 Protección del módulo",
+          "l1": "L1 Baja tensión del bus CC",
+          "l2": "L2 Alta tensión del bus CC",
+          "l4": "L4 Fallo MCE",
+          "l5": "L5 Protección de velocidad cero",
+          "l7": "L7 Error de secuencia de fases",
+          "l8": "L8 Diferencia de velocidad > 15 Hz (reloj)",
+          "l9": "L9 Diferencia entre velocidad real y objetivo > 15 Hz",
+          "unknown": "Código desconocido"
+        }
+      },
+      "error_hist1": {
+        "name": "Error – historial 1",
+        "state": {
+          "none": "Sin error",
+          "e0": "E0 Fallo de caudal de agua (E8 3×)",
+          "e1": "E1 Pérdida de fase / N y L invertidos",
+          "e2": "E2 Comunicación controlador – módulo hidráulico",
+          "e3": "E3 Sensor de salida de agua T1",
+          "e4": "E4 Sensor del depósito ACS T5",
+          "e5": "E5 Sensor del condensador T3",
+          "e6": "E6 Sensor de temperatura exterior T4",
+          "e7": "E7 Sensor del depósito de inercia arriba Tbt1",
+          "e8": "E8 Fallo de caudal de agua",
+          "e9": "E9 Sensor de aspiración Th",
+          "ea": "EA Sensor de descarga Tp",
+          "eb": "Eb Sensor del panel solar Tsolar",
+          "ec": "Ec Sensor del depósito de inercia abajo Tbt2",
+          "ed": "Ed Sensor de entrada de agua Tw_in",
+          "ee": "EE EEPROM del módulo hidráulico",
+          "p0": "P0 Protección de baja presión",
+          "p1": "P1 Protección de alta presión",
+          "p3": "P3 Sobrecorriente del compresor",
+          "p4": "P4 Alta temperatura de descarga",
+          "p5": "P5 Diferencia Tw_out – Tw_in demasiado grande",
+          "p6": "P6 Protección del módulo inverter",
+          "pb": "Pb Protección antihielo",
+          "pd": "Pd Alta temperatura del refrigerante a la salida del condensador",
+          "pp": "PP Diferencia anómala Tw_out – Tw_in",
+          "h0": "H0 Comunicación módulo hidráulico – placa principal",
+          "h1": "H1 Comunicación inverter – placa principal",
+          "h2": "H2 Sensor de refrigerante líquido T2",
+          "h3": "H3 Sensor de refrigerante gas T2B",
+          "h4": "H4 P6 tres veces (L0/L1)",
+          "h5": "H5 Sensor de temperatura ambiente Ta",
+          "h6": "H6 Fallo del ventilador CC",
+          "h7": "H7 Protección de tensión",
+          "h8": "H8 Sensor de presión",
+          "h9": "H9 Sensor de agua zona 2 Tw2",
+          "ha": "HA Sensor de salida de agua Tw_out",
+          "hb": "Hb PP tres veces y Tw_out < 7 °C",
+          "hd": "Hd Comunicación entre módulos hidráulicos (cascada)",
+          "he": "HE Comunicación placa principal – termostato",
+          "hf": "HF EEPROM del módulo inverter",
+          "hh": "HH H6 10× en 2 horas",
+          "hp": "HP Baja presión (Pe<0,6) 3× por hora",
+          "c7": "C7 Sobrecalentamiento del módulo inverter",
+          "bh": "bH Fallo de la placa PED",
+          "f1": "F1 Baja tensión del bus CC",
+          "l0": "L0 Protección del módulo",
+          "l1": "L1 Baja tensión del bus CC",
+          "l2": "L2 Alta tensión del bus CC",
+          "l4": "L4 Fallo MCE",
+          "l5": "L5 Protección de velocidad cero",
+          "l7": "L7 Error de secuencia de fases",
+          "l8": "L8 Diferencia de velocidad > 15 Hz (reloj)",
+          "l9": "L9 Diferencia entre velocidad real y objetivo > 15 Hz",
+          "unknown": "Código desconocido"
+        }
+      },
+      "error_hist2": {
+        "name": "Error – historial 2",
+        "state": {
+          "none": "Sin error",
+          "e0": "E0 Fallo de caudal de agua (E8 3×)",
+          "e1": "E1 Pérdida de fase / N y L invertidos",
+          "e2": "E2 Comunicación controlador – módulo hidráulico",
+          "e3": "E3 Sensor de salida de agua T1",
+          "e4": "E4 Sensor del depósito ACS T5",
+          "e5": "E5 Sensor del condensador T3",
+          "e6": "E6 Sensor de temperatura exterior T4",
+          "e7": "E7 Sensor del depósito de inercia arriba Tbt1",
+          "e8": "E8 Fallo de caudal de agua",
+          "e9": "E9 Sensor de aspiración Th",
+          "ea": "EA Sensor de descarga Tp",
+          "eb": "Eb Sensor del panel solar Tsolar",
+          "ec": "Ec Sensor del depósito de inercia abajo Tbt2",
+          "ed": "Ed Sensor de entrada de agua Tw_in",
+          "ee": "EE EEPROM del módulo hidráulico",
+          "p0": "P0 Protección de baja presión",
+          "p1": "P1 Protección de alta presión",
+          "p3": "P3 Sobrecorriente del compresor",
+          "p4": "P4 Alta temperatura de descarga",
+          "p5": "P5 Diferencia Tw_out – Tw_in demasiado grande",
+          "p6": "P6 Protección del módulo inverter",
+          "pb": "Pb Protección antihielo",
+          "pd": "Pd Alta temperatura del refrigerante a la salida del condensador",
+          "pp": "PP Diferencia anómala Tw_out – Tw_in",
+          "h0": "H0 Comunicación módulo hidráulico – placa principal",
+          "h1": "H1 Comunicación inverter – placa principal",
+          "h2": "H2 Sensor de refrigerante líquido T2",
+          "h3": "H3 Sensor de refrigerante gas T2B",
+          "h4": "H4 P6 tres veces (L0/L1)",
+          "h5": "H5 Sensor de temperatura ambiente Ta",
+          "h6": "H6 Fallo del ventilador CC",
+          "h7": "H7 Protección de tensión",
+          "h8": "H8 Sensor de presión",
+          "h9": "H9 Sensor de agua zona 2 Tw2",
+          "ha": "HA Sensor de salida de agua Tw_out",
+          "hb": "Hb PP tres veces y Tw_out < 7 °C",
+          "hd": "Hd Comunicación entre módulos hidráulicos (cascada)",
+          "he": "HE Comunicación placa principal – termostato",
+          "hf": "HF EEPROM del módulo inverter",
+          "hh": "HH H6 10× en 2 horas",
+          "hp": "HP Baja presión (Pe<0,6) 3× por hora",
+          "c7": "C7 Sobrecalentamiento del módulo inverter",
+          "bh": "bH Fallo de la placa PED",
+          "f1": "F1 Baja tensión del bus CC",
+          "l0": "L0 Protección del módulo",
+          "l1": "L1 Baja tensión del bus CC",
+          "l2": "L2 Alta tensión del bus CC",
+          "l4": "L4 Fallo MCE",
+          "l5": "L5 Protección de velocidad cero",
+          "l7": "L7 Error de secuencia de fases",
+          "l8": "L8 Diferencia de velocidad > 15 Hz (reloj)",
+          "l9": "L9 Diferencia entre velocidad real y objetivo > 15 Hz",
+          "unknown": "Código desconocido"
+        }
+      },
+      "error_hist3": {
+        "name": "Error – historial 3",
+        "state": {
+          "none": "Sin error",
+          "e0": "E0 Fallo de caudal de agua (E8 3×)",
+          "e1": "E1 Pérdida de fase / N y L invertidos",
+          "e2": "E2 Comunicación controlador – módulo hidráulico",
+          "e3": "E3 Sensor de salida de agua T1",
+          "e4": "E4 Sensor del depósito ACS T5",
+          "e5": "E5 Sensor del condensador T3",
+          "e6": "E6 Sensor de temperatura exterior T4",
+          "e7": "E7 Sensor del depósito de inercia arriba Tbt1",
+          "e8": "E8 Fallo de caudal de agua",
+          "e9": "E9 Sensor de aspiración Th",
+          "ea": "EA Sensor de descarga Tp",
+          "eb": "Eb Sensor del panel solar Tsolar",
+          "ec": "Ec Sensor del depósito de inercia abajo Tbt2",
+          "ed": "Ed Sensor de entrada de agua Tw_in",
+          "ee": "EE EEPROM del módulo hidráulico",
+          "p0": "P0 Protección de baja presión",
+          "p1": "P1 Protección de alta presión",
+          "p3": "P3 Sobrecorriente del compresor",
+          "p4": "P4 Alta temperatura de descarga",
+          "p5": "P5 Diferencia Tw_out – Tw_in demasiado grande",
+          "p6": "P6 Protección del módulo inverter",
+          "pb": "Pb Protección antihielo",
+          "pd": "Pd Alta temperatura del refrigerante a la salida del condensador",
+          "pp": "PP Diferencia anómala Tw_out – Tw_in",
+          "h0": "H0 Comunicación módulo hidráulico – placa principal",
+          "h1": "H1 Comunicación inverter – placa principal",
+          "h2": "H2 Sensor de refrigerante líquido T2",
+          "h3": "H3 Sensor de refrigerante gas T2B",
+          "h4": "H4 P6 tres veces (L0/L1)",
+          "h5": "H5 Sensor de temperatura ambiente Ta",
+          "h6": "H6 Fallo del ventilador CC",
+          "h7": "H7 Protección de tensión",
+          "h8": "H8 Sensor de presión",
+          "h9": "H9 Sensor de agua zona 2 Tw2",
+          "ha": "HA Sensor de salida de agua Tw_out",
+          "hb": "Hb PP tres veces y Tw_out < 7 °C",
+          "hd": "Hd Comunicación entre módulos hidráulicos (cascada)",
+          "he": "HE Comunicación placa principal – termostato",
+          "hf": "HF EEPROM del módulo inverter",
+          "hh": "HH H6 10× en 2 horas",
+          "hp": "HP Baja presión (Pe<0,6) 3× por hora",
+          "c7": "C7 Sobrecalentamiento del módulo inverter",
+          "bh": "bH Fallo de la placa PED",
+          "f1": "F1 Baja tensión del bus CC",
+          "l0": "L0 Protección del módulo",
+          "l1": "L1 Baja tensión del bus CC",
+          "l2": "L2 Alta tensión del bus CC",
+          "l4": "L4 Fallo MCE",
+          "l5": "L5 Protección de velocidad cero",
+          "l7": "L7 Error de secuencia de fases",
+          "l8": "L8 Diferencia de velocidad > 15 Hz (reloj)",
+          "l9": "L9 Diferencia entre velocidad real y objetivo > 15 Hz",
+          "unknown": "Código desconocido"
+        }
+      },
+      "energy_in": {
+        "name": "Electricidad consumida"
+      },
+      "energy_out": {
+        "name": "Calor producido"
+      },
+      "cop_total": {
+        "name": "COP total"
+      },
+      "ac_indoor_temperature": {
+        "name": "Temperatura ambiente"
+      },
+      "ac_pmv": {
+        "name": "Confort térmico (PMV)"
+      },
+      "ac_indoor_fan_speed": {
+        "name": "Velocidad del ventilador interior"
+      },
+      "ac_indoor_coil_temperature": {
+        "name": "Temperatura del intercambiador interior"
+      },
+      "ac_humidity": {
+        "name": "Humedad ambiente"
+      },
+      "ac_outdoor_temperature": {
+        "name": "Temperatura exterior"
+      },
+      "ac_compressor_frequency": {
+        "name": "Frecuencia del compresor"
+      },
+      "ac_compressor_current": {
+        "name": "Corriente del compresor"
+      },
+      "ac_outdoor_coil_temperature": {
+        "name": "Temperatura del intercambiador exterior"
+      },
+      "ac_discharge_temperature": {
+        "name": "Temperatura de descarga del compresor"
+      },
+      "ac_outdoor_fan_speed": {
+        "name": "Velocidad del ventilador exterior"
+      },
+      "ac_energy_total": {
+        "name": "Electricidad consumida"
+      },
+      "emission_z1_heat": {
+        "name": "Tipo de emisor – zona 1 calefacción",
+        "state": {
+          "fan_coil": "fancoil",
+          "radiators": "radiadores",
+          "underfloor": "suelo radiante",
+          "other": "otro"
+        }
+      },
+      "emission_z2_heat": {
+        "name": "Tipo de emisor – zona 2 calefacción",
+        "state": {
+          "fan_coil": "fancoil",
+          "radiators": "radiadores",
+          "underfloor": "suelo radiante",
+          "other": "otro"
+        }
+      },
+      "emission_z1_cool": {
+        "name": "Tipo de emisor – zona 1 refrigeración",
+        "state": {
+          "fan_coil": "fancoil",
+          "radiators": "radiadores",
+          "underfloor": "suelo radiante",
+          "other": "otro"
+        }
+      },
+      "emission_z2_cool": {
+        "name": "Tipo de emisor – zona 2 refrigeración",
+        "state": {
+          "fan_coil": "fancoil",
+          "radiators": "radiadores",
+          "underfloor": "suelo radiante",
+          "other": "otro"
+        }
+      }
+    },
+    "binary_sensor": {
+      "ibh1": {
+        "name": "Resistencia eléctrica IBH1"
+      },
+      "ibh2": {
+        "name": "Resistencia eléctrica IBH2"
+      },
+      "pump_i": {
+        "name": "Bomba de circulación interna"
+      },
+      "sv1": {
+        "name": "Válvula de 3 vías SV1 (ACS)"
+      },
+      "sv2": {
+        "name": "Válvula de 3 vías SV2"
+      },
+      "pump_o": {
+        "name": "Bomba de circulación externa"
+      },
+      "pump_c": {
+        "name": "Bomba zona 2 (pump_C)"
+      },
+      "sv3": {
+        "name": "Válvula de 3 vías SV3"
+      },
+      "crankcase": {
+        "name": "Calentador del cárter"
+      },
+      "pump_s": {
+        "name": "Bomba solar (pump_S)"
+      },
+      "alarm": {
+        "name": "Alarma"
+      },
+      "ahs": {
+        "name": "Fuente de calor adicional (AHS)"
+      },
+      "defrost": {
+        "name": "Desescarche"
+      },
+      "anti_freeze": {
+        "name": "Protección antihielo"
+      },
+      "oil_return": {
+        "name": "Retorno de aceite"
+      },
+      "remote_onoff": {
+        "name": "Encendido/apagado remoto activo"
+      },
+      "thermostat_heat": {
+        "name": "Termostato – demanda de calefacción (HT)"
+      },
+      "thermostat_cool": {
+        "name": "Termostato – demanda de refrigeración (CL)"
+      },
+      "solar_input": {
+        "name": "Entrada solar"
+      },
+      "dhw_anti_freeze": {
+        "name": "Protección antihielo del depósito ACS"
+      },
+      "sg_signal": {
+        "name": "Señal smart grid (SG)"
+      },
+      "euv_signal": {
+        "name": "Electricidad barata (EUV)"
+      },
+      "holiday_away": {
+        "name": "Vacaciones – fuera"
+      },
+      "holiday_home": {
+        "name": "Vacaciones – en casa"
+      },
+      "compressor_running": {
+        "name": "Compresor en marcha"
+      },
+      "ac_self_clean": {
+        "name": "Autolimpieza"
+      },
+      "ac_filter_full": {
+        "name": "Limpiar el filtro"
+      },
+      "tbh": {
+        "name": "Resistencia del depósito TBH"
+      },
+      "pump_d": {
+        "name": "Recirculación ACS (pump_D)"
+      },
+      "p1_dhw": {
+        "name": "Función: agua caliente"
+      },
+      "p1_tbh": {
+        "name": "Función: resistencia del depósito TBH"
+      },
+      "p1_disinfect": {
+        "name": "Función: desinfección"
+      },
+      "p1_pump_d": {
+        "name": "Función: bomba de recirculación ACS"
+      },
+      "p1_dhw_priority_fn": {
+        "name": "Función: prioridad ACS"
+      },
+      "p1_pump_d_disinfect": {
+        "name": "Función: recirculación durante la desinfección"
+      },
+      "p1_cooling": {
+        "name": "Función: refrigeración"
+      },
+      "p1_heating": {
+        "name": "Función: calefacción"
+      },
+      "p1_pump_i_silent": {
+        "name": "Función: bomba de circulación silenciosa"
+      },
+      "p1_room_temp": {
+        "name": "Función: control por temperatura ambiente"
+      },
+      "p1_room_thermostat": {
+        "name": "Función: termostato de ambiente"
+      },
+      "p1_thermostat_mode": {
+        "name": "Función: el termostato cambia el modo"
+      },
+      "p1_thermostat_double": {
+        "name": "Función: termostato 2 zonas"
+      },
+      "p1_dhw_priority": {
+        "name": "Función: prioridad ACS activada"
+      },
+      "p2_m1m2": {
+        "name": "Función: M1M2 / AHS encendido-apagado"
+      },
+      "p2_tbt1": {
+        "name": "Función: sensor del depósito de inercia Tbt1"
+      },
+      "p2_fpipe": {
+        "name": "Función: tubería ≥ 10 m"
+      },
+      "p2_smart_grid": {
+        "name": "Función: smart grid"
+      },
+      "p2_double_zone": {
+        "name": "Función: dos zonas"
+      },
+      "p2_tbt": {
+        "name": "Función: depósito de inercia"
+      }
+    },
+    "number": {
+      "zone1_set": {
+        "name": "Zona 1 – consigna de agua"
+      },
+      "zone2_set": {
+        "name": "Zona 2 – consigna de agua"
+      },
+      "dhw_set": {
+        "name": "Agua caliente – consigna"
+      },
+      "room_set": {
+        "name": "Estancia – consigna"
+      },
+      "curve_z1_no": {
+        "name": "Curva climática zona 1 (1–9)"
+      },
+      "curve_z2_no": {
+        "name": "Curva climática zona 2 (1–9)"
+      },
+      "sg_max": {
+        "name": "Smart grid – máx. horas en tarifa alta"
+      },
+      "p_dt5_on": {
+        "name": "ACS – histéresis de arranque (dT5_ON)"
+      },
+      "p_dt1s5": {
+        "name": "ACS – diferencia agua/depósito (dT1S5)"
+      },
+      "p_t4dhwmax": {
+        "name": "ACS – temperatura exterior máx."
+      },
+      "p_t4dhwmin": {
+        "name": "ACS – temperatura exterior mín."
+      },
+      "p_t_dhwhp_max": {
+        "name": "ACS – tiempo máx. de calentamiento con bomba de calor"
+      },
+      "p_t_dhwhp_restrict": {
+        "name": "ACS – tiempo de calefacción entre ciclos de ACS"
+      },
+      "p_pump_d_time": {
+        "name": "Recirculación ACS – tiempo de funcionamiento"
+      },
+      "p_t_tbh_delay": {
+        "name": "TBH – retardo de encendido"
+      },
+      "p_dt5_tbh_off": {
+        "name": "TBH – diferencia de apagado (dT5_TBH_OFF)"
+      },
+      "p_t4_tbh_on": {
+        "name": "TBH – temperatura exterior máx."
+      },
+      "p_tbh_power": {
+        "name": "TBH – potencia"
+      },
+      "p_t5s_di": {
+        "name": "Desinfección – temperatura"
+      },
+      "p_t_di_max": {
+        "name": "Desinfección – duración máx."
+      },
+      "p_t_di_hightemp": {
+        "name": "Desinfección – tiempo de mantenimiento"
+      },
+      "p_dt1sc": {
+        "name": "Refrigeración – histéresis del agua (dT1SC)"
+      },
+      "p_dtsc": {
+        "name": "Refrigeración – histéresis de la estancia (dTSC)"
+      },
+      "p_t4cmax": {
+        "name": "Refrigeración – temperatura exterior máx."
+      },
+      "p_t4cmin": {
+        "name": "Refrigeración – temperatura exterior mín."
+      },
+      "p_dt1sh": {
+        "name": "Calefacción – histéresis del agua (dT1SH)"
+      },
+      "p_dtsh": {
+        "name": "Calefacción – histéresis de la estancia (dTSH)"
+      },
+      "p_t4hmax": {
+        "name": "Calefacción – temperatura exterior máx."
+      },
+      "p_t4hmin": {
+        "name": "Calefacción – temperatura exterior mín."
+      },
+      "p_t4autocmin": {
+        "name": "Auto – exterior mín. para refrigeración"
+      },
+      "p_t4autohmax": {
+        "name": "Auto – exterior máx. para calefacción"
+      },
+      "p_t1seth1": {
+        "name": "Curva de calefacción propia – agua punto 1"
+      },
+      "p_t4h1": {
+        "name": "Curva de calefacción propia – exterior punto 1"
+      },
+      "p_t1seth2": {
+        "name": "Curva de calefacción propia – agua punto 2"
+      },
+      "p_t4h2": {
+        "name": "Curva de calefacción propia – exterior punto 2"
+      },
+      "p_t1setc1": {
+        "name": "Curva de refrigeración propia – agua punto 1"
+      },
+      "p_t1setc2": {
+        "name": "Curva de refrigeración propia – agua punto 2"
+      },
+      "p_t4c2": {
+        "name": "Curva de refrigeración propia – exterior punto 2"
+      },
+      "p_t4_ibh_on": {
+        "name": "IBH – temperatura exterior máx. para encender"
+      },
+      "p_dt1_ibh_on": {
+        "name": "IBH – diferencia de agua para encender"
+      },
+      "p_t_ibh_delay": {
+        "name": "IBH – retardo de encendido"
+      },
+      "p_ibh1_power": {
+        "name": "IBH1 – potencia"
+      },
+      "p_ibh2_power": {
+        "name": "IBH2 – potencia"
+      },
+      "p_t4_ahs_on": {
+        "name": "AHS – temperatura exterior máx. para encender"
+      },
+      "p_dt1_ahs_on": {
+        "name": "AHS – diferencia de agua para encender"
+      },
+      "p_t_ahs_delay": {
+        "name": "AHS – retardo de encendido"
+      },
+      "p_holiday_heat": {
+        "name": "Vacaciones – temperatura del agua de calefacción"
+      },
+      "p_holiday_dhw": {
+        "name": "Vacaciones – temperatura ACS"
+      },
+      "p_power_limit": {
+        "name": "Limitación de potencia (tipo 0–8)"
+      },
+      "ac_fan_percent": {
+        "name": "Ventilador"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Modo",
+        "state": {
+          "auto": "auto",
+          "cool": "refrigeración",
+          "heat": "calefacción"
+        }
+      },
+      "silent_level": {
+        "name": "Nivel del modo silencioso",
+        "state": {
+          "level_1": "nivel 1",
+          "level_2": "nivel 2"
+        }
+      },
+      "forced_dhw": {
+        "name": "ACS forzada",
+        "state": {
+          "none": "sin forzar",
+          "force_on": "forzar encendido",
+          "force_off": "forzar apagado"
+        }
+      },
+      "forced_tbh": {
+        "name": "Resistencia del depósito forzada (TBH)",
+        "state": {
+          "none": "sin forzar",
+          "force_on": "forzar encendido",
+          "force_off": "forzar apagado"
+        }
+      },
+      "forced_ibh": {
+        "name": "Resistencia de apoyo forzada (IBH)",
+        "state": {
+          "none": "sin forzar",
+          "force_on": "forzar encendido",
+          "force_off": "forzar apagado"
+        }
+      },
+      "ac_mode": {
+        "name": "Modo de las unidades",
+        "state": {
+          "off": "apagado",
+          "heat": "calefacción",
+          "cool": "refrigeración",
+          "dry": "deshumidificación",
+          "fan_only": "ventilador",
+          "mixed": "mixto"
+        }
+      },
+      "ac_ud_angle": {
+        "name": "Lama arriba–abajo",
+        "state": {
+          "free": "libre",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      },
+      "ac_lr_angle": {
+        "name": "Lama izquierda–derecha",
+        "state": {
+          "free": "libre",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      }
+    },
+    "switch": {
+      "zone1_power": {
+        "name": "Zona 1 – calefacción/refrigeración"
+      },
+      "zone2_power": {
+        "name": "Zona 2 – calefacción/refrigeración"
+      },
+      "dhw_power": {
+        "name": "Calentamiento de agua caliente"
+      },
+      "room_power": {
+        "name": "Zonas por temperatura ambiente"
+      },
+      "eco": {
+        "name": "Modo ECO"
+      },
+      "silent": {
+        "name": "Modo silencioso"
+      },
+      "disinfect": {
+        "name": "Desinfección (antilegionela)"
+      },
+      "curve_z1": {
+        "name": "Curva climática zona 1"
+      },
+      "curve_z2": {
+        "name": "Curva climática zona 2"
+      },
+      "ac_dry": {
+        "name": "Secar el intercambiador tras apagar"
+      },
+      "ac_frost_protect": {
+        "name": "Protección contra heladas 8 °C"
+      },
+      "ac_anion": {
+        "name": "Ionizador"
+      },
+      "ac_display": {
+        "name": "Pantalla"
+      },
+      "ac_beep": {
+        "name": "Pitido al controlar"
+      },
+      "ac_prevent_straight_wind": {
+        "name": "Flujo de aire lejos de las personas"
+      }
+    },
+    "climate": {
+      "zone1_climate": {
+        "name": "Zona 1"
+      },
+      "ac_climate": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "silent": "silencioso",
+              "low": "bajo",
+              "medium": "medio",
+              "high": "alto",
+              "auto": "auto"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "pump_d_start": {
+        "name": "Iniciar recirculación ACS"
+      },
+      "ac_self_clean_start": {
+        "name": "Iniciar autolimpieza"
+      }
+    }
+  },
+  "device": {
+    "outdoor_unit": {
+      "name": "Unidad exterior {unit}"
+    }
+  }
+}

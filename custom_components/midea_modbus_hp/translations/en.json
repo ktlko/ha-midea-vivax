@@ -1,0 +1,1018 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Midea / Vivax",
+        "menu_options": {
+          "heat_pump": "Heat pump (Modbus via EW11)",
+          "air_conditioner": "Air conditioner (Wi-Fi)"
+        }
+      },
+      "heat_pump": {
+        "title": "Heat pump (Modbus TCP)",
+        "description": "Modbus TCP gateway (e.g. Elfin EW11) wired to H1/H2 of the heat pump wired controller.",
+        "data": {
+          "host": "Gateway IP address",
+          "port": "Port",
+          "device_id": "Modbus address (HMI ADDRESS FOR BMS)",
+          "name": "Name"
+        }
+      },
+      "air_conditioner": {
+        "title": "Air conditioner (Wi-Fi)",
+        "menu_options": {
+          "ac_cloud": "Sign in to the Midea cloud (MSmartHome, NetHome Plus…)",
+          "ac_lan": "Use a unit paired in Midea AC LAN"
+        }
+      },
+      "ac_select": {
+        "title": "Choose air conditioner",
+        "description": "Units found on the network: {found}. If the IP address is empty, look it up in your router (DHCP). Give indoor units sharing one outdoor unit (multi-split) the same outdoor unit name.",
+        "data": {
+          "unit": "Unit",
+          "device_id": "Unit ID (appliance ID from the app)",
+          "host": "IP address of the unit",
+          "name": "Name",
+          "outdoor_unit": "Shared outdoor unit (empty = own)"
+        }
+      },
+      "ac_cloud": {
+        "title": "Midea cloud",
+        "description": "The air conditioner needs a token and key for local control. The integration downloads them once from the cloud of the app the unit is registered in (MSmartHome = SmartHome). The password is not stored. Without your own account, tick the default account – you then enter the unit ID manually.",
+        "data": {
+          "cloud": "App / cloud",
+          "username": "Account e-mail",
+          "password": "Password",
+          "default_account": "Use the default account (no sign-in)"
+        }
+      },
+      "ac_lan": {
+        "title": "Air conditioner from Midea AC LAN",
+        "description": "Token and key are taken from the Midea AC LAN integration. Give indoor units sharing one outdoor unit (multi-split) the same outdoor unit name.",
+        "data": {
+          "unit": "Unit",
+          "name": "Name",
+          "outdoor_unit": "Shared outdoor unit (empty = own)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot read from the heat pump. Check IP, port, wiring (A+ to H2, B- to H1) and 9600 8N1.",
+      "cannot_connect_ac": "The air conditioner does not answer (IP address, token/key).",
+      "no_devices_found": "No air conditioner found on the account.",
+      "all_configured": "All air conditioners found are already added.",
+      "missing_credentials": "Enter e-mail and password, or tick the default account.",
+      "cloud_login_failed": "Signing in to the Midea cloud failed, or the cloud does not know this unit. Check the app, e-mail and password.",
+      "missing_unit": "Choose a unit (or enter its numeric ID) and enter its IP address.",
+      "no_token": "The cloud returned no token for this unit. Check the unit ID and the app."
+    },
+    "abort": {
+      "already_configured": "This device is already configured.",
+      "no_air_conditioners": "No further air conditioners paired in Midea AC LAN."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Air conditioner",
+        "data": {
+          "host": "IP address",
+          "outdoor_unit": "Shared outdoor unit (empty = own)"
+        }
+      }
+    },
+    "abort": {
+      "not_supported": "The heat pump has no options."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "comp_freq": {
+        "name": "Compressor frequency"
+      },
+      "unit_mode": {
+        "name": "Current unit mode",
+        "state": {
+          "off": "off",
+          "cool": "cooling",
+          "heat": "heating",
+          "other": "other"
+        }
+      },
+      "fan_speed": {
+        "name": "Fan speed"
+      },
+      "exv": {
+        "name": "Expansion valve (opening)"
+      },
+      "tw_in": {
+        "name": "Water inlet (Tw_in)"
+      },
+      "tw_out": {
+        "name": "Water outlet (Tw_out)"
+      },
+      "t3": {
+        "name": "Condenser (T3)"
+      },
+      "t4": {
+        "name": "Outdoor temperature (T4)"
+      },
+      "tp": {
+        "name": "Compressor discharge (Tp)"
+      },
+      "th": {
+        "name": "Compressor suction (Th)"
+      },
+      "t1": {
+        "name": "Total water outlet (T1)"
+      },
+      "t1b": {
+        "name": "Zone 2 water (T1B)"
+      },
+      "t2": {
+        "name": "Refrigerant liquid (T2)"
+      },
+      "t2b": {
+        "name": "Refrigerant gas (T2B)"
+      },
+      "ta": {
+        "name": "Room temperature (Ta)"
+      },
+      "t5": {
+        "name": "DHW tank (T5)"
+      },
+      "p_high": {
+        "name": "High pressure"
+      },
+      "p_low": {
+        "name": "Low pressure"
+      },
+      "odu_current": {
+        "name": "Outdoor unit current"
+      },
+      "odu_voltage": {
+        "name": "Outdoor unit voltage"
+      },
+      "tbt1": {
+        "name": "Buffer tank top (Tbt1)"
+      },
+      "tbt2": {
+        "name": "Buffer tank bottom (Tbt2)"
+      },
+      "comp_hours": {
+        "name": "Compressor operating time"
+      },
+      "unit_capacity": {
+        "name": "Unit capacity class"
+      },
+      "idu_sw": {
+        "name": "Hydro module software"
+      },
+      "hmi_sw": {
+        "name": "Controller software"
+      },
+      "target_freq": {
+        "name": "Target frequency"
+      },
+      "dc_current": {
+        "name": "DC current"
+      },
+      "dc_voltage": {
+        "name": "DC voltage"
+      },
+      "tf": {
+        "name": "Module temperature (TF)"
+      },
+      "curve_t1s_z1": {
+        "name": "Weather curve target zone 1"
+      },
+      "curve_t1s_z2": {
+        "name": "Weather curve target zone 2"
+      },
+      "water_flow": {
+        "name": "Water flow"
+      },
+      "odu_limit": {
+        "name": "Current limit (code)"
+      },
+      "capacity": {
+        "name": "Hydro module output"
+      },
+      "tsolar": {
+        "name": "Solar panel (Tsolar)"
+      },
+      "lim_cool_max": {
+        "name": "Cooling limit – max. water zone 1"
+      },
+      "lim_cool_min": {
+        "name": "Cooling limit – min. water zone 1"
+      },
+      "lim_heat_max": {
+        "name": "Heating limit – max. water zone 1"
+      },
+      "lim_heat_min": {
+        "name": "Heating limit – min. water zone 1"
+      },
+      "lim_room_max": {
+        "name": "Room limit – max."
+      },
+      "lim_room_min": {
+        "name": "Room limit – min."
+      },
+      "lim_dhw_max": {
+        "name": "Hot water limit – max."
+      },
+      "lim_dhw_min": {
+        "name": "Hot water limit – min."
+      },
+      "dry_up": {
+        "name": "Floor drying – ramp-up days"
+      },
+      "dry_peak_days": {
+        "name": "Floor drying – days at peak"
+      },
+      "dry_down": {
+        "name": "Floor drying – ramp-down days"
+      },
+      "dry_peak": {
+        "name": "Floor drying – peak temperature"
+      },
+      "t_arsth": {
+        "name": "Floor preheating – duration"
+      },
+      "preheat_t1s": {
+        "name": "Floor preheating – water temperature"
+      },
+      "error": {
+        "name": "Current error",
+        "state": {
+          "none": "No error",
+          "e0": "E0 Water flow failure (E8 3×)",
+          "e1": "E1 Phase loss / N and L swapped",
+          "e2": "E2 Communication controller – hydro module",
+          "e3": "E3 Water outlet sensor T1",
+          "e4": "E4 DHW tank sensor T5",
+          "e5": "E5 Condenser sensor T3",
+          "e6": "E6 Outdoor temperature sensor T4",
+          "e7": "E7 Buffer tank top sensor Tbt1",
+          "e8": "E8 Water flow failure",
+          "e9": "E9 Suction sensor Th",
+          "ea": "EA Discharge sensor Tp",
+          "eb": "Eb Solar panel sensor Tsolar",
+          "ec": "Ec Buffer tank bottom sensor Tbt2",
+          "ed": "Ed Water inlet sensor Tw_in",
+          "ee": "EE Hydro module EEPROM",
+          "p0": "P0 Low pressure protection",
+          "p1": "P1 High pressure protection",
+          "p3": "P3 Compressor overcurrent",
+          "p4": "P4 High discharge temperature",
+          "p5": "P5 Tw_out – Tw_in difference too large",
+          "p6": "P6 Inverter module protection",
+          "pb": "Pb Anti-freeze protection",
+          "pd": "Pd High refrigerant temperature at condenser outlet",
+          "pp": "PP Abnormal Tw_out – Tw_in difference",
+          "h0": "H0 Communication hydro module – main board",
+          "h1": "H1 Communication inverter – main board",
+          "h2": "H2 Refrigerant liquid sensor T2",
+          "h3": "H3 Refrigerant gas sensor T2B",
+          "h4": "H4 P6 three times (L0/L1)",
+          "h5": "H5 Room temperature sensor Ta",
+          "h6": "H6 DC fan failure",
+          "h7": "H7 Voltage protection",
+          "h8": "H8 Pressure sensor",
+          "h9": "H9 Zone 2 water sensor Tw2",
+          "ha": "HA Water outlet sensor Tw_out",
+          "hb": "Hb PP three times and Tw_out < 7 °C",
+          "hd": "Hd Communication between hydro modules (cascade)",
+          "he": "HE Communication main board – thermostat",
+          "hf": "HF Inverter module EEPROM",
+          "hh": "HH H6 10× within 2 hours",
+          "hp": "HP Low pressure (Pe<0.6) 3× per hour",
+          "c7": "C7 Inverter module overheating",
+          "bh": "bH PED board failure",
+          "f1": "F1 Low DC bus voltage",
+          "l0": "L0 Module protection",
+          "l1": "L1 Low DC bus voltage",
+          "l2": "L2 High DC bus voltage",
+          "l4": "L4 MCE failure",
+          "l5": "L5 Zero speed protection",
+          "l7": "L7 Phase sequence error",
+          "l8": "L8 Speed difference > 15 Hz (clock)",
+          "l9": "L9 Actual vs. target speed difference > 15 Hz",
+          "unknown": "Unknown code"
+        }
+      },
+      "error_hist1": {
+        "name": "Error – history 1",
+        "state": {
+          "none": "No error",
+          "e0": "E0 Water flow failure (E8 3×)",
+          "e1": "E1 Phase loss / N and L swapped",
+          "e2": "E2 Communication controller – hydro module",
+          "e3": "E3 Water outlet sensor T1",
+          "e4": "E4 DHW tank sensor T5",
+          "e5": "E5 Condenser sensor T3",
+          "e6": "E6 Outdoor temperature sensor T4",
+          "e7": "E7 Buffer tank top sensor Tbt1",
+          "e8": "E8 Water flow failure",
+          "e9": "E9 Suction sensor Th",
+          "ea": "EA Discharge sensor Tp",
+          "eb": "Eb Solar panel sensor Tsolar",
+          "ec": "Ec Buffer tank bottom sensor Tbt2",
+          "ed": "Ed Water inlet sensor Tw_in",
+          "ee": "EE Hydro module EEPROM",
+          "p0": "P0 Low pressure protection",
+          "p1": "P1 High pressure protection",
+          "p3": "P3 Compressor overcurrent",
+          "p4": "P4 High discharge temperature",
+          "p5": "P5 Tw_out – Tw_in difference too large",
+          "p6": "P6 Inverter module protection",
+          "pb": "Pb Anti-freeze protection",
+          "pd": "Pd High refrigerant temperature at condenser outlet",
+          "pp": "PP Abnormal Tw_out – Tw_in difference",
+          "h0": "H0 Communication hydro module – main board",
+          "h1": "H1 Communication inverter – main board",
+          "h2": "H2 Refrigerant liquid sensor T2",
+          "h3": "H3 Refrigerant gas sensor T2B",
+          "h4": "H4 P6 three times (L0/L1)",
+          "h5": "H5 Room temperature sensor Ta",
+          "h6": "H6 DC fan failure",
+          "h7": "H7 Voltage protection",
+          "h8": "H8 Pressure sensor",
+          "h9": "H9 Zone 2 water sensor Tw2",
+          "ha": "HA Water outlet sensor Tw_out",
+          "hb": "Hb PP three times and Tw_out < 7 °C",
+          "hd": "Hd Communication between hydro modules (cascade)",
+          "he": "HE Communication main board – thermostat",
+          "hf": "HF Inverter module EEPROM",
+          "hh": "HH H6 10× within 2 hours",
+          "hp": "HP Low pressure (Pe<0.6) 3× per hour",
+          "c7": "C7 Inverter module overheating",
+          "bh": "bH PED board failure",
+          "f1": "F1 Low DC bus voltage",
+          "l0": "L0 Module protection",
+          "l1": "L1 Low DC bus voltage",
+          "l2": "L2 High DC bus voltage",
+          "l4": "L4 MCE failure",
+          "l5": "L5 Zero speed protection",
+          "l7": "L7 Phase sequence error",
+          "l8": "L8 Speed difference > 15 Hz (clock)",
+          "l9": "L9 Actual vs. target speed difference > 15 Hz",
+          "unknown": "Unknown code"
+        }
+      },
+      "error_hist2": {
+        "name": "Error – history 2",
+        "state": {
+          "none": "No error",
+          "e0": "E0 Water flow failure (E8 3×)",
+          "e1": "E1 Phase loss / N and L swapped",
+          "e2": "E2 Communication controller – hydro module",
+          "e3": "E3 Water outlet sensor T1",
+          "e4": "E4 DHW tank sensor T5",
+          "e5": "E5 Condenser sensor T3",
+          "e6": "E6 Outdoor temperature sensor T4",
+          "e7": "E7 Buffer tank top sensor Tbt1",
+          "e8": "E8 Water flow failure",
+          "e9": "E9 Suction sensor Th",
+          "ea": "EA Discharge sensor Tp",
+          "eb": "Eb Solar panel sensor Tsolar",
+          "ec": "Ec Buffer tank bottom sensor Tbt2",
+          "ed": "Ed Water inlet sensor Tw_in",
+          "ee": "EE Hydro module EEPROM",
+          "p0": "P0 Low pressure protection",
+          "p1": "P1 High pressure protection",
+          "p3": "P3 Compressor overcurrent",
+          "p4": "P4 High discharge temperature",
+          "p5": "P5 Tw_out – Tw_in difference too large",
+          "p6": "P6 Inverter module protection",
+          "pb": "Pb Anti-freeze protection",
+          "pd": "Pd High refrigerant temperature at condenser outlet",
+          "pp": "PP Abnormal Tw_out – Tw_in difference",
+          "h0": "H0 Communication hydro module – main board",
+          "h1": "H1 Communication inverter – main board",
+          "h2": "H2 Refrigerant liquid sensor T2",
+          "h3": "H3 Refrigerant gas sensor T2B",
+          "h4": "H4 P6 three times (L0/L1)",
+          "h5": "H5 Room temperature sensor Ta",
+          "h6": "H6 DC fan failure",
+          "h7": "H7 Voltage protection",
+          "h8": "H8 Pressure sensor",
+          "h9": "H9 Zone 2 water sensor Tw2",
+          "ha": "HA Water outlet sensor Tw_out",
+          "hb": "Hb PP three times and Tw_out < 7 °C",
+          "hd": "Hd Communication between hydro modules (cascade)",
+          "he": "HE Communication main board – thermostat",
+          "hf": "HF Inverter module EEPROM",
+          "hh": "HH H6 10× within 2 hours",
+          "hp": "HP Low pressure (Pe<0.6) 3× per hour",
+          "c7": "C7 Inverter module overheating",
+          "bh": "bH PED board failure",
+          "f1": "F1 Low DC bus voltage",
+          "l0": "L0 Module protection",
+          "l1": "L1 Low DC bus voltage",
+          "l2": "L2 High DC bus voltage",
+          "l4": "L4 MCE failure",
+          "l5": "L5 Zero speed protection",
+          "l7": "L7 Phase sequence error",
+          "l8": "L8 Speed difference > 15 Hz (clock)",
+          "l9": "L9 Actual vs. target speed difference > 15 Hz",
+          "unknown": "Unknown code"
+        }
+      },
+      "error_hist3": {
+        "name": "Error – history 3",
+        "state": {
+          "none": "No error",
+          "e0": "E0 Water flow failure (E8 3×)",
+          "e1": "E1 Phase loss / N and L swapped",
+          "e2": "E2 Communication controller – hydro module",
+          "e3": "E3 Water outlet sensor T1",
+          "e4": "E4 DHW tank sensor T5",
+          "e5": "E5 Condenser sensor T3",
+          "e6": "E6 Outdoor temperature sensor T4",
+          "e7": "E7 Buffer tank top sensor Tbt1",
+          "e8": "E8 Water flow failure",
+          "e9": "E9 Suction sensor Th",
+          "ea": "EA Discharge sensor Tp",
+          "eb": "Eb Solar panel sensor Tsolar",
+          "ec": "Ec Buffer tank bottom sensor Tbt2",
+          "ed": "Ed Water inlet sensor Tw_in",
+          "ee": "EE Hydro module EEPROM",
+          "p0": "P0 Low pressure protection",
+          "p1": "P1 High pressure protection",
+          "p3": "P3 Compressor overcurrent",
+          "p4": "P4 High discharge temperature",
+          "p5": "P5 Tw_out – Tw_in difference too large",
+          "p6": "P6 Inverter module protection",
+          "pb": "Pb Anti-freeze protection",
+          "pd": "Pd High refrigerant temperature at condenser outlet",
+          "pp": "PP Abnormal Tw_out – Tw_in difference",
+          "h0": "H0 Communication hydro module – main board",
+          "h1": "H1 Communication inverter – main board",
+          "h2": "H2 Refrigerant liquid sensor T2",
+          "h3": "H3 Refrigerant gas sensor T2B",
+          "h4": "H4 P6 three times (L0/L1)",
+          "h5": "H5 Room temperature sensor Ta",
+          "h6": "H6 DC fan failure",
+          "h7": "H7 Voltage protection",
+          "h8": "H8 Pressure sensor",
+          "h9": "H9 Zone 2 water sensor Tw2",
+          "ha": "HA Water outlet sensor Tw_out",
+          "hb": "Hb PP three times and Tw_out < 7 °C",
+          "hd": "Hd Communication between hydro modules (cascade)",
+          "he": "HE Communication main board – thermostat",
+          "hf": "HF Inverter module EEPROM",
+          "hh": "HH H6 10× within 2 hours",
+          "hp": "HP Low pressure (Pe<0.6) 3× per hour",
+          "c7": "C7 Inverter module overheating",
+          "bh": "bH PED board failure",
+          "f1": "F1 Low DC bus voltage",
+          "l0": "L0 Module protection",
+          "l1": "L1 Low DC bus voltage",
+          "l2": "L2 High DC bus voltage",
+          "l4": "L4 MCE failure",
+          "l5": "L5 Zero speed protection",
+          "l7": "L7 Phase sequence error",
+          "l8": "L8 Speed difference > 15 Hz (clock)",
+          "l9": "L9 Actual vs. target speed difference > 15 Hz",
+          "unknown": "Unknown code"
+        }
+      },
+      "energy_in": {
+        "name": "Electricity consumed"
+      },
+      "energy_out": {
+        "name": "Heat produced"
+      },
+      "cop_total": {
+        "name": "COP total"
+      },
+      "ac_indoor_temperature": {
+        "name": "Room temperature"
+      },
+      "ac_pmv": {
+        "name": "Thermal comfort (PMV)"
+      },
+      "ac_indoor_fan_speed": {
+        "name": "Indoor fan speed"
+      },
+      "ac_indoor_coil_temperature": {
+        "name": "Indoor coil temperature"
+      },
+      "ac_humidity": {
+        "name": "Room humidity"
+      },
+      "ac_outdoor_temperature": {
+        "name": "Outdoor temperature"
+      },
+      "ac_compressor_frequency": {
+        "name": "Compressor frequency"
+      },
+      "ac_compressor_current": {
+        "name": "Compressor current"
+      },
+      "ac_outdoor_coil_temperature": {
+        "name": "Outdoor coil temperature"
+      },
+      "ac_discharge_temperature": {
+        "name": "Compressor discharge temperature"
+      },
+      "ac_outdoor_fan_speed": {
+        "name": "Outdoor fan speed"
+      },
+      "ac_energy_total": {
+        "name": "Electricity consumed"
+      },
+      "emission_z1_heat": {
+        "name": "Emitter type – zone 1 heating",
+        "state": {
+          "fan_coil": "fan coil",
+          "radiators": "radiators",
+          "underfloor": "underfloor",
+          "other": "other"
+        }
+      },
+      "emission_z2_heat": {
+        "name": "Emitter type – zone 2 heating",
+        "state": {
+          "fan_coil": "fan coil",
+          "radiators": "radiators",
+          "underfloor": "underfloor",
+          "other": "other"
+        }
+      },
+      "emission_z1_cool": {
+        "name": "Emitter type – zone 1 cooling",
+        "state": {
+          "fan_coil": "fan coil",
+          "radiators": "radiators",
+          "underfloor": "underfloor",
+          "other": "other"
+        }
+      },
+      "emission_z2_cool": {
+        "name": "Emitter type – zone 2 cooling",
+        "state": {
+          "fan_coil": "fan coil",
+          "radiators": "radiators",
+          "underfloor": "underfloor",
+          "other": "other"
+        }
+      }
+    },
+    "binary_sensor": {
+      "ibh1": {
+        "name": "Backup heater IBH1"
+      },
+      "ibh2": {
+        "name": "Backup heater IBH2"
+      },
+      "pump_i": {
+        "name": "Internal circulation pump"
+      },
+      "sv1": {
+        "name": "3-way valve SV1 (DHW)"
+      },
+      "sv2": {
+        "name": "3-way valve SV2"
+      },
+      "pump_o": {
+        "name": "External circulation pump"
+      },
+      "pump_c": {
+        "name": "Zone 2 pump (pump_C)"
+      },
+      "sv3": {
+        "name": "3-way valve SV3"
+      },
+      "crankcase": {
+        "name": "Crankcase heater"
+      },
+      "pump_s": {
+        "name": "Solar pump (pump_S)"
+      },
+      "alarm": {
+        "name": "Alarm"
+      },
+      "ahs": {
+        "name": "Additional heat source (AHS)"
+      },
+      "defrost": {
+        "name": "Defrosting"
+      },
+      "anti_freeze": {
+        "name": "Anti-freeze protection"
+      },
+      "oil_return": {
+        "name": "Oil return"
+      },
+      "remote_onoff": {
+        "name": "Remote on/off active"
+      },
+      "thermostat_heat": {
+        "name": "Thermostat – heating demand (HT)"
+      },
+      "thermostat_cool": {
+        "name": "Thermostat – cooling demand (CL)"
+      },
+      "solar_input": {
+        "name": "Solar input"
+      },
+      "dhw_anti_freeze": {
+        "name": "DHW tank anti-freeze protection"
+      },
+      "sg_signal": {
+        "name": "Smart grid signal (SG)"
+      },
+      "euv_signal": {
+        "name": "Cheap electricity (EUV)"
+      },
+      "holiday_away": {
+        "name": "Holiday – away"
+      },
+      "holiday_home": {
+        "name": "Holiday – home"
+      },
+      "compressor_running": {
+        "name": "Compressor running"
+      },
+      "ac_self_clean": {
+        "name": "Self-cleaning"
+      },
+      "ac_filter_full": {
+        "name": "Clean the filter"
+      },
+      "tbh": {
+        "name": "DHW tank heater TBH"
+      },
+      "pump_d": {
+        "name": "DHW circulation (pump_D)"
+      },
+      "p1_dhw": {
+        "name": "Function: hot water"
+      },
+      "p1_tbh": {
+        "name": "Function: DHW tank heater TBH"
+      },
+      "p1_disinfect": {
+        "name": "Function: disinfection"
+      },
+      "p1_pump_d": {
+        "name": "Function: DHW circulation pump"
+      },
+      "p1_dhw_priority_fn": {
+        "name": "Function: DHW priority"
+      },
+      "p1_pump_d_disinfect": {
+        "name": "Function: circulation during disinfection"
+      },
+      "p1_cooling": {
+        "name": "Function: cooling"
+      },
+      "p1_heating": {
+        "name": "Function: heating"
+      },
+      "p1_pump_i_silent": {
+        "name": "Function: silent circulation pump"
+      },
+      "p1_room_temp": {
+        "name": "Function: room temperature control"
+      },
+      "p1_room_thermostat": {
+        "name": "Function: room thermostat"
+      },
+      "p1_thermostat_mode": {
+        "name": "Function: thermostat switches mode"
+      },
+      "p1_thermostat_double": {
+        "name": "Function: thermostat 2 zones"
+      },
+      "p1_dhw_priority": {
+        "name": "Function: DHW priority on"
+      },
+      "p2_m1m2": {
+        "name": "Function: M1M2 / AHS on-off"
+      },
+      "p2_tbt1": {
+        "name": "Function: buffer tank sensor Tbt1"
+      },
+      "p2_fpipe": {
+        "name": "Function: piping ≥ 10 m"
+      },
+      "p2_smart_grid": {
+        "name": "Function: smart grid"
+      },
+      "p2_double_zone": {
+        "name": "Function: two zones"
+      },
+      "p2_tbt": {
+        "name": "Function: buffer tank"
+      }
+    },
+    "number": {
+      "zone1_set": {
+        "name": "Zone 1 – water setpoint"
+      },
+      "zone2_set": {
+        "name": "Zone 2 – water setpoint"
+      },
+      "dhw_set": {
+        "name": "Hot water – setpoint"
+      },
+      "room_set": {
+        "name": "Room – setpoint"
+      },
+      "curve_z1_no": {
+        "name": "Weather curve zone 1 (1–9)"
+      },
+      "curve_z2_no": {
+        "name": "Weather curve zone 2 (1–9)"
+      },
+      "sg_max": {
+        "name": "Smart grid – max. hours at high tariff"
+      },
+      "p_dt5_on": {
+        "name": "DHW – start hysteresis (dT5_ON)"
+      },
+      "p_dt1s5": {
+        "name": "DHW – water/tank difference (dT1S5)"
+      },
+      "p_t4dhwmax": {
+        "name": "DHW – max. outdoor temperature"
+      },
+      "p_t4dhwmin": {
+        "name": "DHW – min. outdoor temperature"
+      },
+      "p_t_dhwhp_max": {
+        "name": "DHW – max. heat pump heating time"
+      },
+      "p_t_dhwhp_restrict": {
+        "name": "DHW – space heating time between DHW runs"
+      },
+      "p_pump_d_time": {
+        "name": "DHW circulation – run time"
+      },
+      "p_t_tbh_delay": {
+        "name": "TBH – switch-on delay"
+      },
+      "p_dt5_tbh_off": {
+        "name": "TBH – switch-off difference (dT5_TBH_OFF)"
+      },
+      "p_t4_tbh_on": {
+        "name": "TBH – max. outdoor temperature"
+      },
+      "p_tbh_power": {
+        "name": "TBH – power"
+      },
+      "p_t5s_di": {
+        "name": "Disinfection – temperature"
+      },
+      "p_t_di_max": {
+        "name": "Disinfection – max. duration"
+      },
+      "p_t_di_hightemp": {
+        "name": "Disinfection – holding time"
+      },
+      "p_dt1sc": {
+        "name": "Cooling – water hysteresis (dT1SC)"
+      },
+      "p_dtsc": {
+        "name": "Cooling – room hysteresis (dTSC)"
+      },
+      "p_t4cmax": {
+        "name": "Cooling – max. outdoor temperature"
+      },
+      "p_t4cmin": {
+        "name": "Cooling – min. outdoor temperature"
+      },
+      "p_dt1sh": {
+        "name": "Heating – water hysteresis (dT1SH)"
+      },
+      "p_dtsh": {
+        "name": "Heating – room hysteresis (dTSH)"
+      },
+      "p_t4hmax": {
+        "name": "Heating – max. outdoor temperature"
+      },
+      "p_t4hmin": {
+        "name": "Heating – min. outdoor temperature"
+      },
+      "p_t4autocmin": {
+        "name": "Auto – min. outdoor for cooling"
+      },
+      "p_t4autohmax": {
+        "name": "Auto – max. outdoor for heating"
+      },
+      "p_t1seth1": {
+        "name": "Custom heating curve – water point 1"
+      },
+      "p_t4h1": {
+        "name": "Custom heating curve – outdoor point 1"
+      },
+      "p_t1seth2": {
+        "name": "Custom heating curve – water point 2"
+      },
+      "p_t4h2": {
+        "name": "Custom heating curve – outdoor point 2"
+      },
+      "p_t1setc1": {
+        "name": "Custom cooling curve – water point 1"
+      },
+      "p_t1setc2": {
+        "name": "Custom cooling curve – water point 2"
+      },
+      "p_t4c2": {
+        "name": "Custom cooling curve – outdoor point 2"
+      },
+      "p_t4_ibh_on": {
+        "name": "IBH – max. outdoor temperature to switch on"
+      },
+      "p_dt1_ibh_on": {
+        "name": "IBH – water difference to switch on"
+      },
+      "p_t_ibh_delay": {
+        "name": "IBH – switch-on delay"
+      },
+      "p_ibh1_power": {
+        "name": "IBH1 – power"
+      },
+      "p_ibh2_power": {
+        "name": "IBH2 – power"
+      },
+      "p_t4_ahs_on": {
+        "name": "AHS – max. outdoor temperature to switch on"
+      },
+      "p_dt1_ahs_on": {
+        "name": "AHS – water difference to switch on"
+      },
+      "p_t_ahs_delay": {
+        "name": "AHS – switch-on delay"
+      },
+      "p_holiday_heat": {
+        "name": "Holiday – heating water temperature"
+      },
+      "p_holiday_dhw": {
+        "name": "Holiday – DHW temperature"
+      },
+      "p_power_limit": {
+        "name": "Power limitation (type 0–8)"
+      },
+      "ac_fan_percent": {
+        "name": "Fan"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Mode",
+        "state": {
+          "auto": "auto",
+          "cool": "cooling",
+          "heat": "heating"
+        }
+      },
+      "silent_level": {
+        "name": "Silent mode level",
+        "state": {
+          "level_1": "level 1",
+          "level_2": "level 2"
+        }
+      },
+      "forced_dhw": {
+        "name": "Forced DHW heating",
+        "state": {
+          "none": "not forced",
+          "force_on": "force on",
+          "force_off": "force off"
+        }
+      },
+      "forced_tbh": {
+        "name": "Forced DHW tank heater (TBH)",
+        "state": {
+          "none": "not forced",
+          "force_on": "force on",
+          "force_off": "force off"
+        }
+      },
+      "forced_ibh": {
+        "name": "Forced backup heater (IBH)",
+        "state": {
+          "none": "not forced",
+          "force_on": "force on",
+          "force_off": "force off"
+        }
+      },
+      "ac_mode": {
+        "name": "Units mode",
+        "state": {
+          "off": "off",
+          "heat": "heating",
+          "cool": "cooling",
+          "dry": "dry",
+          "fan_only": "fan",
+          "mixed": "mixed"
+        }
+      },
+      "ac_ud_angle": {
+        "name": "Louvre up–down",
+        "state": {
+          "free": "free",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      },
+      "ac_lr_angle": {
+        "name": "Louvre left–right",
+        "state": {
+          "free": "free",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      }
+    },
+    "switch": {
+      "zone1_power": {
+        "name": "Zone 1 – heating/cooling"
+      },
+      "zone2_power": {
+        "name": "Zone 2 – heating/cooling"
+      },
+      "dhw_power": {
+        "name": "Hot water heating"
+      },
+      "room_power": {
+        "name": "Zones by room temperature"
+      },
+      "eco": {
+        "name": "ECO mode"
+      },
+      "silent": {
+        "name": "Silent mode"
+      },
+      "disinfect": {
+        "name": "Disinfection (anti-legionella)"
+      },
+      "curve_z1": {
+        "name": "Weather curve zone 1"
+      },
+      "curve_z2": {
+        "name": "Weather curve zone 2"
+      },
+      "ac_dry": {
+        "name": "Dry the coil after switch-off"
+      },
+      "ac_frost_protect": {
+        "name": "Frost protection 8 °C"
+      },
+      "ac_anion": {
+        "name": "Ionizer"
+      },
+      "ac_display": {
+        "name": "Display"
+      },
+      "ac_beep": {
+        "name": "Beep on commands"
+      },
+      "ac_prevent_straight_wind": {
+        "name": "Airflow away from people"
+      }
+    },
+    "climate": {
+      "zone1_climate": {
+        "name": "Zone 1"
+      },
+      "ac_climate": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "silent": "silent",
+              "low": "low",
+              "medium": "medium",
+              "high": "high",
+              "auto": "auto"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "pump_d_start": {
+        "name": "Start DHW circulation"
+      },
+      "ac_self_clean_start": {
+        "name": "Start self-cleaning"
+      }
+    }
+  },
+  "device": {
+    "outdoor_unit": {
+      "name": "Outdoor unit {unit}"
+    }
+  }
+}

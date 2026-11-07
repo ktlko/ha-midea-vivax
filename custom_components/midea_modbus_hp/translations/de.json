@@ -1,0 +1,1018 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Midea / Vivax",
+        "menu_options": {
+          "heat_pump": "Wärmepumpe (Modbus über EW11)",
+          "air_conditioner": "Klimaanlage (WLAN)"
+        }
+      },
+      "heat_pump": {
+        "title": "Wärmepumpe (Modbus TCP)",
+        "description": "Modbus-TCP-Gateway (z. B. Elfin EW11) an H1/H2 der kabelgebundenen Bedieneinheit.",
+        "data": {
+          "host": "IP-Adresse des Gateways",
+          "port": "Port",
+          "device_id": "Modbus-Adresse (HMI ADDRESS FOR BMS)",
+          "name": "Name"
+        }
+      },
+      "air_conditioner": {
+        "title": "Klimaanlage (WLAN)",
+        "menu_options": {
+          "ac_cloud": "Bei der Midea-Cloud anmelden (MSmartHome, NetHome Plus…)",
+          "ac_lan": "In Midea AC LAN gekoppeltes Gerät verwenden"
+        }
+      },
+      "ac_select": {
+        "title": "Klimaanlage auswählen",
+        "description": "Im Netzwerk gefundene Geräte: {found}. Ist keine IP-Adresse eingetragen, findest du sie im Router (DHCP). Innengeräte mit gemeinsamem Außengerät (Multi-Split) erhalten denselben Außengerätenamen.",
+        "data": {
+          "unit": "Gerät",
+          "device_id": "Geräte-ID (Appliance-ID aus der App)",
+          "host": "IP-Adresse des Geräts",
+          "name": "Name",
+          "outdoor_unit": "Gemeinsames Außengerät (leer = eigenes)"
+        }
+      },
+      "ac_cloud": {
+        "title": "Midea-Cloud",
+        "description": "Für die lokale Steuerung braucht die Klimaanlage Token und Schlüssel. Die Integration lädt sie einmalig aus der Cloud der App, in der das Gerät registriert ist (MSmartHome = SmartHome). Das Passwort wird nicht gespeichert. Ohne eigenes Konto das Standardkonto ankreuzen – die Geräte-ID wird dann manuell eingegeben.",
+        "data": {
+          "cloud": "App / Cloud",
+          "username": "E-Mail des Kontos",
+          "password": "Passwort",
+          "default_account": "Standardkonto verwenden (ohne Anmeldung)"
+        }
+      },
+      "ac_lan": {
+        "title": "Klimaanlage aus Midea AC LAN",
+        "description": "Token und Schlüssel werden aus der Integration Midea AC LAN übernommen. Innengeräte mit gemeinsamem Außengerät (Multi-Split) erhalten denselben Außengerätenamen.",
+        "data": {
+          "unit": "Gerät",
+          "name": "Name",
+          "outdoor_unit": "Gemeinsames Außengerät (leer = eigenes)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Die Wärmepumpe kann nicht gelesen werden. IP, Port, Verdrahtung (A+ an H2, B- an H1) und 9600 8N1 prüfen.",
+      "cannot_connect_ac": "Die Klimaanlage antwortet nicht (IP-Adresse, Token/Schlüssel).",
+      "no_devices_found": "Im Konto wurde keine Klimaanlage gefunden.",
+      "all_configured": "Alle gefundenen Klimaanlagen sind bereits hinzugefügt.",
+      "missing_credentials": "E-Mail und Passwort eingeben oder das Standardkonto ankreuzen.",
+      "cloud_login_failed": "Anmeldung bei der Midea-Cloud fehlgeschlagen oder die Cloud kennt das Gerät nicht. App, E-Mail und Passwort prüfen.",
+      "missing_unit": "Gerät wählen (oder numerische ID eingeben) und seine IP-Adresse eingeben.",
+      "no_token": "Die Cloud hat für dieses Gerät kein Token geliefert. Geräte-ID und App prüfen."
+    },
+    "abort": {
+      "already_configured": "Dieses Gerät ist bereits eingerichtet.",
+      "no_air_conditioners": "Keine weiteren in Midea AC LAN gekoppelten Klimaanlagen."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Klimaanlage",
+        "data": {
+          "host": "IP-Adresse",
+          "outdoor_unit": "Gemeinsames Außengerät (leer = eigenes)"
+        }
+      }
+    },
+    "abort": {
+      "not_supported": "Die Wärmepumpe hat keine Optionen."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "comp_freq": {
+        "name": "Kompressorfrequenz"
+      },
+      "unit_mode": {
+        "name": "Aktueller Betriebsmodus",
+        "state": {
+          "off": "aus",
+          "cool": "Kühlen",
+          "heat": "Heizen",
+          "other": "andere"
+        }
+      },
+      "fan_speed": {
+        "name": "Lüfterdrehzahl"
+      },
+      "exv": {
+        "name": "Expansionsventil (Öffnung)"
+      },
+      "tw_in": {
+        "name": "Wassereintritt (Tw_in)"
+      },
+      "tw_out": {
+        "name": "Wasseraustritt (Tw_out)"
+      },
+      "t3": {
+        "name": "Verflüssiger (T3)"
+      },
+      "t4": {
+        "name": "Außentemperatur (T4)"
+      },
+      "tp": {
+        "name": "Kompressor-Druckgas (Tp)"
+      },
+      "th": {
+        "name": "Kompressor-Sauggas (Th)"
+      },
+      "t1": {
+        "name": "Gesamter Wasseraustritt (T1)"
+      },
+      "t1b": {
+        "name": "Wasser Zone 2 (T1B)"
+      },
+      "t2": {
+        "name": "Kältemittel flüssig (T2)"
+      },
+      "t2b": {
+        "name": "Kältemittel gasförmig (T2B)"
+      },
+      "ta": {
+        "name": "Raumtemperatur (Ta)"
+      },
+      "t5": {
+        "name": "Warmwasserspeicher (T5)"
+      },
+      "p_high": {
+        "name": "Hochdruck"
+      },
+      "p_low": {
+        "name": "Niederdruck"
+      },
+      "odu_current": {
+        "name": "Strom Außengerät"
+      },
+      "odu_voltage": {
+        "name": "Spannung Außengerät"
+      },
+      "tbt1": {
+        "name": "Pufferspeicher oben (Tbt1)"
+      },
+      "tbt2": {
+        "name": "Pufferspeicher unten (Tbt2)"
+      },
+      "comp_hours": {
+        "name": "Kompressor-Betriebsstunden"
+      },
+      "unit_capacity": {
+        "name": "Leistungsklasse des Geräts"
+      },
+      "idu_sw": {
+        "name": "Software Hydromodul"
+      },
+      "hmi_sw": {
+        "name": "Software Bedieneinheit"
+      },
+      "target_freq": {
+        "name": "Zielfrequenz"
+      },
+      "dc_current": {
+        "name": "DC-Strom"
+      },
+      "dc_voltage": {
+        "name": "DC-Spannung"
+      },
+      "tf": {
+        "name": "Modultemperatur (TF)"
+      },
+      "curve_t1s_z1": {
+        "name": "Heizkurven-Sollwert Zone 1"
+      },
+      "curve_t1s_z2": {
+        "name": "Heizkurven-Sollwert Zone 2"
+      },
+      "water_flow": {
+        "name": "Wasserdurchfluss"
+      },
+      "odu_limit": {
+        "name": "Strombegrenzung (Code)"
+      },
+      "capacity": {
+        "name": "Leistung Hydromodul"
+      },
+      "tsolar": {
+        "name": "Solarpanel (Tsolar)"
+      },
+      "lim_cool_max": {
+        "name": "Grenze Kühlen – max. Wasser Zone 1"
+      },
+      "lim_cool_min": {
+        "name": "Grenze Kühlen – min. Wasser Zone 1"
+      },
+      "lim_heat_max": {
+        "name": "Grenze Heizen – max. Wasser Zone 1"
+      },
+      "lim_heat_min": {
+        "name": "Grenze Heizen – min. Wasser Zone 1"
+      },
+      "lim_room_max": {
+        "name": "Grenze Raum – max."
+      },
+      "lim_room_min": {
+        "name": "Grenze Raum – min."
+      },
+      "lim_dhw_max": {
+        "name": "Grenze Warmwasser – max."
+      },
+      "lim_dhw_min": {
+        "name": "Grenze Warmwasser – min."
+      },
+      "dry_up": {
+        "name": "Estrichtrocknung – Aufheiztage"
+      },
+      "dry_peak_days": {
+        "name": "Estrichtrocknung – Tage auf Spitzenwert"
+      },
+      "dry_down": {
+        "name": "Estrichtrocknung – Abkühltage"
+      },
+      "dry_peak": {
+        "name": "Estrichtrocknung – Spitzentemperatur"
+      },
+      "t_arsth": {
+        "name": "Fußboden-Vorheizung – Dauer"
+      },
+      "preheat_t1s": {
+        "name": "Fußboden-Vorheizung – Wassertemperatur"
+      },
+      "error": {
+        "name": "Aktueller Fehler",
+        "state": {
+          "none": "Kein Fehler",
+          "e0": "E0 Wasserdurchflussfehler (E8 3×)",
+          "e1": "E1 Phasenausfall / N und L vertauscht",
+          "e2": "E2 Kommunikation Bedieneinheit – Hydromodul",
+          "e3": "E3 Fühler Wasseraustritt T1",
+          "e4": "E4 Fühler Warmwasserspeicher T5",
+          "e5": "E5 Fühler Verflüssiger T3",
+          "e6": "E6 Fühler Außentemperatur T4",
+          "e7": "E7 Fühler Pufferspeicher oben Tbt1",
+          "e8": "E8 Wasserdurchflussfehler",
+          "e9": "E9 Fühler Sauggas Th",
+          "ea": "EA Fühler Druckgas Tp",
+          "eb": "Eb Fühler Solarpanel Tsolar",
+          "ec": "Ec Fühler Pufferspeicher unten Tbt2",
+          "ed": "Ed Fühler Wassereintritt Tw_in",
+          "ee": "EE EEPROM Hydromodul",
+          "p0": "P0 Niederdruckschutz",
+          "p1": "P1 Hochdruckschutz",
+          "p3": "P3 Kompressor-Überstrom",
+          "p4": "P4 Hohe Druckgastemperatur",
+          "p5": "P5 Differenz Tw_out – Tw_in zu groß",
+          "p6": "P6 Schutz Invertermodul",
+          "pb": "Pb Frostschutz",
+          "pd": "Pd Hohe Kältemitteltemperatur am Verflüssigeraustritt",
+          "pp": "PP Ungewöhnliche Differenz Tw_out – Tw_in",
+          "h0": "H0 Kommunikation Hydromodul – Hauptplatine",
+          "h1": "H1 Kommunikation Inverter – Hauptplatine",
+          "h2": "H2 Fühler Kältemittel flüssig T2",
+          "h3": "H3 Fühler Kältemittel gasförmig T2B",
+          "h4": "H4 Dreimal P6 (L0/L1)",
+          "h5": "H5 Fühler Raumtemperatur Ta",
+          "h6": "H6 Fehler DC-Lüfter",
+          "h7": "H7 Spannungsschutz",
+          "h8": "H8 Drucksensor",
+          "h9": "H9 Fühler Wasser Zone 2 Tw2",
+          "ha": "HA Fühler Wasseraustritt Tw_out",
+          "hb": "Hb Dreimal PP und Tw_out < 7 °C",
+          "hd": "Hd Kommunikation zwischen Hydromodulen (Kaskade)",
+          "he": "HE Kommunikation Hauptplatine – Thermostat",
+          "hf": "HF EEPROM Invertermodul",
+          "hh": "HH H6 10× in 2 Stunden",
+          "hp": "HP Niederdruck (Pe<0,6) 3× pro Stunde",
+          "c7": "C7 Überhitzung Invertermodul",
+          "bh": "bH Fehler PED-Platine",
+          "f1": "F1 Niedrige DC-Zwischenkreisspannung",
+          "l0": "L0 Modulschutz",
+          "l1": "L1 Niedrige DC-Zwischenkreisspannung",
+          "l2": "L2 Hohe DC-Zwischenkreisspannung",
+          "l4": "L4 MCE-Fehler",
+          "l5": "L5 Schutz Nulldrehzahl",
+          "l7": "L7 Phasenfolgefehler",
+          "l8": "L8 Drehzahldifferenz > 15 Hz (Takt)",
+          "l9": "L9 Differenz Ist- und Solldrehzahl > 15 Hz",
+          "unknown": "Unbekannter Code"
+        }
+      },
+      "error_hist1": {
+        "name": "Fehler – Verlauf 1",
+        "state": {
+          "none": "Kein Fehler",
+          "e0": "E0 Wasserdurchflussfehler (E8 3×)",
+          "e1": "E1 Phasenausfall / N und L vertauscht",
+          "e2": "E2 Kommunikation Bedieneinheit – Hydromodul",
+          "e3": "E3 Fühler Wasseraustritt T1",
+          "e4": "E4 Fühler Warmwasserspeicher T5",
+          "e5": "E5 Fühler Verflüssiger T3",
+          "e6": "E6 Fühler Außentemperatur T4",
+          "e7": "E7 Fühler Pufferspeicher oben Tbt1",
+          "e8": "E8 Wasserdurchflussfehler",
+          "e9": "E9 Fühler Sauggas Th",
+          "ea": "EA Fühler Druckgas Tp",
+          "eb": "Eb Fühler Solarpanel Tsolar",
+          "ec": "Ec Fühler Pufferspeicher unten Tbt2",
+          "ed": "Ed Fühler Wassereintritt Tw_in",
+          "ee": "EE EEPROM Hydromodul",
+          "p0": "P0 Niederdruckschutz",
+          "p1": "P1 Hochdruckschutz",
+          "p3": "P3 Kompressor-Überstrom",
+          "p4": "P4 Hohe Druckgastemperatur",
+          "p5": "P5 Differenz Tw_out – Tw_in zu groß",
+          "p6": "P6 Schutz Invertermodul",
+          "pb": "Pb Frostschutz",
+          "pd": "Pd Hohe Kältemitteltemperatur am Verflüssigeraustritt",
+          "pp": "PP Ungewöhnliche Differenz Tw_out – Tw_in",
+          "h0": "H0 Kommunikation Hydromodul – Hauptplatine",
+          "h1": "H1 Kommunikation Inverter – Hauptplatine",
+          "h2": "H2 Fühler Kältemittel flüssig T2",
+          "h3": "H3 Fühler Kältemittel gasförmig T2B",
+          "h4": "H4 Dreimal P6 (L0/L1)",
+          "h5": "H5 Fühler Raumtemperatur Ta",
+          "h6": "H6 Fehler DC-Lüfter",
+          "h7": "H7 Spannungsschutz",
+          "h8": "H8 Drucksensor",
+          "h9": "H9 Fühler Wasser Zone 2 Tw2",
+          "ha": "HA Fühler Wasseraustritt Tw_out",
+          "hb": "Hb Dreimal PP und Tw_out < 7 °C",
+          "hd": "Hd Kommunikation zwischen Hydromodulen (Kaskade)",
+          "he": "HE Kommunikation Hauptplatine – Thermostat",
+          "hf": "HF EEPROM Invertermodul",
+          "hh": "HH H6 10× in 2 Stunden",
+          "hp": "HP Niederdruck (Pe<0,6) 3× pro Stunde",
+          "c7": "C7 Überhitzung Invertermodul",
+          "bh": "bH Fehler PED-Platine",
+          "f1": "F1 Niedrige DC-Zwischenkreisspannung",
+          "l0": "L0 Modulschutz",
+          "l1": "L1 Niedrige DC-Zwischenkreisspannung",
+          "l2": "L2 Hohe DC-Zwischenkreisspannung",
+          "l4": "L4 MCE-Fehler",
+          "l5": "L5 Schutz Nulldrehzahl",
+          "l7": "L7 Phasenfolgefehler",
+          "l8": "L8 Drehzahldifferenz > 15 Hz (Takt)",
+          "l9": "L9 Differenz Ist- und Solldrehzahl > 15 Hz",
+          "unknown": "Unbekannter Code"
+        }
+      },
+      "error_hist2": {
+        "name": "Fehler – Verlauf 2",
+        "state": {
+          "none": "Kein Fehler",
+          "e0": "E0 Wasserdurchflussfehler (E8 3×)",
+          "e1": "E1 Phasenausfall / N und L vertauscht",
+          "e2": "E2 Kommunikation Bedieneinheit – Hydromodul",
+          "e3": "E3 Fühler Wasseraustritt T1",
+          "e4": "E4 Fühler Warmwasserspeicher T5",
+          "e5": "E5 Fühler Verflüssiger T3",
+          "e6": "E6 Fühler Außentemperatur T4",
+          "e7": "E7 Fühler Pufferspeicher oben Tbt1",
+          "e8": "E8 Wasserdurchflussfehler",
+          "e9": "E9 Fühler Sauggas Th",
+          "ea": "EA Fühler Druckgas Tp",
+          "eb": "Eb Fühler Solarpanel Tsolar",
+          "ec": "Ec Fühler Pufferspeicher unten Tbt2",
+          "ed": "Ed Fühler Wassereintritt Tw_in",
+          "ee": "EE EEPROM Hydromodul",
+          "p0": "P0 Niederdruckschutz",
+          "p1": "P1 Hochdruckschutz",
+          "p3": "P3 Kompressor-Überstrom",
+          "p4": "P4 Hohe Druckgastemperatur",
+          "p5": "P5 Differenz Tw_out – Tw_in zu groß",
+          "p6": "P6 Schutz Invertermodul",
+          "pb": "Pb Frostschutz",
+          "pd": "Pd Hohe Kältemitteltemperatur am Verflüssigeraustritt",
+          "pp": "PP Ungewöhnliche Differenz Tw_out – Tw_in",
+          "h0": "H0 Kommunikation Hydromodul – Hauptplatine",
+          "h1": "H1 Kommunikation Inverter – Hauptplatine",
+          "h2": "H2 Fühler Kältemittel flüssig T2",
+          "h3": "H3 Fühler Kältemittel gasförmig T2B",
+          "h4": "H4 Dreimal P6 (L0/L1)",
+          "h5": "H5 Fühler Raumtemperatur Ta",
+          "h6": "H6 Fehler DC-Lüfter",
+          "h7": "H7 Spannungsschutz",
+          "h8": "H8 Drucksensor",
+          "h9": "H9 Fühler Wasser Zone 2 Tw2",
+          "ha": "HA Fühler Wasseraustritt Tw_out",
+          "hb": "Hb Dreimal PP und Tw_out < 7 °C",
+          "hd": "Hd Kommunikation zwischen Hydromodulen (Kaskade)",
+          "he": "HE Kommunikation Hauptplatine – Thermostat",
+          "hf": "HF EEPROM Invertermodul",
+          "hh": "HH H6 10× in 2 Stunden",
+          "hp": "HP Niederdruck (Pe<0,6) 3× pro Stunde",
+          "c7": "C7 Überhitzung Invertermodul",
+          "bh": "bH Fehler PED-Platine",
+          "f1": "F1 Niedrige DC-Zwischenkreisspannung",
+          "l0": "L0 Modulschutz",
+          "l1": "L1 Niedrige DC-Zwischenkreisspannung",
+          "l2": "L2 Hohe DC-Zwischenkreisspannung",
+          "l4": "L4 MCE-Fehler",
+          "l5": "L5 Schutz Nulldrehzahl",
+          "l7": "L7 Phasenfolgefehler",
+          "l8": "L8 Drehzahldifferenz > 15 Hz (Takt)",
+          "l9": "L9 Differenz Ist- und Solldrehzahl > 15 Hz",
+          "unknown": "Unbekannter Code"
+        }
+      },
+      "error_hist3": {
+        "name": "Fehler – Verlauf 3",
+        "state": {
+          "none": "Kein Fehler",
+          "e0": "E0 Wasserdurchflussfehler (E8 3×)",
+          "e1": "E1 Phasenausfall / N und L vertauscht",
+          "e2": "E2 Kommunikation Bedieneinheit – Hydromodul",
+          "e3": "E3 Fühler Wasseraustritt T1",
+          "e4": "E4 Fühler Warmwasserspeicher T5",
+          "e5": "E5 Fühler Verflüssiger T3",
+          "e6": "E6 Fühler Außentemperatur T4",
+          "e7": "E7 Fühler Pufferspeicher oben Tbt1",
+          "e8": "E8 Wasserdurchflussfehler",
+          "e9": "E9 Fühler Sauggas Th",
+          "ea": "EA Fühler Druckgas Tp",
+          "eb": "Eb Fühler Solarpanel Tsolar",
+          "ec": "Ec Fühler Pufferspeicher unten Tbt2",
+          "ed": "Ed Fühler Wassereintritt Tw_in",
+          "ee": "EE EEPROM Hydromodul",
+          "p0": "P0 Niederdruckschutz",
+          "p1": "P1 Hochdruckschutz",
+          "p3": "P3 Kompressor-Überstrom",
+          "p4": "P4 Hohe Druckgastemperatur",
+          "p5": "P5 Differenz Tw_out – Tw_in zu groß",
+          "p6": "P6 Schutz Invertermodul",
+          "pb": "Pb Frostschutz",
+          "pd": "Pd Hohe Kältemitteltemperatur am Verflüssigeraustritt",
+          "pp": "PP Ungewöhnliche Differenz Tw_out – Tw_in",
+          "h0": "H0 Kommunikation Hydromodul – Hauptplatine",
+          "h1": "H1 Kommunikation Inverter – Hauptplatine",
+          "h2": "H2 Fühler Kältemittel flüssig T2",
+          "h3": "H3 Fühler Kältemittel gasförmig T2B",
+          "h4": "H4 Dreimal P6 (L0/L1)",
+          "h5": "H5 Fühler Raumtemperatur Ta",
+          "h6": "H6 Fehler DC-Lüfter",
+          "h7": "H7 Spannungsschutz",
+          "h8": "H8 Drucksensor",
+          "h9": "H9 Fühler Wasser Zone 2 Tw2",
+          "ha": "HA Fühler Wasseraustritt Tw_out",
+          "hb": "Hb Dreimal PP und Tw_out < 7 °C",
+          "hd": "Hd Kommunikation zwischen Hydromodulen (Kaskade)",
+          "he": "HE Kommunikation Hauptplatine – Thermostat",
+          "hf": "HF EEPROM Invertermodul",
+          "hh": "HH H6 10× in 2 Stunden",
+          "hp": "HP Niederdruck (Pe<0,6) 3× pro Stunde",
+          "c7": "C7 Überhitzung Invertermodul",
+          "bh": "bH Fehler PED-Platine",
+          "f1": "F1 Niedrige DC-Zwischenkreisspannung",
+          "l0": "L0 Modulschutz",
+          "l1": "L1 Niedrige DC-Zwischenkreisspannung",
+          "l2": "L2 Hohe DC-Zwischenkreisspannung",
+          "l4": "L4 MCE-Fehler",
+          "l5": "L5 Schutz Nulldrehzahl",
+          "l7": "L7 Phasenfolgefehler",
+          "l8": "L8 Drehzahldifferenz > 15 Hz (Takt)",
+          "l9": "L9 Differenz Ist- und Solldrehzahl > 15 Hz",
+          "unknown": "Unbekannter Code"
+        }
+      },
+      "energy_in": {
+        "name": "Verbrauchter Strom"
+      },
+      "energy_out": {
+        "name": "Erzeugte Wärme"
+      },
+      "cop_total": {
+        "name": "COP gesamt"
+      },
+      "ac_indoor_temperature": {
+        "name": "Raumtemperatur"
+      },
+      "ac_pmv": {
+        "name": "Thermischer Komfort (PMV)"
+      },
+      "ac_indoor_fan_speed": {
+        "name": "Drehzahl Innenlüfter"
+      },
+      "ac_indoor_coil_temperature": {
+        "name": "Temperatur Innenwärmetauscher"
+      },
+      "ac_humidity": {
+        "name": "Raumluftfeuchte"
+      },
+      "ac_outdoor_temperature": {
+        "name": "Außentemperatur"
+      },
+      "ac_compressor_frequency": {
+        "name": "Kompressorfrequenz"
+      },
+      "ac_compressor_current": {
+        "name": "Kompressorstrom"
+      },
+      "ac_outdoor_coil_temperature": {
+        "name": "Temperatur Außenwärmetauscher"
+      },
+      "ac_discharge_temperature": {
+        "name": "Kompressor-Druckgastemperatur"
+      },
+      "ac_outdoor_fan_speed": {
+        "name": "Drehzahl Außenlüfter"
+      },
+      "ac_energy_total": {
+        "name": "Verbrauchter Strom"
+      },
+      "emission_z1_heat": {
+        "name": "Heizkörpertyp – Zone 1 Heizen",
+        "state": {
+          "fan_coil": "Gebläsekonvektor",
+          "radiators": "Heizkörper",
+          "underfloor": "Fußbodenheizung",
+          "other": "andere"
+        }
+      },
+      "emission_z2_heat": {
+        "name": "Heizkörpertyp – Zone 2 Heizen",
+        "state": {
+          "fan_coil": "Gebläsekonvektor",
+          "radiators": "Heizkörper",
+          "underfloor": "Fußbodenheizung",
+          "other": "andere"
+        }
+      },
+      "emission_z1_cool": {
+        "name": "Heizkörpertyp – Zone 1 Kühlen",
+        "state": {
+          "fan_coil": "Gebläsekonvektor",
+          "radiators": "Heizkörper",
+          "underfloor": "Fußbodenheizung",
+          "other": "andere"
+        }
+      },
+      "emission_z2_cool": {
+        "name": "Heizkörpertyp – Zone 2 Kühlen",
+        "state": {
+          "fan_coil": "Gebläsekonvektor",
+          "radiators": "Heizkörper",
+          "underfloor": "Fußbodenheizung",
+          "other": "andere"
+        }
+      }
+    },
+    "binary_sensor": {
+      "ibh1": {
+        "name": "Elektroheizstab IBH1"
+      },
+      "ibh2": {
+        "name": "Elektroheizstab IBH2"
+      },
+      "pump_i": {
+        "name": "Interne Umwälzpumpe"
+      },
+      "sv1": {
+        "name": "3-Wege-Ventil SV1 (Warmwasser)"
+      },
+      "sv2": {
+        "name": "3-Wege-Ventil SV2"
+      },
+      "pump_o": {
+        "name": "Externe Umwälzpumpe"
+      },
+      "pump_c": {
+        "name": "Pumpe Zone 2 (pump_C)"
+      },
+      "sv3": {
+        "name": "3-Wege-Ventil SV3"
+      },
+      "crankcase": {
+        "name": "Kurbelwannenheizung"
+      },
+      "pump_s": {
+        "name": "Solarpumpe (pump_S)"
+      },
+      "alarm": {
+        "name": "Alarm"
+      },
+      "ahs": {
+        "name": "Zusätzliche Wärmequelle (AHS)"
+      },
+      "defrost": {
+        "name": "Abtauen"
+      },
+      "anti_freeze": {
+        "name": "Frostschutz"
+      },
+      "oil_return": {
+        "name": "Ölrückführung"
+      },
+      "remote_onoff": {
+        "name": "Fern-Ein/Aus aktiv"
+      },
+      "thermostat_heat": {
+        "name": "Thermostat – Heizanforderung (HT)"
+      },
+      "thermostat_cool": {
+        "name": "Thermostat – Kühlanforderung (CL)"
+      },
+      "solar_input": {
+        "name": "Solareingang"
+      },
+      "dhw_anti_freeze": {
+        "name": "Frostschutz Warmwasserspeicher"
+      },
+      "sg_signal": {
+        "name": "Smart-Grid-Signal (SG)"
+      },
+      "euv_signal": {
+        "name": "Günstiger Strom (EUV)"
+      },
+      "holiday_away": {
+        "name": "Urlaub – abwesend"
+      },
+      "holiday_home": {
+        "name": "Urlaub – zu Hause"
+      },
+      "compressor_running": {
+        "name": "Kompressor läuft"
+      },
+      "ac_self_clean": {
+        "name": "Selbstreinigung"
+      },
+      "ac_filter_full": {
+        "name": "Filter reinigen"
+      },
+      "tbh": {
+        "name": "Speicherheizstab TBH"
+      },
+      "pump_d": {
+        "name": "Warmwasserzirkulation (pump_D)"
+      },
+      "p1_dhw": {
+        "name": "Funktion: Warmwasser"
+      },
+      "p1_tbh": {
+        "name": "Funktion: Speicherheizstab TBH"
+      },
+      "p1_disinfect": {
+        "name": "Funktion: Desinfektion"
+      },
+      "p1_pump_d": {
+        "name": "Funktion: Zirkulationspumpe Warmwasser"
+      },
+      "p1_dhw_priority_fn": {
+        "name": "Funktion: Warmwasservorrang"
+      },
+      "p1_pump_d_disinfect": {
+        "name": "Funktion: Zirkulation bei Desinfektion"
+      },
+      "p1_cooling": {
+        "name": "Funktion: Kühlen"
+      },
+      "p1_heating": {
+        "name": "Funktion: Heizen"
+      },
+      "p1_pump_i_silent": {
+        "name": "Funktion: leise Umwälzpumpe"
+      },
+      "p1_room_temp": {
+        "name": "Funktion: Regelung nach Raumtemperatur"
+      },
+      "p1_room_thermostat": {
+        "name": "Funktion: Raumthermostat"
+      },
+      "p1_thermostat_mode": {
+        "name": "Funktion: Thermostat wechselt Modus"
+      },
+      "p1_thermostat_double": {
+        "name": "Funktion: Thermostat 2 Zonen"
+      },
+      "p1_dhw_priority": {
+        "name": "Funktion: Warmwasservorrang aktiv"
+      },
+      "p2_m1m2": {
+        "name": "Funktion: M1M2 / AHS Ein-Aus"
+      },
+      "p2_tbt1": {
+        "name": "Funktion: Pufferspeicherfühler Tbt1"
+      },
+      "p2_fpipe": {
+        "name": "Funktion: Leitung ≥ 10 m"
+      },
+      "p2_smart_grid": {
+        "name": "Funktion: Smart Grid"
+      },
+      "p2_double_zone": {
+        "name": "Funktion: zwei Zonen"
+      },
+      "p2_tbt": {
+        "name": "Funktion: Pufferspeicher"
+      }
+    },
+    "number": {
+      "zone1_set": {
+        "name": "Zone 1 – Wasser-Solltemperatur"
+      },
+      "zone2_set": {
+        "name": "Zone 2 – Wasser-Solltemperatur"
+      },
+      "dhw_set": {
+        "name": "Warmwasser – Solltemperatur"
+      },
+      "room_set": {
+        "name": "Raum – Solltemperatur"
+      },
+      "curve_z1_no": {
+        "name": "Heizkurve Zone 1 (1–9)"
+      },
+      "curve_z2_no": {
+        "name": "Heizkurve Zone 2 (1–9)"
+      },
+      "sg_max": {
+        "name": "Smart Grid – max. Stunden bei Hochtarif"
+      },
+      "p_dt5_on": {
+        "name": "Warmwasser – Starthysterese (dT5_ON)"
+      },
+      "p_dt1s5": {
+        "name": "Warmwasser – Differenz Wasser/Speicher (dT1S5)"
+      },
+      "p_t4dhwmax": {
+        "name": "Warmwasser – max. Außentemperatur"
+      },
+      "p_t4dhwmin": {
+        "name": "Warmwasser – min. Außentemperatur"
+      },
+      "p_t_dhwhp_max": {
+        "name": "Warmwasser – max. Heizzeit Wärmepumpe"
+      },
+      "p_t_dhwhp_restrict": {
+        "name": "Warmwasser – Heizzeit zwischen Warmwasserläufen"
+      },
+      "p_pump_d_time": {
+        "name": "Warmwasserzirkulation – Laufzeit"
+      },
+      "p_t_tbh_delay": {
+        "name": "TBH – Einschaltverzögerung"
+      },
+      "p_dt5_tbh_off": {
+        "name": "TBH – Ausschaltdifferenz (dT5_TBH_OFF)"
+      },
+      "p_t4_tbh_on": {
+        "name": "TBH – max. Außentemperatur"
+      },
+      "p_tbh_power": {
+        "name": "TBH – Leistung"
+      },
+      "p_t5s_di": {
+        "name": "Desinfektion – Temperatur"
+      },
+      "p_t_di_max": {
+        "name": "Desinfektion – max. Dauer"
+      },
+      "p_t_di_hightemp": {
+        "name": "Desinfektion – Haltezeit"
+      },
+      "p_dt1sc": {
+        "name": "Kühlen – Wasserhysterese (dT1SC)"
+      },
+      "p_dtsc": {
+        "name": "Kühlen – Raumhysterese (dTSC)"
+      },
+      "p_t4cmax": {
+        "name": "Kühlen – max. Außentemperatur"
+      },
+      "p_t4cmin": {
+        "name": "Kühlen – min. Außentemperatur"
+      },
+      "p_dt1sh": {
+        "name": "Heizen – Wasserhysterese (dT1SH)"
+      },
+      "p_dtsh": {
+        "name": "Heizen – Raumhysterese (dTSH)"
+      },
+      "p_t4hmax": {
+        "name": "Heizen – max. Außentemperatur"
+      },
+      "p_t4hmin": {
+        "name": "Heizen – min. Außentemperatur"
+      },
+      "p_t4autocmin": {
+        "name": "Auto – min. Außentemperatur für Kühlen"
+      },
+      "p_t4autohmax": {
+        "name": "Auto – max. Außentemperatur für Heizen"
+      },
+      "p_t1seth1": {
+        "name": "Eigene Heizkurve – Wasser Punkt 1"
+      },
+      "p_t4h1": {
+        "name": "Eigene Heizkurve – außen Punkt 1"
+      },
+      "p_t1seth2": {
+        "name": "Eigene Heizkurve – Wasser Punkt 2"
+      },
+      "p_t4h2": {
+        "name": "Eigene Heizkurve – außen Punkt 2"
+      },
+      "p_t1setc1": {
+        "name": "Eigene Kühlkurve – Wasser Punkt 1"
+      },
+      "p_t1setc2": {
+        "name": "Eigene Kühlkurve – Wasser Punkt 2"
+      },
+      "p_t4c2": {
+        "name": "Eigene Kühlkurve – außen Punkt 2"
+      },
+      "p_t4_ibh_on": {
+        "name": "IBH – max. Außentemperatur zum Einschalten"
+      },
+      "p_dt1_ibh_on": {
+        "name": "IBH – Wasserdifferenz zum Einschalten"
+      },
+      "p_t_ibh_delay": {
+        "name": "IBH – Einschaltverzögerung"
+      },
+      "p_ibh1_power": {
+        "name": "IBH1 – Leistung"
+      },
+      "p_ibh2_power": {
+        "name": "IBH2 – Leistung"
+      },
+      "p_t4_ahs_on": {
+        "name": "AHS – max. Außentemperatur zum Einschalten"
+      },
+      "p_dt1_ahs_on": {
+        "name": "AHS – Wasserdifferenz zum Einschalten"
+      },
+      "p_t_ahs_delay": {
+        "name": "AHS – Einschaltverzögerung"
+      },
+      "p_holiday_heat": {
+        "name": "Urlaub – Heizwassertemperatur"
+      },
+      "p_holiday_dhw": {
+        "name": "Urlaub – Warmwassertemperatur"
+      },
+      "p_power_limit": {
+        "name": "Leistungsbegrenzung (Typ 0–8)"
+      },
+      "ac_fan_percent": {
+        "name": "Lüfter"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Modus",
+        "state": {
+          "auto": "Auto",
+          "cool": "Kühlen",
+          "heat": "Heizen"
+        }
+      },
+      "silent_level": {
+        "name": "Stufe Flüstermodus",
+        "state": {
+          "level_1": "Stufe 1",
+          "level_2": "Stufe 2"
+        }
+      },
+      "forced_dhw": {
+        "name": "Erzwungene Warmwasserbereitung",
+        "state": {
+          "none": "nicht erzwungen",
+          "force_on": "erzwungen ein",
+          "force_off": "erzwungen aus"
+        }
+      },
+      "forced_tbh": {
+        "name": "Erzwungener Speicherheizstab (TBH)",
+        "state": {
+          "none": "nicht erzwungen",
+          "force_on": "erzwungen ein",
+          "force_off": "erzwungen aus"
+        }
+      },
+      "forced_ibh": {
+        "name": "Erzwungener Notheizstab (IBH)",
+        "state": {
+          "none": "nicht erzwungen",
+          "force_on": "erzwungen ein",
+          "force_off": "erzwungen aus"
+        }
+      },
+      "ac_mode": {
+        "name": "Modus der Geräte",
+        "state": {
+          "off": "aus",
+          "heat": "Heizen",
+          "cool": "Kühlen",
+          "dry": "Entfeuchten",
+          "fan_only": "Lüfter",
+          "mixed": "gemischt"
+        }
+      },
+      "ac_ud_angle": {
+        "name": "Lamelle oben–unten",
+        "state": {
+          "free": "frei",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      },
+      "ac_lr_angle": {
+        "name": "Lamelle links–rechts",
+        "state": {
+          "free": "frei",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      }
+    },
+    "switch": {
+      "zone1_power": {
+        "name": "Zone 1 – Heizen/Kühlen"
+      },
+      "zone2_power": {
+        "name": "Zone 2 – Heizen/Kühlen"
+      },
+      "dhw_power": {
+        "name": "Warmwasserbereitung"
+      },
+      "room_power": {
+        "name": "Zonen nach Raumtemperatur"
+      },
+      "eco": {
+        "name": "ECO-Modus"
+      },
+      "silent": {
+        "name": "Flüstermodus"
+      },
+      "disinfect": {
+        "name": "Desinfektion (Anti-Legionellen)"
+      },
+      "curve_z1": {
+        "name": "Heizkurve Zone 1"
+      },
+      "curve_z2": {
+        "name": "Heizkurve Zone 2"
+      },
+      "ac_dry": {
+        "name": "Wärmetauscher nach dem Ausschalten trocknen"
+      },
+      "ac_frost_protect": {
+        "name": "Frostschutz 8 °C"
+      },
+      "ac_anion": {
+        "name": "Ionisator"
+      },
+      "ac_display": {
+        "name": "Display"
+      },
+      "ac_beep": {
+        "name": "Signalton bei Bedienung"
+      },
+      "ac_prevent_straight_wind": {
+        "name": "Luftstrom an Personen vorbei"
+      }
+    },
+    "climate": {
+      "zone1_climate": {
+        "name": "Zone 1"
+      },
+      "ac_climate": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "silent": "leise",
+              "low": "niedrig",
+              "medium": "mittel",
+              "high": "hoch",
+              "auto": "Auto"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "pump_d_start": {
+        "name": "Warmwasserzirkulation starten"
+      },
+      "ac_self_clean_start": {
+        "name": "Selbstreinigung starten"
+      }
+    }
+  },
+  "device": {
+    "outdoor_unit": {
+      "name": "Außengerät {unit}"
+    }
+  }
+}

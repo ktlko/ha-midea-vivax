@@ -1,0 +1,1018 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Midea / Vivax",
+        "menu_options": {
+          "heat_pump": "Pompa ciepła (Modbus przez EW11)",
+          "air_conditioner": "Klimatyzator (Wi-Fi)"
+        }
+      },
+      "heat_pump": {
+        "title": "Pompa ciepła (Modbus TCP)",
+        "description": "Bramka Modbus TCP (np. Elfin EW11) podłączona do H1/H2 przewodowego sterownika.",
+        "data": {
+          "host": "Adres IP bramki",
+          "port": "Port",
+          "device_id": "Adres Modbus (HMI ADDRESS FOR BMS)",
+          "name": "Nazwa"
+        }
+      },
+      "air_conditioner": {
+        "title": "Klimatyzator (Wi-Fi)",
+        "menu_options": {
+          "ac_cloud": "Zaloguj się do chmury Midea (MSmartHome, NetHome Plus…)",
+          "ac_lan": "Użyj urządzenia sparowanego w Midea AC LAN"
+        }
+      },
+      "ac_select": {
+        "title": "Wybór klimatyzatora",
+        "description": "Urządzenia znalezione w sieci: {found}. Jeśli adres IP jest pusty, znajdziesz go w routerze (DHCP). Jednostkom wewnętrznym ze wspólną jednostką zewnętrzną (multi-split) nadaj tę samą nazwę jednostki zewnętrznej.",
+        "data": {
+          "unit": "Urządzenie",
+          "device_id": "ID urządzenia (Appliance ID z aplikacji)",
+          "host": "Adres IP urządzenia",
+          "name": "Nazwa",
+          "outdoor_unit": "Wspólna jednostka zewnętrzna (puste = własna)"
+        }
+      },
+      "ac_cloud": {
+        "title": "Chmura Midea",
+        "description": "Do sterowania lokalnego klimatyzator potrzebuje tokenu i klucza. Integracja pobiera je jednorazowo z chmury aplikacji, w której zarejestrowano urządzenie (MSmartHome = SmartHome). Hasło nie jest zapisywane. Bez własnego konta zaznacz konto domyślne – ID urządzenia wpiszesz wtedy ręcznie.",
+        "data": {
+          "cloud": "Aplikacja / chmura",
+          "username": "E-mail konta",
+          "password": "Hasło",
+          "default_account": "Użyj konta domyślnego (bez logowania)"
+        }
+      },
+      "ac_lan": {
+        "title": "Klimatyzator z Midea AC LAN",
+        "description": "Token i klucz są przejmowane z integracji Midea AC LAN. Jednostkom wewnętrznym ze wspólną jednostką zewnętrzną (multi-split) nadaj tę samą nazwę jednostki zewnętrznej.",
+        "data": {
+          "unit": "Urządzenie",
+          "name": "Nazwa",
+          "outdoor_unit": "Wspólna jednostka zewnętrzna (puste = własna)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nie można odczytać pompy ciepła. Sprawdź IP, port, okablowanie (A+ do H2, B- do H1) i 9600 8N1.",
+      "cannot_connect_ac": "Klimatyzator nie odpowiada (adres IP, token/klucz).",
+      "no_devices_found": "Na koncie nie znaleziono klimatyzatora.",
+      "all_configured": "Wszystkie znalezione klimatyzatory są już dodane.",
+      "missing_credentials": "Wpisz e-mail i hasło albo zaznacz konto domyślne.",
+      "cloud_login_failed": "Logowanie do chmury Midea nie powiodło się albo chmura nie zna urządzenia. Sprawdź aplikację, e-mail i hasło.",
+      "missing_unit": "Wybierz urządzenie (lub wpisz numeryczne ID) i wpisz jego adres IP.",
+      "no_token": "Chmura nie zwróciła tokenu dla tego urządzenia. Sprawdź ID urządzenia i aplikację."
+    },
+    "abort": {
+      "already_configured": "To urządzenie jest już skonfigurowane.",
+      "no_air_conditioners": "Brak kolejnych klimatyzatorów sparowanych w Midea AC LAN."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Klimatyzator",
+        "data": {
+          "host": "Adres IP",
+          "outdoor_unit": "Wspólna jednostka zewnętrzna (puste = własna)"
+        }
+      }
+    },
+    "abort": {
+      "not_supported": "Pompa ciepła nie ma opcji."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "comp_freq": {
+        "name": "Częstotliwość sprężarki"
+      },
+      "unit_mode": {
+        "name": "Aktualny tryb urządzenia",
+        "state": {
+          "off": "wyłączone",
+          "cool": "chłodzenie",
+          "heat": "grzanie",
+          "other": "inne"
+        }
+      },
+      "fan_speed": {
+        "name": "Prędkość wentylatora"
+      },
+      "exv": {
+        "name": "Zawór rozprężny (otwarcie)"
+      },
+      "tw_in": {
+        "name": "Wlot wody (Tw_in)"
+      },
+      "tw_out": {
+        "name": "Wylot wody (Tw_out)"
+      },
+      "t3": {
+        "name": "Skraplacz (T3)"
+      },
+      "t4": {
+        "name": "Temperatura zewnętrzna (T4)"
+      },
+      "tp": {
+        "name": "Tłoczenie sprężarki (Tp)"
+      },
+      "th": {
+        "name": "Ssanie sprężarki (Th)"
+      },
+      "t1": {
+        "name": "Całkowity wylot wody (T1)"
+      },
+      "t1b": {
+        "name": "Woda strefa 2 (T1B)"
+      },
+      "t2": {
+        "name": "Czynnik ciekły (T2)"
+      },
+      "t2b": {
+        "name": "Czynnik gazowy (T2B)"
+      },
+      "ta": {
+        "name": "Temperatura pokojowa (Ta)"
+      },
+      "t5": {
+        "name": "Zasobnik CWU (T5)"
+      },
+      "p_high": {
+        "name": "Wysokie ciśnienie"
+      },
+      "p_low": {
+        "name": "Niskie ciśnienie"
+      },
+      "odu_current": {
+        "name": "Prąd jednostki zewnętrznej"
+      },
+      "odu_voltage": {
+        "name": "Napięcie jednostki zewnętrznej"
+      },
+      "tbt1": {
+        "name": "Bufor góra (Tbt1)"
+      },
+      "tbt2": {
+        "name": "Bufor dół (Tbt2)"
+      },
+      "comp_hours": {
+        "name": "Czas pracy sprężarki"
+      },
+      "unit_capacity": {
+        "name": "Klasa mocy urządzenia"
+      },
+      "idu_sw": {
+        "name": "Oprogramowanie hydromodułu"
+      },
+      "hmi_sw": {
+        "name": "Oprogramowanie sterownika"
+      },
+      "target_freq": {
+        "name": "Częstotliwość docelowa"
+      },
+      "dc_current": {
+        "name": "Prąd DC"
+      },
+      "dc_voltage": {
+        "name": "Napięcie DC"
+      },
+      "tf": {
+        "name": "Temperatura modułu (TF)"
+      },
+      "curve_t1s_z1": {
+        "name": "Cel krzywej grzewczej strefa 1"
+      },
+      "curve_t1s_z2": {
+        "name": "Cel krzywej grzewczej strefa 2"
+      },
+      "water_flow": {
+        "name": "Przepływ wody"
+      },
+      "odu_limit": {
+        "name": "Ograniczenie prądu (kod)"
+      },
+      "capacity": {
+        "name": "Moc hydromodułu"
+      },
+      "tsolar": {
+        "name": "Panel solarny (Tsolar)"
+      },
+      "lim_cool_max": {
+        "name": "Limit chłodzenia – maks. woda strefa 1"
+      },
+      "lim_cool_min": {
+        "name": "Limit chłodzenia – min. woda strefa 1"
+      },
+      "lim_heat_max": {
+        "name": "Limit grzania – maks. woda strefa 1"
+      },
+      "lim_heat_min": {
+        "name": "Limit grzania – min. woda strefa 1"
+      },
+      "lim_room_max": {
+        "name": "Limit pomieszczenia – maks."
+      },
+      "lim_room_min": {
+        "name": "Limit pomieszczenia – min."
+      },
+      "lim_dhw_max": {
+        "name": "Limit CWU – maks."
+      },
+      "lim_dhw_min": {
+        "name": "Limit CWU – min."
+      },
+      "dry_up": {
+        "name": "Suszenie posadzki – dni narastania"
+      },
+      "dry_peak_days": {
+        "name": "Suszenie posadzki – dni szczytu"
+      },
+      "dry_down": {
+        "name": "Suszenie posadzki – dni opadania"
+      },
+      "dry_peak": {
+        "name": "Suszenie posadzki – temperatura szczytowa"
+      },
+      "t_arsth": {
+        "name": "Wstępne grzanie podłogi – czas"
+      },
+      "preheat_t1s": {
+        "name": "Wstępne grzanie podłogi – temperatura wody"
+      },
+      "error": {
+        "name": "Aktualny błąd",
+        "state": {
+          "none": "Brak błędu",
+          "e0": "E0 Błąd przepływu wody (E8 3×)",
+          "e1": "E1 Zanik fazy / zamienione N i L",
+          "e2": "E2 Komunikacja sterownik – hydromoduł",
+          "e3": "E3 Czujnik wody wylotowej T1",
+          "e4": "E4 Czujnik zasobnika T5",
+          "e5": "E5 Czujnik skraplacza T3",
+          "e6": "E6 Czujnik temperatury zewnętrznej T4",
+          "e7": "E7 Czujnik bufora góra Tbt1",
+          "e8": "E8 Błąd przepływu wody",
+          "e9": "E9 Czujnik ssania Th",
+          "ea": "EA Czujnik tłoczenia Tp",
+          "eb": "Eb Czujnik panelu solarnego Tsolar",
+          "ec": "Ec Czujnik bufora dół Tbt2",
+          "ed": "Ed Czujnik wody wlotowej Tw_in",
+          "ee": "EE EEPROM hydromodułu",
+          "p0": "P0 Ochrona niskiego ciśnienia",
+          "p1": "P1 Ochrona wysokiego ciśnienia",
+          "p3": "P3 Przetężenie sprężarki",
+          "p4": "P4 Wysoka temperatura tłoczenia",
+          "p5": "P5 Zbyt duża różnica Tw_out – Tw_in",
+          "p6": "P6 Ochrona modułu inwertera",
+          "pb": "Pb Ochrona przed zamarzaniem",
+          "pd": "Pd Wysoka temperatura czynnika na wylocie skraplacza",
+          "pp": "PP Nietypowa różnica Tw_out – Tw_in",
+          "h0": "H0 Komunikacja hydromoduł – płyta główna",
+          "h1": "H1 Komunikacja inwerter – płyta główna",
+          "h2": "H2 Czujnik czynnika ciekłego T2",
+          "h3": "H3 Czujnik czynnika gazowego T2B",
+          "h4": "H4 Trzykrotnie P6 (L0/L1)",
+          "h5": "H5 Czujnik temperatury pokojowej Ta",
+          "h6": "H6 Awaria wentylatora DC",
+          "h7": "H7 Ochrona napięciowa",
+          "h8": "H8 Czujnik ciśnienia",
+          "h9": "H9 Czujnik wody strefy 2 Tw2",
+          "ha": "HA Czujnik wody wylotowej Tw_out",
+          "hb": "Hb Trzykrotnie PP i Tw_out < 7 °C",
+          "hd": "Hd Komunikacja między hydromodułami (kaskada)",
+          "he": "HE Komunikacja płyta główna – termostat",
+          "hf": "HF EEPROM modułu inwertera",
+          "hh": "HH H6 10× w ciągu 2 godzin",
+          "hp": "HP Niskie ciśnienie (Pe<0,6) 3× na godzinę",
+          "c7": "C7 Przegrzanie modułu inwertera",
+          "bh": "bH Awaria płytki PED",
+          "f1": "F1 Niskie napięcie szyny DC",
+          "l0": "L0 Ochrona modułu",
+          "l1": "L1 Niskie napięcie szyny DC",
+          "l2": "L2 Wysokie napięcie szyny DC",
+          "l4": "L4 Awaria MCE",
+          "l5": "L5 Ochrona zerowej prędkości",
+          "l7": "L7 Błąd kolejności faz",
+          "l8": "L8 Różnica prędkości > 15 Hz (zegar)",
+          "l9": "L9 Różnica prędkości rzeczywistej i zadanej > 15 Hz",
+          "unknown": "Nieznany kod"
+        }
+      },
+      "error_hist1": {
+        "name": "Błąd – historia 1",
+        "state": {
+          "none": "Brak błędu",
+          "e0": "E0 Błąd przepływu wody (E8 3×)",
+          "e1": "E1 Zanik fazy / zamienione N i L",
+          "e2": "E2 Komunikacja sterownik – hydromoduł",
+          "e3": "E3 Czujnik wody wylotowej T1",
+          "e4": "E4 Czujnik zasobnika T5",
+          "e5": "E5 Czujnik skraplacza T3",
+          "e6": "E6 Czujnik temperatury zewnętrznej T4",
+          "e7": "E7 Czujnik bufora góra Tbt1",
+          "e8": "E8 Błąd przepływu wody",
+          "e9": "E9 Czujnik ssania Th",
+          "ea": "EA Czujnik tłoczenia Tp",
+          "eb": "Eb Czujnik panelu solarnego Tsolar",
+          "ec": "Ec Czujnik bufora dół Tbt2",
+          "ed": "Ed Czujnik wody wlotowej Tw_in",
+          "ee": "EE EEPROM hydromodułu",
+          "p0": "P0 Ochrona niskiego ciśnienia",
+          "p1": "P1 Ochrona wysokiego ciśnienia",
+          "p3": "P3 Przetężenie sprężarki",
+          "p4": "P4 Wysoka temperatura tłoczenia",
+          "p5": "P5 Zbyt duża różnica Tw_out – Tw_in",
+          "p6": "P6 Ochrona modułu inwertera",
+          "pb": "Pb Ochrona przed zamarzaniem",
+          "pd": "Pd Wysoka temperatura czynnika na wylocie skraplacza",
+          "pp": "PP Nietypowa różnica Tw_out – Tw_in",
+          "h0": "H0 Komunikacja hydromoduł – płyta główna",
+          "h1": "H1 Komunikacja inwerter – płyta główna",
+          "h2": "H2 Czujnik czynnika ciekłego T2",
+          "h3": "H3 Czujnik czynnika gazowego T2B",
+          "h4": "H4 Trzykrotnie P6 (L0/L1)",
+          "h5": "H5 Czujnik temperatury pokojowej Ta",
+          "h6": "H6 Awaria wentylatora DC",
+          "h7": "H7 Ochrona napięciowa",
+          "h8": "H8 Czujnik ciśnienia",
+          "h9": "H9 Czujnik wody strefy 2 Tw2",
+          "ha": "HA Czujnik wody wylotowej Tw_out",
+          "hb": "Hb Trzykrotnie PP i Tw_out < 7 °C",
+          "hd": "Hd Komunikacja między hydromodułami (kaskada)",
+          "he": "HE Komunikacja płyta główna – termostat",
+          "hf": "HF EEPROM modułu inwertera",
+          "hh": "HH H6 10× w ciągu 2 godzin",
+          "hp": "HP Niskie ciśnienie (Pe<0,6) 3× na godzinę",
+          "c7": "C7 Przegrzanie modułu inwertera",
+          "bh": "bH Awaria płytki PED",
+          "f1": "F1 Niskie napięcie szyny DC",
+          "l0": "L0 Ochrona modułu",
+          "l1": "L1 Niskie napięcie szyny DC",
+          "l2": "L2 Wysokie napięcie szyny DC",
+          "l4": "L4 Awaria MCE",
+          "l5": "L5 Ochrona zerowej prędkości",
+          "l7": "L7 Błąd kolejności faz",
+          "l8": "L8 Różnica prędkości > 15 Hz (zegar)",
+          "l9": "L9 Różnica prędkości rzeczywistej i zadanej > 15 Hz",
+          "unknown": "Nieznany kod"
+        }
+      },
+      "error_hist2": {
+        "name": "Błąd – historia 2",
+        "state": {
+          "none": "Brak błędu",
+          "e0": "E0 Błąd przepływu wody (E8 3×)",
+          "e1": "E1 Zanik fazy / zamienione N i L",
+          "e2": "E2 Komunikacja sterownik – hydromoduł",
+          "e3": "E3 Czujnik wody wylotowej T1",
+          "e4": "E4 Czujnik zasobnika T5",
+          "e5": "E5 Czujnik skraplacza T3",
+          "e6": "E6 Czujnik temperatury zewnętrznej T4",
+          "e7": "E7 Czujnik bufora góra Tbt1",
+          "e8": "E8 Błąd przepływu wody",
+          "e9": "E9 Czujnik ssania Th",
+          "ea": "EA Czujnik tłoczenia Tp",
+          "eb": "Eb Czujnik panelu solarnego Tsolar",
+          "ec": "Ec Czujnik bufora dół Tbt2",
+          "ed": "Ed Czujnik wody wlotowej Tw_in",
+          "ee": "EE EEPROM hydromodułu",
+          "p0": "P0 Ochrona niskiego ciśnienia",
+          "p1": "P1 Ochrona wysokiego ciśnienia",
+          "p3": "P3 Przetężenie sprężarki",
+          "p4": "P4 Wysoka temperatura tłoczenia",
+          "p5": "P5 Zbyt duża różnica Tw_out – Tw_in",
+          "p6": "P6 Ochrona modułu inwertera",
+          "pb": "Pb Ochrona przed zamarzaniem",
+          "pd": "Pd Wysoka temperatura czynnika na wylocie skraplacza",
+          "pp": "PP Nietypowa różnica Tw_out – Tw_in",
+          "h0": "H0 Komunikacja hydromoduł – płyta główna",
+          "h1": "H1 Komunikacja inwerter – płyta główna",
+          "h2": "H2 Czujnik czynnika ciekłego T2",
+          "h3": "H3 Czujnik czynnika gazowego T2B",
+          "h4": "H4 Trzykrotnie P6 (L0/L1)",
+          "h5": "H5 Czujnik temperatury pokojowej Ta",
+          "h6": "H6 Awaria wentylatora DC",
+          "h7": "H7 Ochrona napięciowa",
+          "h8": "H8 Czujnik ciśnienia",
+          "h9": "H9 Czujnik wody strefy 2 Tw2",
+          "ha": "HA Czujnik wody wylotowej Tw_out",
+          "hb": "Hb Trzykrotnie PP i Tw_out < 7 °C",
+          "hd": "Hd Komunikacja między hydromodułami (kaskada)",
+          "he": "HE Komunikacja płyta główna – termostat",
+          "hf": "HF EEPROM modułu inwertera",
+          "hh": "HH H6 10× w ciągu 2 godzin",
+          "hp": "HP Niskie ciśnienie (Pe<0,6) 3× na godzinę",
+          "c7": "C7 Przegrzanie modułu inwertera",
+          "bh": "bH Awaria płytki PED",
+          "f1": "F1 Niskie napięcie szyny DC",
+          "l0": "L0 Ochrona modułu",
+          "l1": "L1 Niskie napięcie szyny DC",
+          "l2": "L2 Wysokie napięcie szyny DC",
+          "l4": "L4 Awaria MCE",
+          "l5": "L5 Ochrona zerowej prędkości",
+          "l7": "L7 Błąd kolejności faz",
+          "l8": "L8 Różnica prędkości > 15 Hz (zegar)",
+          "l9": "L9 Różnica prędkości rzeczywistej i zadanej > 15 Hz",
+          "unknown": "Nieznany kod"
+        }
+      },
+      "error_hist3": {
+        "name": "Błąd – historia 3",
+        "state": {
+          "none": "Brak błędu",
+          "e0": "E0 Błąd przepływu wody (E8 3×)",
+          "e1": "E1 Zanik fazy / zamienione N i L",
+          "e2": "E2 Komunikacja sterownik – hydromoduł",
+          "e3": "E3 Czujnik wody wylotowej T1",
+          "e4": "E4 Czujnik zasobnika T5",
+          "e5": "E5 Czujnik skraplacza T3",
+          "e6": "E6 Czujnik temperatury zewnętrznej T4",
+          "e7": "E7 Czujnik bufora góra Tbt1",
+          "e8": "E8 Błąd przepływu wody",
+          "e9": "E9 Czujnik ssania Th",
+          "ea": "EA Czujnik tłoczenia Tp",
+          "eb": "Eb Czujnik panelu solarnego Tsolar",
+          "ec": "Ec Czujnik bufora dół Tbt2",
+          "ed": "Ed Czujnik wody wlotowej Tw_in",
+          "ee": "EE EEPROM hydromodułu",
+          "p0": "P0 Ochrona niskiego ciśnienia",
+          "p1": "P1 Ochrona wysokiego ciśnienia",
+          "p3": "P3 Przetężenie sprężarki",
+          "p4": "P4 Wysoka temperatura tłoczenia",
+          "p5": "P5 Zbyt duża różnica Tw_out – Tw_in",
+          "p6": "P6 Ochrona modułu inwertera",
+          "pb": "Pb Ochrona przed zamarzaniem",
+          "pd": "Pd Wysoka temperatura czynnika na wylocie skraplacza",
+          "pp": "PP Nietypowa różnica Tw_out – Tw_in",
+          "h0": "H0 Komunikacja hydromoduł – płyta główna",
+          "h1": "H1 Komunikacja inwerter – płyta główna",
+          "h2": "H2 Czujnik czynnika ciekłego T2",
+          "h3": "H3 Czujnik czynnika gazowego T2B",
+          "h4": "H4 Trzykrotnie P6 (L0/L1)",
+          "h5": "H5 Czujnik temperatury pokojowej Ta",
+          "h6": "H6 Awaria wentylatora DC",
+          "h7": "H7 Ochrona napięciowa",
+          "h8": "H8 Czujnik ciśnienia",
+          "h9": "H9 Czujnik wody strefy 2 Tw2",
+          "ha": "HA Czujnik wody wylotowej Tw_out",
+          "hb": "Hb Trzykrotnie PP i Tw_out < 7 °C",
+          "hd": "Hd Komunikacja między hydromodułami (kaskada)",
+          "he": "HE Komunikacja płyta główna – termostat",
+          "hf": "HF EEPROM modułu inwertera",
+          "hh": "HH H6 10× w ciągu 2 godzin",
+          "hp": "HP Niskie ciśnienie (Pe<0,6) 3× na godzinę",
+          "c7": "C7 Przegrzanie modułu inwertera",
+          "bh": "bH Awaria płytki PED",
+          "f1": "F1 Niskie napięcie szyny DC",
+          "l0": "L0 Ochrona modułu",
+          "l1": "L1 Niskie napięcie szyny DC",
+          "l2": "L2 Wysokie napięcie szyny DC",
+          "l4": "L4 Awaria MCE",
+          "l5": "L5 Ochrona zerowej prędkości",
+          "l7": "L7 Błąd kolejności faz",
+          "l8": "L8 Różnica prędkości > 15 Hz (zegar)",
+          "l9": "L9 Różnica prędkości rzeczywistej i zadanej > 15 Hz",
+          "unknown": "Nieznany kod"
+        }
+      },
+      "energy_in": {
+        "name": "Zużyta energia elektryczna"
+      },
+      "energy_out": {
+        "name": "Wytworzone ciepło"
+      },
+      "cop_total": {
+        "name": "COP całkowity"
+      },
+      "ac_indoor_temperature": {
+        "name": "Temperatura w pomieszczeniu"
+      },
+      "ac_pmv": {
+        "name": "Komfort cieplny (PMV)"
+      },
+      "ac_indoor_fan_speed": {
+        "name": "Prędkość wentylatora wewnętrznego"
+      },
+      "ac_indoor_coil_temperature": {
+        "name": "Temperatura wymiennika wewnętrznego"
+      },
+      "ac_humidity": {
+        "name": "Wilgotność w pomieszczeniu"
+      },
+      "ac_outdoor_temperature": {
+        "name": "Temperatura zewnętrzna"
+      },
+      "ac_compressor_frequency": {
+        "name": "Częstotliwość sprężarki"
+      },
+      "ac_compressor_current": {
+        "name": "Prąd sprężarki"
+      },
+      "ac_outdoor_coil_temperature": {
+        "name": "Temperatura wymiennika zewnętrznego"
+      },
+      "ac_discharge_temperature": {
+        "name": "Temperatura tłoczenia sprężarki"
+      },
+      "ac_outdoor_fan_speed": {
+        "name": "Prędkość wentylatora zewnętrznego"
+      },
+      "ac_energy_total": {
+        "name": "Zużyta energia elektryczna"
+      },
+      "emission_z1_heat": {
+        "name": "Typ grzejników – strefa 1 grzanie",
+        "state": {
+          "fan_coil": "klimakonwektor",
+          "radiators": "grzejniki",
+          "underfloor": "podłogowe",
+          "other": "inne"
+        }
+      },
+      "emission_z2_heat": {
+        "name": "Typ grzejników – strefa 2 grzanie",
+        "state": {
+          "fan_coil": "klimakonwektor",
+          "radiators": "grzejniki",
+          "underfloor": "podłogowe",
+          "other": "inne"
+        }
+      },
+      "emission_z1_cool": {
+        "name": "Typ grzejników – strefa 1 chłodzenie",
+        "state": {
+          "fan_coil": "klimakonwektor",
+          "radiators": "grzejniki",
+          "underfloor": "podłogowe",
+          "other": "inne"
+        }
+      },
+      "emission_z2_cool": {
+        "name": "Typ grzejników – strefa 2 chłodzenie",
+        "state": {
+          "fan_coil": "klimakonwektor",
+          "radiators": "grzejniki",
+          "underfloor": "podłogowe",
+          "other": "inne"
+        }
+      }
+    },
+    "binary_sensor": {
+      "ibh1": {
+        "name": "Grzałka elektryczna IBH1"
+      },
+      "ibh2": {
+        "name": "Grzałka elektryczna IBH2"
+      },
+      "pump_i": {
+        "name": "Wewnętrzna pompa obiegowa"
+      },
+      "sv1": {
+        "name": "Zawór trójdrożny SV1 (CWU)"
+      },
+      "sv2": {
+        "name": "Zawór trójdrożny SV2"
+      },
+      "pump_o": {
+        "name": "Zewnętrzna pompa obiegowa"
+      },
+      "pump_c": {
+        "name": "Pompa strefy 2 (pump_C)"
+      },
+      "sv3": {
+        "name": "Zawór trójdrożny SV3"
+      },
+      "crankcase": {
+        "name": "Grzałka karteru"
+      },
+      "pump_s": {
+        "name": "Pompa solarna (pump_S)"
+      },
+      "alarm": {
+        "name": "Alarm"
+      },
+      "ahs": {
+        "name": "Dodatkowe źródło ciepła (AHS)"
+      },
+      "defrost": {
+        "name": "Odszranianie"
+      },
+      "anti_freeze": {
+        "name": "Ochrona przed zamarzaniem"
+      },
+      "oil_return": {
+        "name": "Powrót oleju"
+      },
+      "remote_onoff": {
+        "name": "Zdalne wł./wył. aktywne"
+      },
+      "thermostat_heat": {
+        "name": "Termostat – żądanie grzania (HT)"
+      },
+      "thermostat_cool": {
+        "name": "Termostat – żądanie chłodzenia (CL)"
+      },
+      "solar_input": {
+        "name": "Wejście solarne"
+      },
+      "dhw_anti_freeze": {
+        "name": "Ochrona zasobnika przed zamarzaniem"
+      },
+      "sg_signal": {
+        "name": "Sygnał smart grid (SG)"
+      },
+      "euv_signal": {
+        "name": "Tania energia (EUV)"
+      },
+      "holiday_away": {
+        "name": "Urlop – poza domem"
+      },
+      "holiday_home": {
+        "name": "Urlop – w domu"
+      },
+      "compressor_running": {
+        "name": "Sprężarka pracuje"
+      },
+      "ac_self_clean": {
+        "name": "Samooczyszczanie"
+      },
+      "ac_filter_full": {
+        "name": "Wyczyść filtr"
+      },
+      "tbh": {
+        "name": "Grzałka zasobnika TBH"
+      },
+      "pump_d": {
+        "name": "Cyrkulacja CWU (pump_D)"
+      },
+      "p1_dhw": {
+        "name": "Funkcja: ciepła woda"
+      },
+      "p1_tbh": {
+        "name": "Funkcja: grzałka zasobnika TBH"
+      },
+      "p1_disinfect": {
+        "name": "Funkcja: dezynfekcja"
+      },
+      "p1_pump_d": {
+        "name": "Funkcja: pompa cyrkulacyjna CWU"
+      },
+      "p1_dhw_priority_fn": {
+        "name": "Funkcja: priorytet CWU"
+      },
+      "p1_pump_d_disinfect": {
+        "name": "Funkcja: cyrkulacja podczas dezynfekcji"
+      },
+      "p1_cooling": {
+        "name": "Funkcja: chłodzenie"
+      },
+      "p1_heating": {
+        "name": "Funkcja: grzanie"
+      },
+      "p1_pump_i_silent": {
+        "name": "Funkcja: cicha pompa obiegowa"
+      },
+      "p1_room_temp": {
+        "name": "Funkcja: sterowanie wg temperatury pokojowej"
+      },
+      "p1_room_thermostat": {
+        "name": "Funkcja: termostat pokojowy"
+      },
+      "p1_thermostat_mode": {
+        "name": "Funkcja: termostat przełącza tryb"
+      },
+      "p1_thermostat_double": {
+        "name": "Funkcja: termostat 2 strefy"
+      },
+      "p1_dhw_priority": {
+        "name": "Funkcja: priorytet CWU włączony"
+      },
+      "p2_m1m2": {
+        "name": "Funkcja: M1M2 / AHS wł.-wył."
+      },
+      "p2_tbt1": {
+        "name": "Funkcja: czujnik bufora Tbt1"
+      },
+      "p2_fpipe": {
+        "name": "Funkcja: rurociąg ≥ 10 m"
+      },
+      "p2_smart_grid": {
+        "name": "Funkcja: smart grid"
+      },
+      "p2_double_zone": {
+        "name": "Funkcja: dwie strefy"
+      },
+      "p2_tbt": {
+        "name": "Funkcja: zbiornik buforowy"
+      }
+    },
+    "number": {
+      "zone1_set": {
+        "name": "Strefa 1 – zadana temperatura wody"
+      },
+      "zone2_set": {
+        "name": "Strefa 2 – zadana temperatura wody"
+      },
+      "dhw_set": {
+        "name": "Ciepła woda – temperatura zadana"
+      },
+      "room_set": {
+        "name": "Pomieszczenie – temperatura zadana"
+      },
+      "curve_z1_no": {
+        "name": "Krzywa grzewcza strefa 1 (1–9)"
+      },
+      "curve_z2_no": {
+        "name": "Krzywa grzewcza strefa 2 (1–9)"
+      },
+      "sg_max": {
+        "name": "Smart grid – maks. godzin w drogiej taryfie"
+      },
+      "p_dt5_on": {
+        "name": "CWU – histereza startu (dT5_ON)"
+      },
+      "p_dt1s5": {
+        "name": "CWU – różnica woda/zasobnik (dT1S5)"
+      },
+      "p_t4dhwmax": {
+        "name": "CWU – maks. temperatura zewnętrzna"
+      },
+      "p_t4dhwmin": {
+        "name": "CWU – min. temperatura zewnętrzna"
+      },
+      "p_t_dhwhp_max": {
+        "name": "CWU – maks. czas grzania pompą ciepła"
+      },
+      "p_t_dhwhp_restrict": {
+        "name": "CWU – czas grzania między cyklami CWU"
+      },
+      "p_pump_d_time": {
+        "name": "Cyrkulacja CWU – czas pracy"
+      },
+      "p_t_tbh_delay": {
+        "name": "TBH – opóźnienie włączenia"
+      },
+      "p_dt5_tbh_off": {
+        "name": "TBH – różnica wyłączenia (dT5_TBH_OFF)"
+      },
+      "p_t4_tbh_on": {
+        "name": "TBH – maks. temperatura zewnętrzna"
+      },
+      "p_tbh_power": {
+        "name": "TBH – moc"
+      },
+      "p_t5s_di": {
+        "name": "Dezynfekcja – temperatura"
+      },
+      "p_t_di_max": {
+        "name": "Dezynfekcja – maks. czas"
+      },
+      "p_t_di_hightemp": {
+        "name": "Dezynfekcja – czas utrzymania"
+      },
+      "p_dt1sc": {
+        "name": "Chłodzenie – histereza wody (dT1SC)"
+      },
+      "p_dtsc": {
+        "name": "Chłodzenie – histereza pomieszczenia (dTSC)"
+      },
+      "p_t4cmax": {
+        "name": "Chłodzenie – maks. temperatura zewnętrzna"
+      },
+      "p_t4cmin": {
+        "name": "Chłodzenie – min. temperatura zewnętrzna"
+      },
+      "p_dt1sh": {
+        "name": "Grzanie – histereza wody (dT1SH)"
+      },
+      "p_dtsh": {
+        "name": "Grzanie – histereza pomieszczenia (dTSH)"
+      },
+      "p_t4hmax": {
+        "name": "Grzanie – maks. temperatura zewnętrzna"
+      },
+      "p_t4hmin": {
+        "name": "Grzanie – min. temperatura zewnętrzna"
+      },
+      "p_t4autocmin": {
+        "name": "Auto – min. temp. zewnętrzna dla chłodzenia"
+      },
+      "p_t4autohmax": {
+        "name": "Auto – maks. temp. zewnętrzna dla grzania"
+      },
+      "p_t1seth1": {
+        "name": "Własna krzywa grzania – woda punkt 1"
+      },
+      "p_t4h1": {
+        "name": "Własna krzywa grzania – zewnątrz punkt 1"
+      },
+      "p_t1seth2": {
+        "name": "Własna krzywa grzania – woda punkt 2"
+      },
+      "p_t4h2": {
+        "name": "Własna krzywa grzania – zewnątrz punkt 2"
+      },
+      "p_t1setc1": {
+        "name": "Własna krzywa chłodzenia – woda punkt 1"
+      },
+      "p_t1setc2": {
+        "name": "Własna krzywa chłodzenia – woda punkt 2"
+      },
+      "p_t4c2": {
+        "name": "Własna krzywa chłodzenia – zewnątrz punkt 2"
+      },
+      "p_t4_ibh_on": {
+        "name": "IBH – maks. temp. zewnętrzna włączenia"
+      },
+      "p_dt1_ibh_on": {
+        "name": "IBH – różnica wody do włączenia"
+      },
+      "p_t_ibh_delay": {
+        "name": "IBH – opóźnienie włączenia"
+      },
+      "p_ibh1_power": {
+        "name": "IBH1 – moc"
+      },
+      "p_ibh2_power": {
+        "name": "IBH2 – moc"
+      },
+      "p_t4_ahs_on": {
+        "name": "AHS – maks. temp. zewnętrzna włączenia"
+      },
+      "p_dt1_ahs_on": {
+        "name": "AHS – różnica wody do włączenia"
+      },
+      "p_t_ahs_delay": {
+        "name": "AHS – opóźnienie włączenia"
+      },
+      "p_holiday_heat": {
+        "name": "Urlop – temperatura wody grzewczej"
+      },
+      "p_holiday_dhw": {
+        "name": "Urlop – temperatura CWU"
+      },
+      "p_power_limit": {
+        "name": "Ograniczenie mocy (typ 0–8)"
+      },
+      "ac_fan_percent": {
+        "name": "Wentylator"
+      }
+    },
+    "select": {
+      "mode": {
+        "name": "Tryb",
+        "state": {
+          "auto": "auto",
+          "cool": "chłodzenie",
+          "heat": "grzanie"
+        }
+      },
+      "silent_level": {
+        "name": "Poziom trybu cichego",
+        "state": {
+          "level_1": "poziom 1",
+          "level_2": "poziom 2"
+        }
+      },
+      "forced_dhw": {
+        "name": "Wymuszone grzanie CWU",
+        "state": {
+          "none": "bez wymuszenia",
+          "force_on": "wymuś włączenie",
+          "force_off": "wymuś wyłączenie"
+        }
+      },
+      "forced_tbh": {
+        "name": "Wymuszona grzałka zasobnika (TBH)",
+        "state": {
+          "none": "bez wymuszenia",
+          "force_on": "wymuś włączenie",
+          "force_off": "wymuś wyłączenie"
+        }
+      },
+      "forced_ibh": {
+        "name": "Wymuszona grzałka rezerwowa (IBH)",
+        "state": {
+          "none": "bez wymuszenia",
+          "force_on": "wymuś włączenie",
+          "force_off": "wymuś wyłączenie"
+        }
+      },
+      "ac_mode": {
+        "name": "Tryb urządzeń",
+        "state": {
+          "off": "wyłączone",
+          "heat": "grzanie",
+          "cool": "chłodzenie",
+          "dry": "osuszanie",
+          "fan_only": "wentylator",
+          "mixed": "różne"
+        }
+      },
+      "ac_ud_angle": {
+        "name": "Żaluzja góra–dół",
+        "state": {
+          "free": "swobodnie",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      },
+      "ac_lr_angle": {
+        "name": "Żaluzja lewo–prawo",
+        "state": {
+          "free": "swobodnie",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5"
+        }
+      }
+    },
+    "switch": {
+      "zone1_power": {
+        "name": "Strefa 1 – grzanie/chłodzenie"
+      },
+      "zone2_power": {
+        "name": "Strefa 2 – grzanie/chłodzenie"
+      },
+      "dhw_power": {
+        "name": "Grzanie ciepłej wody"
+      },
+      "room_power": {
+        "name": "Strefy wg temperatury pokojowej"
+      },
+      "eco": {
+        "name": "Tryb ECO"
+      },
+      "silent": {
+        "name": "Tryb cichy"
+      },
+      "disinfect": {
+        "name": "Dezynfekcja (antylegionella)"
+      },
+      "curve_z1": {
+        "name": "Krzywa grzewcza strefa 1"
+      },
+      "curve_z2": {
+        "name": "Krzywa grzewcza strefa 2"
+      },
+      "ac_dry": {
+        "name": "Osuszanie wymiennika po wyłączeniu"
+      },
+      "ac_frost_protect": {
+        "name": "Ochrona przed mrozem 8 °C"
+      },
+      "ac_anion": {
+        "name": "Jonizator"
+      },
+      "ac_display": {
+        "name": "Wyświetlacz"
+      },
+      "ac_beep": {
+        "name": "Sygnał dźwiękowy przy sterowaniu"
+      },
+      "ac_prevent_straight_wind": {
+        "name": "Nawiew omijający ludzi"
+      }
+    },
+    "climate": {
+      "zone1_climate": {
+        "name": "Strefa 1"
+      },
+      "ac_climate": {
+        "state_attributes": {
+          "fan_mode": {
+            "state": {
+              "silent": "cichy",
+              "low": "niski",
+              "medium": "średni",
+              "high": "wysoki",
+              "auto": "auto"
+            }
+          }
+        }
+      }
+    },
+    "button": {
+      "pump_d_start": {
+        "name": "Uruchom cyrkulację CWU"
+      },
+      "ac_self_clean_start": {
+        "name": "Uruchom samooczyszczanie"
+      }
+    }
+  },
+  "device": {
+    "outdoor_unit": {
+      "name": "Jednostka zewnętrzna {unit}"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "domain": "midea_modbus_hp",
+  "name": "Midea / Vivax (Modbus + Wi-Fi)",
+  "codeowners": [
+    "@ktlko"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/ktlko/ha-midea-vivax",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/ktlko/ha-midea-vivax/issues",
+  "loggers": [
+    "midealocal",
+    "pymodbus"
+  ],
+  "requirements": [
+    "pymodbus>=3.13.1",
+    "midea-local>=6.0.0"
+  ],
+  "version": "1.0.0"
+}
