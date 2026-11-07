@@ -40,6 +40,9 @@ Other Midea Wi-Fi appliances (dehumidifiers, water heaters, fans, purifiers, …
   library (local connection, status pushed by the appliance)
 - power, setpoints, modes and options as switches, numbers and selects; temperatures, humidity, filters, tanks,
   errors and running states as sensors – all names and states translated
+- washer, dryer, dishwasher and oven programs and states shown as translated values
+- protocol details of 15 device types, derived by simulating the official Midea Lua plug-ins:
+  [docs/lua-protocol.md](docs/lua-protocol.md)
 
 ## Requirements
 

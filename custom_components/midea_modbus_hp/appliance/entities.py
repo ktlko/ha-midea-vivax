@@ -81,11 +81,20 @@ class ApplianceSensor(ApplianceEntity, SensorEntity):
             self._attr_device_class = SensorDeviceClass(dc)
         if sc := spec.get("sc"):
             self._attr_state_class = SensorStateClass(sc)
+        self._options: list[str] | None = None
+        if values := spec.get("o"):
+            # Known text values (midea-local tables, confirmed by the Midea Lua plug-ins): translated states.
+            self._options = list(dict.fromkeys(option_key(v) for v in values))
+            self._attr_device_class = SensorDeviceClass.ENUM
+            self._attr_options = self._options
 
     @property
     def native_value(self) -> Any:
         """Value (lists and structures are not shown)."""
         value = self.value
+        if self._options is not None:
+            key = None if value is None else option_key(value)
+            return key if key in self._options else None
         if isinstance(value, (list, tuple, dict)):
             return None
         if isinstance(value, bool) and self.spec.get("u") is None:
