@@ -88,6 +88,15 @@ class AcClimate(AcEntity, ClimateEntity):
         c: AcCoordinator = entry.runtime_data
         self._attr_min_temp, self._attr_max_temp = c.temperature_range
         self._attr_fan_modes = list(FAN_SPEEDS)
+        # Offer only the louvre directions the unit reports (B5 0x0215).
+        vertical, horizontal = c.swing_directions
+        self._attr_swing_modes = [SWING_OFF]
+        if vertical:
+            self._attr_swing_modes.append(SWING_VERTICAL)
+        if horizontal:
+            self._attr_swing_modes.append(SWING_HORIZONTAL)
+        if vertical and horizontal:
+            self._attr_swing_modes.append(SWING_BOTH)
         self._attr_preset_modes = [PRESET_NONE, PRESET_SLEEP]
         if c.has(CAP_ECO, 1, 2):
             self._attr_preset_modes.append(PRESET_ECO)

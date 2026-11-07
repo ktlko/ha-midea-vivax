@@ -222,7 +222,8 @@ def parse_c1(body: bytes) -> dict:
     if group == 0x44:
         # BCD in Wh: hourly deltas reach ~1.4 kWh while cooling and 1-3 Wh in standby
         # (midea-local's 0.01 kWh reading gives up to 14 kWh per hour on a 3-room multi-split).
-        return {"energy_total": _bcd(d[0:4]) / 1000, "power": int.from_bytes(d[12:15], "big") / 10}
+        return {"energy_total": _bcd(d[0:4]) / 1000, "power_watts": int.from_bytes(d[12:15], "big") / 10}
+        # (not "power": that key is the on/off flag of the C0 status)
     if group == 0x41:
         return {
             "compressor_frequency": d[0],
@@ -366,9 +367,9 @@ class AcLanClient:
                 for frame in frames:
                     writer.write(self._encode_8370(self._encode_v2(frame), _ENCRYPTED_REQUEST))
                     await writer.drain()
-                    expected = len(replies) + 1
-                    replies += await self._receive(reader, lambda: len(replies) >= expected, REPLY_TIMEOUT)
-                replies += await self._receive(reader, lambda: False, LATE_REPLY_TIMEOUT)
+                    # Stop waiting as soon as this frame's reply (or any frame) has arrived.
+                    replies += await self._receive(reader, lambda got: len(got) >= 1, REPLY_TIMEOUT)
+                replies += await self._receive(reader, lambda got: False, LATE_REPLY_TIMEOUT)
                 return replies
             except (OSError, TimeoutError, asyncio.IncompleteReadError) as err:
                 raise MideaLanError(f"{self.host}: {err!r}") from err
@@ -397,7 +398,7 @@ class AcLanClient:
         frames: list[bytes] = []
         loop = asyncio.get_running_loop()
         deadline = loop.time() + timeout
-        while not done():
+        while not done(frames):
             remaining = deadline - loop.time()
             if remaining <= 0:
                 break

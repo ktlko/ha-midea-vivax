@@ -18,5 +18,5 @@
     "pymodbus>=3.13.1",
     "midea-local>=15.0.0"
   ],
-  "version": "1.2.0"
+  "version": "1.2.1"
 }

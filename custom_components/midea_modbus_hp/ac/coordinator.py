@@ -20,6 +20,7 @@ MAX_MISSED = 3  # polls without a status reply before the entities go unavailabl
 CAP_FAN = 0x0210
 CAP_ECO = 0x0212
 CAP_FROST = 0x0213
+CAP_SWING = 0x0215  # 0 vertical only, 1 vertical + horizontal, 2 none, 3 horizontal only
 CAP_ENERGY = 0x0216
 CAP_TURBO = 0x021A
 CAP_ANION = 0x021E
@@ -66,6 +67,14 @@ class AcCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def fan_percent(self) -> bool:
         """Free 1-100 % fan speed (B5 0x0210 value 1)."""
         return self.has(CAP_FAN, 1)
+
+    @property
+    def swing_directions(self) -> tuple[bool, bool]:
+        """(vertical, horizontal) louvre swing supported, from B5 0x0215; both when not reported."""
+        raw = self.capabilities.get(CAP_SWING)
+        if not raw:
+            return True, True
+        return raw[0] in (0, 1), raw[0] in (1, 3)
 
     @property
     def temperature_range(self) -> tuple[float, float]:
